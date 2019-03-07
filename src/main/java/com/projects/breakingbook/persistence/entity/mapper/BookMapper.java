@@ -24,7 +24,6 @@ public class BookMapper implements RowMapper<Book> {
 
         // TODO : Check if this is correct
         ArrayList<String> authors = new ArrayList(Arrays.asList(resultSet.getArray("authors")));
-        ArrayList<String> subjects = new ArrayList(Arrays.asList(resultSet.getArray("subjects")));
 
         return Book.builder()
                 .id(resultSet.getLong("id"))
@@ -35,12 +34,8 @@ public class BookMapper implements RowMapper<Book> {
                 .language(resultSet.getString("language"))
                 .publisher(resultSet.getString("publisher"))
                 .datePublished(resultSet.getDate("date_published"))
-                .edition(resultSet.getString("edition"))
                 .page(resultSet.getInt("page"))
-                .overview(resultSet.getString("overview"))
                 .synopsis(resultSet.getString("synopsis"))
-                .subjects(subjects)
-                .reviews_api(resultSet.getString("reviews_api"))
                 .reader(reader)
                 .friend(friend)
                 .build();

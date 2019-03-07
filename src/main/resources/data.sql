@@ -7,8 +7,8 @@ INSERT INTO public.friend(
 VALUES ('friend', 'avatar', 1);
 
 INSERT INTO public.book(
-  title, authors, isbn, image, language, publisher, date_published, edition, page, overview, synopsis, subjects, reviews_api, reader, friend)
-VALUES ('titre', '{author 1, author 2}', 7984653, 'image', 'language','publisher', '2013-06-01', 'edition', 123, 'overview', 'synopsis', '{subject 1, subject 2}', 'review api', 1, 1);
+  title, authors, isbn, image, language, publisher, date_published, page, synopsis, reader, friend)
+VALUES ('titre', '{author 1, author 2}', 7984653, 'image', 'language','publisher', '2013-06-01', 123, 'synopsis', 1, 1);
 
 INSERT INTO public.review(
   rating, comment, book)

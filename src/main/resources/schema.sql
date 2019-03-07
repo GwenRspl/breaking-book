@@ -40,12 +40,8 @@ CREATE TABLE IF NOT EXISTS book (
   language character varying(255),
   publisher character varying(255),
   date_published date,
-  edition character varying(255),
   page integer,
-  overview character varying(255),
   synopsis text,
-  subjects character varying(255)[],
-  reviews_api character varying(255),
   reader bigint references reader(id) ON DELETE CASCADE,
   friend bigint references friend(id)
 );

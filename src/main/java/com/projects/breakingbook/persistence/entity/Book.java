@@ -22,12 +22,8 @@ public class Book {
     private String language;
     private String publisher;
     private Date datePublished;
-    private String edition;
     private int page;
-    private String overview;
     private String synopsis;
-    private List<String> subjects;
-    private String reviews_api;
     private Reader reader;
     private Friend friend;
 
@@ -45,18 +41,14 @@ public class Book {
                 Objects.equals(language, book.language) &&
                 Objects.equals(publisher, book.publisher) &&
                 Objects.equals(datePublished, book.datePublished) &&
-                Objects.equals(edition, book.edition) &&
-                Objects.equals(overview, book.overview) &&
                 Objects.equals(synopsis, book.synopsis) &&
-                Objects.equals(subjects, book.subjects) &&
-                Objects.equals(reviews_api, book.reviews_api) &&
                 Objects.equals(reader, book.reader) &&
                 Objects.equals(friend, book.friend);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, authors, isbn, image, language, publisher, datePublished, edition, page, overview, synopsis, subjects, reviews_api, reader, friend);
+        return Objects.hash(id, title, authors, isbn, image, language, publisher, datePublished, page, synopsis, reader, friend);
     }
 
     @Override
@@ -69,13 +61,9 @@ public class Book {
                 ", image='" + image + '\'' +
                 ", language='" + language + '\'' +
                 ", publisher='" + publisher + '\'' +
-                ", date_published=" + datePublished +
-                ", edition='" + edition + '\'' +
+                ", datePublished=" + datePublished +
                 ", page=" + page +
-                ", overview='" + overview + '\'' +
                 ", synopsis='" + synopsis + '\'' +
-                ", subjects=" + subjects +
-                ", reviews_api='" + reviews_api + '\'' +
                 ", reader=" + reader +
                 ", friend=" + friend +
                 '}';
