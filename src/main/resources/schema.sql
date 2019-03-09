@@ -1,76 +1,69 @@
 DROP TABLE IF EXISTS reader CASCADE;
 CREATE TABLE IF NOT EXISTS reader (
-  id serial primary key,
-  name character varying(255),
-  avatar character varying(255),
-  email character varying(255),
-  password character varying(15)
+  reader_id serial primary key,
+  reader_name character varying(255),
+  reader_avatar character varying(255),
+  reader_email character varying(255),
+  reader_password character varying(15)
 );
-
 
 DROP TABLE IF EXISTS wishlist CASCADE;
 CREATE TABLE IF NOT EXISTS wishlist (
-  id serial primary key,
-  name character varying(255),
-  reader bigint references reader(id) ON DELETE CASCADE
+  wishlist_id serial primary key,
+  wishlist_name character varying(255),
+  wishlist_reader bigint references reader(reader_id) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS collection CASCADE;
 CREATE TABLE IF NOT EXISTS collection (
-  id serial primary key,
-  name character varying(255)
+  collection_id serial primary key,
+  collection_name character varying(255)
 );
-
 
 DROP TABLE IF EXISTS friend CASCADE;
 CREATE TABLE IF NOT EXISTS friend (
-  id serial primary key,
-  name character varying(255),
-  avatar character varying(255),
-  reader bigint references reader(id) ON DELETE CASCADE
+  friend_id serial primary key,
+  friend_name character varying(255),
+  friend_avatar character varying(255),
+  friend_reader bigint references reader(reader_id) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS book CASCADE;
 CREATE TABLE IF NOT EXISTS book (
-  id serial primary key,
-  title character varying(255),
-  authors character varying(255)[],
-  isbn character varying(255),
-  image character varying(255),
-  language character varying(255),
-  publisher character varying(255),
-  date_published date,
-  edition character varying(255),
-  page integer,
-  overview character varying(255),
-  synopsis text,
-  subjects character varying(255)[],
-  reviews_api character varying(255),
-  reader bigint references reader(id) ON DELETE CASCADE,
-  friend bigint references friend(id)
+  book_id serial primary key,
+  book_title character varying(255),
+  book_authors character varying(255)[],
+  book_isbn character varying(255),
+  book_image character varying(255),
+  book_language character varying(255),
+  book_publisher character varying(255),
+  book_date_published date,
+  book_page integer,
+  book_synopsis text,
+  book_reader bigint references reader(reader_id) ON DELETE CASCADE,
+  book_friend bigint references friend(friend_id)
 );
 
 DROP TABLE IF EXISTS review;
 CREATE TABLE IF NOT EXISTS review (
-  id serial primary key,
-  rating integer,
-  comment character varying(255),
-  book bigint references book(id) ON DELETE CASCADE
+  review_id serial primary key,
+  review_rating integer,
+  review_comment character varying(255),
+  review_book bigint references book(book_id) ON DELETE CASCADE
 );
-
 
 DROP TABLE IF EXISTS book_collection;
 CREATE TABLE IF NOT EXISTS book_collection (
-  id serial primary key,
-  book_id bigint references book(id),
-  collection_id bigint references collection(id) ON DELETE CASCADE
+  book_collection_id serial primary key,
+  book_collection_book_id bigint references book(book_id),
+  book_collection_collection_id bigint references collection(collection_id) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS book_wishlist;
 CREATE TABLE IF NOT EXISTS book_wishlist (
-  id serial primary key,
-  book_id bigint references book(id),
-  wishlist_id bigint references wishlist(id) ON DELETE CASCADE
+  book_wishlist_id serial primary key,
+  book_wishlist_book_id bigint references book(book_id),
+  book_wishlist_wishlist_id bigint references wishlist(wishlist_id) ON DELETE CASCADE
 );
 
 
