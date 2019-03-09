@@ -1,4 +1,15 @@
 package com.projects.breakingbook.business.service;
 
-public class ReaderService {
+import com.projects.breakingbook.persistence.entity.Reader;
+
+import java.util.List;
+
+public interface ReaderService {
+
+    List<Reader> getAll();
+    Reader getOne(final Long id);
+    Reader create();
+    Reader update(final Long id);
+    Boolean delete(final Long id);
+    Boolean deleteAll();
 }

@@ -5,10 +5,12 @@ import com.projects.breakingbook.persistence.entity.Friend;
 import com.projects.breakingbook.persistence.entity.Reader;
 import org.springframework.jdbc.core.RowMapper;
 
+import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class BookMapper implements RowMapper<Book> {
     @Override
@@ -23,7 +25,9 @@ public class BookMapper implements RowMapper<Book> {
                 .build();
 
         // TODO : Check if this is correct
-        ArrayList<String> authors = new ArrayList(Arrays.asList(resultSet.getArray("book_authors")));
+  /*      ArrayList<String> authors = new ArrayList(Arrays.asList(resultSet.getArray("book_authors")));*/
+        String[] authorsArray = (String[]) resultSet.getArray("book_authors").getArray();
+        ArrayList<String> authors = new ArrayList<>(Arrays.asList(authorsArray));
 
         return Book.builder()
                 .id(resultSet.getLong("book_id"))

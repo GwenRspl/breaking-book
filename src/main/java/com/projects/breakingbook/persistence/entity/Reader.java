@@ -18,6 +18,10 @@ public class Reader {
     private String email;
     private String password;
 
+    public Reader(Long id) {
+        this.id = id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
