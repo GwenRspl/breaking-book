@@ -14,12 +14,14 @@ import java.util.List;
 public class WishlistRepositoryImpl implements WishlistRepository {
 
     private final JdbcTemplate jdbcTemplate;
-    private final String INSERT = "INSERT INTO wishlist(name, reader) VALUES (?, ?)";
-    private final String SELECT_ALL = "SELECT * FROM wishlist INNER JOIN reader r ON wishlist.reader = r.id";
-    private final String SELECT_BY_ID = "SELECT * FROM wishlist INNER JOIN reader r ON wishlist.reader = r.id WHERE id = ?";
-    private final String DELETE_BY_ID = "DELETE FROM wishlist WHERE id = ?";
+    private final String INSERT = "INSERT INTO wishlist(wishlist_name, wishlist_reader) VALUES (?, ?)";
+    private final String SELECT_ALL = "SELECT * FROM wishlist INNER JOIN reader r ON " +
+            "wishlist.wishlist_reader = r.reader_id";
+    private final String SELECT_BY_ID = "SELECT * FROM wishlist INNER JOIN reader r ON " +
+            "wishlist.wishlist_reader = r.reader_id WHERE wishlist_id = ?";
+    private final String DELETE_BY_ID = "DELETE FROM wishlist WHERE wishlist_id = ?";
     private final String DELETE_ALL = "DELETE FROM wishlist";
-    private final String UPDATE = "UPDATE wishlist SET name = ?, reader = ? WHERE id = ?";
+    private final String UPDATE = "UPDATE wishlist SET wishlist_name = ?, wishlist_reader = ? WHERE wishlist_id = ?";
 
     public WishlistRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

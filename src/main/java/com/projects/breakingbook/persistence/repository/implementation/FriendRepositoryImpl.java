@@ -15,12 +15,14 @@ public class FriendRepositoryImpl implements FriendRepository {
 
     // TODO : ambiguous columns name
     private final JdbcTemplate jdbcTemplate;
-    private final String INSERT = "INSERT INTO friend(name, avatar, reader) VALUES (?, ?, ?)";
-    private final String SELECT_ALL = "SELECT * FROM friend INNER JOIN reader r ON friend.reader = r.id";
-    private final String SELECT_BY_ID = "SELECT * FROM friend INNER JOIN reader r ON friend.reader = r.id WHERE id = ?";
-    private final String DELETE_BY_ID = "DELETE FROM friend WHERE id = ?";
+    private final String INSERT = "INSERT INTO friend(friend_name, friend_avatar, friend_reader) VALUES (?, ?, ?)";
+    private final String SELECT_ALL = "SELECT * FROM friend INNER JOIN reader r ON friend.friend_reader = r.reader_id";
+    private final String SELECT_BY_ID = "SELECT * FROM friend INNER JOIN reader r ON friend.friend_reader = r.reader_id " +
+            "WHERE friend_id = ?";
+    private final String DELETE_BY_ID = "DELETE FROM friend WHERE friend_id = ?";
     private final String DELETE_ALL = "DELETE FROM friend";
-    private final String UPDATE = "UPDATE friend SET name = ?, avatar = ?, reader = ? WHERE id = ?";
+    private final String UPDATE = "UPDATE friend SET friend_name = ?, friend_avatar = ?, friend_reader = ? WHERE " +
+            "friend_id = ?";
 
     public FriendRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

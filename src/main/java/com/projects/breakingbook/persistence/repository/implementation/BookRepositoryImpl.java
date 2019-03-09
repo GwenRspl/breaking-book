@@ -14,12 +14,18 @@ import java.util.List;
 public class BookRepositoryImpl implements BookRepository {
 
     private final JdbcTemplate jdbcTemplate;
-    private final String INSERT = "INSERT INTO book(title, authors, isbn, image, language, publisher, date_published, page, synopsis, reader, friend) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private final String SELECT_ALL = "SELECT * FROM book INNER JOIN reader r ON book.reader = r.id INNER JOIN friend f on book.friend = f.id";
-    private final String SELECT_BY_ID = "SELECT * FROM book INNER JOIN reader r ON book.reader = r.id INNER JOIN friend f on book.friend = f.id WHERE id = ?";
-    private final String DELETE_BY_ID = "DELETE FROM book WHERE id = ?";
+    private final String INSERT = "INSERT INTO book(book_title, book_authors, book_isbn, book_image, book_language, " +
+            "book_publisher, book_date_published, book_page, book_synopsis, book_reader, book_friend) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String SELECT_ALL = "SELECT * FROM book INNER JOIN reader r ON book.book_reader = r.reader_id INNER JOIN " +
+            "friend f on book.book_friend = f.friend_id";
+    private final String SELECT_BY_ID = "SELECT * FROM book INNER JOIN reader r ON book.book_reader = r.reader_id INNER JOIN " +
+            "friend f on book.book_friend = f.friend_id WHERE book_id = ?";
+    private final String DELETE_BY_ID = "DELETE FROM book WHERE book_id = ?";
     private final String DELETE_ALL = "DELETE FROM book";
-    private final String UPDATE = "UPDATE book SET title = ?, authors = ?, isbn = ?, image = ?, language = ?, publisher = ?, date_published = ?, page = ?, synopsis = ?, reader = ?, friend = ? WHERE id = ?";
+    private final String UPDATE = "UPDATE book SET book_title = ?, book_authors = ?, book_isbn = ?, book_image = ?, " +
+            "book_language = ?, book_publisher = ?, book_date_published = ?, book_page = ?, book_synopsis = ?, " +
+            "book_reader = ?, book_friend = ? WHERE book_id = ?";
 
     public BookRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
