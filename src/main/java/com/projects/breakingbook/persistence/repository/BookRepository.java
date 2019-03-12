@@ -7,9 +7,9 @@ import java.util.List;
 public interface BookRepository {
 
     List<Book> findAllBooks();
-    void createBook(Book book);
+    boolean createBook(Book book);
     Book findBookById(Long id);
-    void deleteBookById(Long id);
-    void deleteAllBooks();
-    void updateBook(Long id, Book book);
+    boolean deleteBookById(Long id);
+    boolean deleteAllBooks();
+    boolean updateBook(Long id, Book book);
 }
