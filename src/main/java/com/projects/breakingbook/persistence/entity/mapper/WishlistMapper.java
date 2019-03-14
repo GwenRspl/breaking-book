@@ -12,6 +12,10 @@ public class WishlistMapper implements RowMapper<Wishlist> {
     public Wishlist mapRow(ResultSet resultSet, int i) throws SQLException {
         Reader reader = Reader.builder()
                 .id(resultSet.getLong("wishlist_reader"))
+                .name(resultSet.getString("reader_name"))
+                .avatar(resultSet.getString("reader_avatar"))
+                .email(resultSet.getString("reader_email"))
+                .password(resultSet.getString("reader_password"))
                 .build();
 
         return Wishlist.builder()

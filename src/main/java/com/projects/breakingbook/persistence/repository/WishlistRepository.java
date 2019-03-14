@@ -7,9 +7,9 @@ import java.util.List;
 public interface WishlistRepository {
 
     List<Wishlist> findAllWishlists();
-    void createWishlist(Wishlist wishlist);
+    boolean createWishlist(Wishlist wishlist);
     Wishlist findWishlistById(Long id);
-    void deleteWishlistById(Long id);
-    void deleteAllWishlists();
-    void updateWishlist(Long id, Wishlist wishlist);
+    boolean deleteWishlistById(Long id);
+    boolean deleteAllWishlists();
+    boolean updateWishlist(Long id, Wishlist wishlist);
 }
