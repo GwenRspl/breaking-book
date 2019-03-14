@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.sql.DataSource;
 import java.sql.Array;
 import java.sql.SQLException;
 import java.util.List;
@@ -40,13 +41,7 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public boolean createBook(Book book) {
-        Array authors = null;
-        try {
-            authors = this.jdbcTemplate.getDataSource().getConnection().createArrayOf("VARCHAR", book.getAuthors().toArray());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        int result = this.jdbcTemplate.update(INSERT, book.getTitle(), authors, book.getIsbn(), book.getImage(),
+        int result = this.jdbcTemplate.update(INSERT, book.getTitle(), convertListToSqlArray(book.getAuthors()), book.getIsbn(), book.getImage(),
                 book.getLanguage(), book.getPublisher(), book.getDatePublished(), book.getPage(), book.getSynopsis(),
                 book.getReader().getId(), book.getFriend().getId());
         return result != 0;
@@ -71,13 +66,18 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public boolean updateBook(Long id, Book book) {
+        int result = this.jdbcTemplate.update(UPDATE, book.getTitle(), convertListToSqlArray(book.getAuthors()), book.getIsbn(), book.getImage(), book.getLanguage(), book.getPublisher(), book.getDatePublished(), book.getPage(), book.getSynopsis(), book.getReader().getId(), book.getFriend().getId(), id);
+        return result != 0;
+    }
+
+    private Array convertListToSqlArray(List<String> listToConvert){
         Array authors = null;
         try {
-            authors = this.jdbcTemplate.getDataSource().getConnection().createArrayOf("VARCHAR", book.getAuthors().toArray());
+            DataSource dataSource = this.jdbcTemplate.getDataSource();
+            if(dataSource != null) authors = dataSource.getConnection().createArrayOf("VARCHAR", listToConvert.toArray());
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        int result = this.jdbcTemplate.update(UPDATE, book.getTitle(), authors, book.getIsbn(), book.getImage(), book.getLanguage(), book.getPublisher(), book.getDatePublished(), book.getPage(), book.getSynopsis(), book.getReader().getId(), book.getFriend().getId(), id);
-        return result != 0;
+        return authors;
     }
 }
