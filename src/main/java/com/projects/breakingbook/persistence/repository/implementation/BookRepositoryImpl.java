@@ -48,7 +48,7 @@ public class BookRepositoryImpl implements BookRepository {
         }
         int result = this.jdbcTemplate.update(INSERT, book.getTitle(), authors, book.getIsbn(), book.getImage(),
                 book.getLanguage(), book.getPublisher(), book.getDatePublished(), book.getPage(), book.getSynopsis(),
-                book.getReader(), book.getFriend());
+                book.getReader().getId(), book.getFriend().getId());
         return result != 0;
     }
 
@@ -71,7 +71,13 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public boolean updateBook(Long id, Book book) {
-        int result = this.jdbcTemplate.update(UPDATE, book.getTitle(), book.getAuthors(), book.getIsbn(), book.getImage(), book.getLanguage(), book.getPublisher(), book.getDatePublished(), book.getPage(), book.getSynopsis(), book.getReader(), book.getFriend(), id);
+        Array authors = null;
+        try {
+            authors = this.jdbcTemplate.getDataSource().getConnection().createArrayOf("VARCHAR", book.getAuthors().toArray());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        int result = this.jdbcTemplate.update(UPDATE, book.getTitle(), authors, book.getIsbn(), book.getImage(), book.getLanguage(), book.getPublisher(), book.getDatePublished(), book.getPage(), book.getSynopsis(), book.getReader().getId(), book.getFriend().getId(), id);
         return result != 0;
     }
 }

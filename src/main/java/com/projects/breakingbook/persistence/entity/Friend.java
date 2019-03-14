@@ -17,6 +17,10 @@ public class Friend {
     private String avatar;
     private Reader reader;
 
+    public Friend(Long id) {
+        this.id = id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
