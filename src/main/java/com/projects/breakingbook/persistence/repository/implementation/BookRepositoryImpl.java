@@ -41,16 +41,10 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public boolean createBook(Book book) {
-        Array authors = null;
-        try {
-            DataSource dataSource = this.jdbcTemplate.getDataSource();
-            if(dataSource != null) authors = dataSource.getConnection().createArrayOf("VARCHAR", book.getAuthors().toArray());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        int result = this.jdbcTemplate.update(INSERT, book.getTitle(), authors, book.getIsbn(), book.getImage(),
+
+        int result = this.jdbcTemplate.update(INSERT, book.getTitle(), convertListToSqlArray(book.getAuthors()), book.getIsbn(), book.getImage(),
                 book.getLanguage(), book.getPublisher(), book.getDatePublished(), book.getPage(), book.getSynopsis(),
-                book.getReader(), book.getFriend());
+                book.getReader().getId(), book.getFriend().getId());
         return result != 0;
     }
 
@@ -73,7 +67,18 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public boolean updateBook(Long id, Book book) {
-        int result = this.jdbcTemplate.update(UPDATE, book.getTitle(), book.getAuthors(), book.getIsbn(), book.getImage(), book.getLanguage(), book.getPublisher(), book.getDatePublished(), book.getPage(), book.getSynopsis(), book.getReader(), book.getFriend(), id);
+        int result = this.jdbcTemplate.update(UPDATE, book.getTitle(), convertListToSqlArray(book.getAuthors()), book.getIsbn(), book.getImage(), book.getLanguage(), book.getPublisher(), book.getDatePublished(), book.getPage(), book.getSynopsis(), book.getReader().getId(), book.getFriend().getId(), id);
         return result != 0;
+    }
+
+    private Array convertListToSqlArray(List<String> listToConvert){
+        Array authors = null;
+        try {
+            DataSource dataSource = this.jdbcTemplate.getDataSource();
+            if(dataSource != null) authors = dataSource.getConnection().createArrayOf("VARCHAR", listToConvert.toArray());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return authors;
     }
 }

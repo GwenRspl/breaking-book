@@ -26,6 +26,7 @@ public class ReaderController {
 
     @GetMapping("/{id}")
     public Reader getOne(@PathVariable final Long id) {
+
         return this.readerService.getOne(id);
     }
 
