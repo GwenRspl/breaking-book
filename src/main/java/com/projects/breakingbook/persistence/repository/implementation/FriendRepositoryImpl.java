@@ -13,7 +13,6 @@ import java.util.List;
 @Transactional
 public class FriendRepositoryImpl implements FriendRepository {
 
-    // TODO : ambiguous columns name
     private final JdbcTemplate jdbcTemplate;
     private final String INSERT = "INSERT INTO friend(friend_name, friend_avatar, friend_reader) VALUES (?, ?, ?)";
     private final String SELECT_ALL = "SELECT * FROM friend INNER JOIN reader r ON friend.friend_reader = r.reader_id";
@@ -34,8 +33,9 @@ public class FriendRepositoryImpl implements FriendRepository {
     }
 
     @Override
-    public void createFriend(Friend friend) {
-        this.jdbcTemplate.update(INSERT, friend.getName(), friend.getAvatar(), friend.getReader());
+    public boolean createFriend(Friend friend) {
+        int result = this.jdbcTemplate.update(INSERT, friend.getName(), friend.getAvatar(), friend.getReader().getId());
+        return result != 0;
     }
 
     @Override
@@ -44,17 +44,20 @@ public class FriendRepositoryImpl implements FriendRepository {
     }
 
     @Override
-    public void deleteFriendById(Long id) {
-        this.jdbcTemplate.update(DELETE_BY_ID, id);
+    public boolean deleteFriendById(Long id) {
+        int result = this.jdbcTemplate.update(DELETE_BY_ID, id);
+        return result != 0;
     }
 
     @Override
-    public void deleteAllFriends() {
-        this.jdbcTemplate.update(DELETE_ALL);
+    public boolean deleteAllFriends() {
+        int result = this.jdbcTemplate.update(DELETE_ALL);
+        return result != 0;
     }
 
     @Override
-    public void updateFriend(Long id, Friend friend) {
-        this.jdbcTemplate.update(UPDATE, friend.getName(), friend.getAvatar(), friend.getReader(), id);
+    public boolean updateFriend(Long id, Friend friend) {
+        int result = this.jdbcTemplate.update(UPDATE, friend.getName(), friend.getAvatar(), friend.getReader().getId(), id);
+        return result != 0;
     }
 }

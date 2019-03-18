@@ -1,5 +1,6 @@
 package com.projects.breakingbook.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +17,7 @@ public class Reader {
     private String name;
     private String avatar;
     private String email;
+    @JsonIgnore
     private String password;
 
     public Reader(Long id) {

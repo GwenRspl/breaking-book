@@ -8,8 +8,8 @@ public interface ReaderService {
 
     List<Reader> getAll();
     Reader getOne(final Long id);
-    Reader create();
-    Reader update(final Long id);
-    Boolean delete(final Long id);
-    Boolean deleteAll();
+    boolean create(final Reader reader);
+    boolean update(final Long id, final Reader reader);
+    boolean delete(final Long id);
+    boolean deleteAll();
 }

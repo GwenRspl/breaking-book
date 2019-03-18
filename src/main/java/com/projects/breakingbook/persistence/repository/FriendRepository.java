@@ -7,9 +7,9 @@ import java.util.List;
 public interface FriendRepository {
 
     List<Friend> findAllFriends();
-    void createFriend(Friend friend);
+    boolean createFriend(Friend friend);
     Friend findFriendById(Long id);
-    void deleteFriendById(Long id);
-    void deleteAllFriends();
-    void updateFriend(Long id, Friend friend);
+    boolean deleteFriendById(Long id);
+    boolean deleteAllFriends();
+    boolean updateFriend(Long id, Friend friend);
 }

@@ -21,7 +21,7 @@ public class WishlistRepositoryImpl implements WishlistRepository {
             "wishlist.wishlist_reader = r.reader_id WHERE wishlist_id = ?";
     private final String DELETE_BY_ID = "DELETE FROM wishlist WHERE wishlist_id = ?";
     private final String DELETE_ALL = "DELETE FROM wishlist";
-    private final String UPDATE = "UPDATE wishlist SET wishlist_name = ?, wishlist_reader = ? WHERE wishlist_id = ?";
+    private final String UPDATE = "UPDATE wishlist SET wishlist_name = ? WHERE wishlist_id = ?";
 
     public WishlistRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -33,8 +33,9 @@ public class WishlistRepositoryImpl implements WishlistRepository {
     }
 
     @Override
-    public void createWishlist(Wishlist wishlist) {
-        this.jdbcTemplate.update(INSERT, wishlist.getName(), wishlist.getReader());
+    public boolean createWishlist(Wishlist wishlist) {
+        int result = this.jdbcTemplate.update(INSERT, wishlist.getName(), wishlist.getReader().getId());
+        return result != 0;
     }
 
     @Override
@@ -43,17 +44,20 @@ public class WishlistRepositoryImpl implements WishlistRepository {
     }
 
     @Override
-    public void deleteWishlistById(Long id) {
-        this.jdbcTemplate.update(DELETE_BY_ID, id);
+    public boolean deleteWishlistById(Long id) {
+        int result = this.jdbcTemplate.update(DELETE_BY_ID, id);
+        return result != 0;
     }
 
     @Override
-    public void deleteAllWishlists() {
-        this.jdbcTemplate.update(DELETE_ALL);
+    public boolean deleteAllWishlists() {
+        int result = this.jdbcTemplate.update(DELETE_ALL);
+        return result != 0;
     }
 
     @Override
-    public void updateWishlist(Long id, Wishlist wishlist) {
-        this.jdbcTemplate.update(UPDATE, wishlist.getName(), wishlist.getReader(), id);
+    public boolean updateWishlist(Long id, Wishlist wishlist) {
+        int result = this.jdbcTemplate.update(UPDATE, wishlist.getName(), id);
+        return result != 0;
     }
 }

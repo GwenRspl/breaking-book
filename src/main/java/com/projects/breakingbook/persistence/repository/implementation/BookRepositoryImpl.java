@@ -41,6 +41,7 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public boolean createBook(Book book) {
+
         int result = this.jdbcTemplate.update(INSERT, book.getTitle(), convertListToSqlArray(book.getAuthors()), book.getIsbn(), book.getImage(),
                 book.getLanguage(), book.getPublisher(), book.getDatePublished(), book.getPage(), book.getSynopsis(),
                 book.getReader().getId(), book.getFriend().getId());
