@@ -55,14 +55,14 @@ CREATE TABLE IF NOT EXISTS review (
 DROP TABLE IF EXISTS book_collection;
 CREATE TABLE IF NOT EXISTS book_collection (
   book_collection_id serial primary key,
-  book_collection_book_id bigint references book(book_id),
+  book_collection_book_id bigint references book(book_id) ON DELETE CASCADE,
   book_collection_collection_id bigint references collection(collection_id) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS book_wishlist;
 CREATE TABLE IF NOT EXISTS book_wishlist (
   book_wishlist_id serial primary key,
-  book_wishlist_book_id bigint references book(book_id),
+  book_wishlist_book_id bigint references book(book_id) ON DELETE CASCADE,
   book_wishlist_wishlist_id bigint references wishlist(wishlist_id) ON DELETE CASCADE
 );
 

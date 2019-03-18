@@ -15,15 +15,21 @@ public class BookMapper implements RowMapper<Book> {
     public Book mapRow(ResultSet resultSet, int i) throws SQLException {
         Reader reader = Reader.builder()
                 .id(resultSet.getLong("book_reader"))
+                .name(resultSet.getString("reader_name"))
+                .avatar(resultSet.getString("reader_avatar"))
+                .email(resultSet.getString("reader_email"))
+                .password(resultSet.getString("reader_password"))
                 .build();
-        // TODO : Check if only id is enough, need to change name of columns ?
 
         Friend friend = Friend.builder()
                 .id(resultSet.getLong("book_friend"))
+                .name(resultSet.getString("friend_name"))
+                .avatar(resultSet.getString("friend_avatar"))
+                .reader(reader)
                 .build();
 
-        // TODO : Check if this is correct
-        ArrayList<String> authors = new ArrayList(Arrays.asList(resultSet.getArray("book_authors")));
+        String[] authorsArray = (String[]) resultSet.getArray("book_authors").getArray();
+        ArrayList<String> authors = new ArrayList<>(Arrays.asList(authorsArray));
 
         return Book.builder()
                 .id(resultSet.getLong("book_id"))

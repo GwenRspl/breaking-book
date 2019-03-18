@@ -7,6 +7,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.sql.DataSource;
+import java.sql.Array;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -37,8 +40,11 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public void createBook(Book book) {
-        this.jdbcTemplate.update(INSERT, book.getTitle(), book.getAuthors(), book.getIsbn(), book.getImage(), book.getLanguage(), book.getPublisher(), book.getDatePublished(), book.getPage(), book.getSynopsis(), book.getReader(), book.getFriend());
+    public boolean createBook(Book book) {
+        int result = this.jdbcTemplate.update(INSERT, book.getTitle(), convertListToSqlArray(book.getAuthors()), book.getIsbn(), book.getImage(),
+                book.getLanguage(), book.getPublisher(), book.getDatePublished(), book.getPage(), book.getSynopsis(),
+                book.getReader().getId(), book.getFriend().getId());
+        return result != 0;
     }
 
     @Override
@@ -47,17 +53,31 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public void deleteBookById(Long id) {
-        this.jdbcTemplate.update(DELETE_BY_ID, id);
+    public boolean deleteBookById(Long id) {
+        int result = this.jdbcTemplate.update(DELETE_BY_ID, id);
+        return result != 0;
     }
 
     @Override
-    public void deleteAllBooks() {
-        this.jdbcTemplate.update(DELETE_ALL);
+    public boolean deleteAllBooks() {
+        int result = this.jdbcTemplate.update(DELETE_ALL);
+        return result != 0;
     }
 
     @Override
-    public void updateBook(Long id, Book book) {
-        this.jdbcTemplate.update(UPDATE, book.getTitle(), book.getAuthors(), book.getIsbn(), book.getImage(), book.getLanguage(), book.getPublisher(), book.getDatePublished(), book.getPage(), book.getSynopsis(), book.getReader(), book.getFriend(), id);
+    public boolean updateBook(Long id, Book book) {
+        int result = this.jdbcTemplate.update(UPDATE, book.getTitle(), convertListToSqlArray(book.getAuthors()), book.getIsbn(), book.getImage(), book.getLanguage(), book.getPublisher(), book.getDatePublished(), book.getPage(), book.getSynopsis(), book.getReader().getId(), book.getFriend().getId(), id);
+        return result != 0;
+    }
+
+    private Array convertListToSqlArray(List<String> listToConvert){
+        Array authors = null;
+        try {
+            DataSource dataSource = this.jdbcTemplate.getDataSource();
+            if(dataSource != null) authors = dataSource.getConnection().createArrayOf("VARCHAR", listToConvert.toArray());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return authors;
     }
 }
