@@ -15,6 +15,7 @@ public class ReaderMapper implements RowMapper<Reader> {
                 .avatar(resultSet.getString("reader_avatar"))
                 .email(resultSet.getString("reader_email"))
                 .password(resultSet.getString("reader_password"))
+                .friends()
                 .build();
     }
 }

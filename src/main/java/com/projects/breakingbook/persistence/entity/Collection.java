@@ -5,42 +5,39 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Objects;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Friend {
+public class Collection {
     private Long id;
     private String name;
-    private String avatar;
-
-    public Friend(Long id) {
-        this.id = id;
-    }
+    private List<Book> books;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Friend friend = (Friend) o;
-        return Objects.equals(id, friend.id) &&
-                Objects.equals(name, friend.name) &&
-                Objects.equals(avatar, friend.avatar);
+        Collection that = (Collection) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(books, that.books);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, avatar);
+        return Objects.hash(id, name, books);
     }
 
     @Override
     public String toString() {
-        return "Friend{" +
+        return "Collection{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", avatar='" + avatar + '\'' +
+                ", books=" + books +
                 '}';
     }
 }

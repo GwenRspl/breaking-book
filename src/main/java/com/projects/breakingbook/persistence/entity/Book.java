@@ -28,10 +28,7 @@ public class Book {
     private boolean owned;
     private int rating;
     private String comment;
-    private Reader reader;
     private Friend friend;
-    private List<Wishlist> wishlists;
-    private List<Collection> collections;
 
     @Override
     public boolean equals(Object o) {
@@ -51,15 +48,12 @@ public class Book {
                 Objects.equals(datePublished, book.datePublished) &&
                 Objects.equals(synopsis, book.synopsis) &&
                 Objects.equals(comment, book.comment) &&
-                Objects.equals(reader, book.reader) &&
-                Objects.equals(friend, book.friend) &&
-                Objects.equals(wishlists, book.wishlists) &&
-                Objects.equals(collections, book.collections);
+                Objects.equals(friend, book.friend);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, authors, isbn, image, language, publisher, datePublished, pages, synopsis, owned, rating, comment, reader, friend, wishlists, collections);
+        return Objects.hash(id, title, authors, isbn, image, language, publisher, datePublished, pages, synopsis, owned, rating, comment, friend);
     }
 
     @Override
@@ -78,10 +72,7 @@ public class Book {
                 ", owned=" + owned +
                 ", rating=" + rating +
                 ", comment='" + comment + '\'' +
-                ", reader=" + reader +
                 ", friend=" + friend +
-                ", wishlists=" + wishlists +
-                ", collections=" + collections +
                 '}';
     }
 }
