@@ -40,7 +40,7 @@ public class BookMapper implements RowMapper<Book> {
                 .language(resultSet.getString("book_language"))
                 .publisher(resultSet.getString("book_publisher"))
                 .datePublished(resultSet.getDate("book_date_published"))
-                .page(resultSet.getInt("book_page"))
+                .pages(resultSet.getInt("book_page"))
                 .synopsis(resultSet.getString("book_synopsis"))
                 .reader(reader)
                 .friend(friend)

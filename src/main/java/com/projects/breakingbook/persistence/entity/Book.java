@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -22,17 +23,24 @@ public class Book {
     private String language;
     private String publisher;
     private Date datePublished;
-    private int page;
+    private int pages;
     private String synopsis;
+    private boolean owned;
+    private int rating;
+    private String comment;
     private Reader reader;
     private Friend friend;
+    private List<Wishlist> wishlists;
+    private List<Collection> collections;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Book book = (Book) o;
-        return page == book.page &&
+        return pages == book.pages &&
+                owned == book.owned &&
+                rating == book.rating &&
                 Objects.equals(id, book.id) &&
                 Objects.equals(title, book.title) &&
                 Objects.equals(authors, book.authors) &&
@@ -42,13 +50,16 @@ public class Book {
                 Objects.equals(publisher, book.publisher) &&
                 Objects.equals(datePublished, book.datePublished) &&
                 Objects.equals(synopsis, book.synopsis) &&
+                Objects.equals(comment, book.comment) &&
                 Objects.equals(reader, book.reader) &&
-                Objects.equals(friend, book.friend);
+                Objects.equals(friend, book.friend) &&
+                Objects.equals(wishlists, book.wishlists) &&
+                Objects.equals(collections, book.collections);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, authors, isbn, image, language, publisher, datePublished, page, synopsis, reader, friend);
+        return Objects.hash(id, title, authors, isbn, image, language, publisher, datePublished, pages, synopsis, owned, rating, comment, reader, friend, wishlists, collections);
     }
 
     @Override
@@ -62,10 +73,15 @@ public class Book {
                 ", language='" + language + '\'' +
                 ", publisher='" + publisher + '\'' +
                 ", datePublished=" + datePublished +
-                ", page=" + page +
+                ", pages=" + pages +
                 ", synopsis='" + synopsis + '\'' +
+                ", owned=" + owned +
+                ", rating=" + rating +
+                ", comment='" + comment + '\'' +
                 ", reader=" + reader +
                 ", friend=" + friend +
+                ", wishlists=" + wishlists +
+                ", collections=" + collections +
                 '}';
     }
 }
