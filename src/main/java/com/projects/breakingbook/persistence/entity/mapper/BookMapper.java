@@ -14,10 +14,19 @@ public class BookMapper implements RowMapper<Book> {
     @Override
     public Book mapRow(ResultSet resultSet, int i) throws SQLException {
 
+        Reader reader = Reader.builder()
+                .id(resultSet.getLong("reader_id"))
+                .name(resultSet.getString("reader_name"))
+                .avatar(resultSet.getString("reader_avatar"))
+                .email(resultSet.getString("reader_email"))
+                .password(resultSet.getString("reader_password"))
+                .build();
+
         Friend friend = Friend.builder()
                 .id(resultSet.getLong("book_friend"))
                 .name(resultSet.getString("friend_name"))
                 .avatar(resultSet.getString("friend_avatar"))
+                .reader(reader)
                 .build();
 
         String[] authorsArray = (String[]) resultSet.getArray("book_authors").getArray();
@@ -34,6 +43,9 @@ public class BookMapper implements RowMapper<Book> {
                 .datePublished(resultSet.getDate("book_date_published"))
                 .pages(resultSet.getInt("book_page"))
                 .synopsis(resultSet.getString("book_synopsis"))
+                .owned(resultSet.getBoolean("book_owned"))
+                .rating(resultSet.getInt("book_rating"))
+                .comment(resultSet.getString("book_comment"))
                 .friend(friend)
                 .build();
     }

@@ -20,7 +20,6 @@ public class Reader {
     private String email;
     @JsonIgnore
     private String password;
-    private List<Friend> friends;
     private List<Book> books;
 
     public Reader(Long id) {
@@ -37,13 +36,12 @@ public class Reader {
                 Objects.equals(avatar, reader.avatar) &&
                 Objects.equals(email, reader.email) &&
                 Objects.equals(password, reader.password) &&
-                Objects.equals(friends, reader.friends) &&
                 Objects.equals(books, reader.books);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, avatar, email, password, friends, books);
+        return Objects.hash(id, name, avatar, email, password, books);
     }
 
     @Override
@@ -54,7 +52,6 @@ public class Reader {
                 ", avatar='" + avatar + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", friends=" + friends +
                 ", books=" + books +
                 '}';
     }

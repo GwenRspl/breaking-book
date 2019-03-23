@@ -15,6 +15,7 @@ public class Friend {
     private Long id;
     private String name;
     private String avatar;
+    private Reader reader;
 
     public Friend(Long id) {
         this.id = id;
@@ -27,12 +28,13 @@ public class Friend {
         Friend friend = (Friend) o;
         return Objects.equals(id, friend.id) &&
                 Objects.equals(name, friend.name) &&
-                Objects.equals(avatar, friend.avatar);
+                Objects.equals(avatar, friend.avatar) &&
+                Objects.equals(reader, friend.reader);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, avatar);
+        return Objects.hash(id, name, avatar, reader);
     }
 
     @Override
@@ -41,6 +43,7 @@ public class Friend {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", avatar='" + avatar + '\'' +
+                ", reader=" + reader +
                 '}';
     }
 }

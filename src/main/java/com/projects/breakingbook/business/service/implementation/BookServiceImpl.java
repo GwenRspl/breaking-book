@@ -43,9 +43,8 @@ public class BookServiceImpl implements BookService {
         if(book.getLanguage() == null) book.setLanguage(originalBook.getLanguage());
         if(book.getPublisher() == null) book.setPublisher(originalBook.getPublisher());
         if(book.getDatePublished() == null) book.setDatePublished(originalBook.getDatePublished());
-        if(book.getPage() == 0) book.setPage(originalBook.getPage());
+        if(book.getPages() == 0) book.setPages(originalBook.getPages());
         if(book.getSynopsis() == null) book.setSynopsis(originalBook.getSynopsis());
-        if(book.getReader() == null) book.setReader(originalBook.getReader());
         if(book.getFriend() == null) book.setFriend(originalBook.getFriend());
         return bookRepository.updateBook(id, book);
     }
