@@ -33,6 +33,8 @@ public class CollectionRepositoryImpl implements CollectionRepository {
             "INNER JOIN reader r ON book.book_reader = r.reader_id " +
             "INNER JOIN friend f on book.book_friend = f.friend_id;";
 
+    private final String SELECT_JOIN_BY_ID = "SELECT * FROM collection inner join book_collection on collection.collection_id = book_collection.book_collection_collection_id inner join book on book.book_id = book_collection.book_collection_book_id INNER JOIN reader r ON book.book_reader = r.reader_id INNER JOIN friend f on book.book_friend = f.friend_id;";
+
     public CollectionRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -55,7 +57,10 @@ public class CollectionRepositoryImpl implements CollectionRepository {
 
     @Override
     public Collection findCollectionById(Long id) {
-        return this.jdbcTemplate.queryForObject(SELECT_BY_ID, new Object [] {id}, new CollectionMapper());
+        Collection collection =  this.jdbcTemplate.queryForObject(SELECT_BY_ID, new Object [] {id}, new CollectionMapper());
+        Map<Long, List<Book>> booksMap = this.jdbcTemplate.query(SELECT_JOIN_BY_ID, new CollectionMapExtractor());
+        collection.setBooks(booksMap.get(collection.getId()));
+        return collection;
     }
 
     @Override
