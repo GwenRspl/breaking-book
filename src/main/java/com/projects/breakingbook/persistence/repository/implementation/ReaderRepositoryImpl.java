@@ -26,14 +26,15 @@ public class ReaderRepositoryImpl implements ReaderRepository {
     private final String DELETE_ALL = "DELETE FROM reader";
     private final String UPDATE = "UPDATE reader SET reader_name = ?, reader_avatar = ?, reader_email = ?, reader_password = ? WHERE reader_id = ?";
 
-    private final String SELECT_JOIN  = "select * from reader " +
+    private final String SELECT_JOIN  = "SELECT * FROM reader " +
             "INNER JOIN book ON book.book_reader = reader.reader_id " +
-            "INNER JOIN friend on book.book_friend = friend.friend_id;";
+            "INNER JOIN friend ON book.book_friend = friend.friend_id;";
 
-    private final String SELECT_JOIN_BY_ID  = "select * from reader " +
+    private final String SELECT_JOIN_BY_ID = "SELECT * FROM reader " +
             "INNER JOIN book ON book.book_reader = reader.reader_id " +
-            "INNER JOIN friend on book.book_friend = friend.friend_id " +
+            "INNER JOIN friend ON book.book_friend = friend.friend_id " +
             "WHERE reader.reader_id = ?;";
+
     public ReaderRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -57,7 +58,7 @@ public class ReaderRepositoryImpl implements ReaderRepository {
     @Override
     public Reader findReaderById(Long id) {
         Reader reader = this.jdbcTemplate.queryForObject(SELECT_BY_ID, new Object [] {id}, new ReaderMapper());
-        Map<Long, List<Book>> booksMap = this.jdbcTemplate.query(SELECT_JOIN_BY_ID, new ReaderMapExtractor());
+        Map<Long, List<Book>> booksMap = this.jdbcTemplate.query(SELECT_JOIN_BY_ID, new Object [] {id}, new ReaderMapExtractor());
         reader.setBooks(booksMap.get(reader.getId()));
         return reader;
     }

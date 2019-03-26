@@ -26,13 +26,18 @@ public class WishlistRepositoryImpl implements WishlistRepository {
     private final String DELETE_ALL = "DELETE FROM wishlist";
     private final String UPDATE = "UPDATE wishlist SET wishlist_name = ? WHERE wishlist_id = ?";
 
-    private final String SELECT_JOIN  = "select * from wishlist " +
-            "inner join book_wishlist on wishlist.wishlist_id = book_wishlist.book_wishlist_wishlist_id " +
-            "inner join book on book.book_id = book_wishlist.book_wishlist_book_id " +
+    private final String SELECT_JOIN  = "SELECT * FROM wishlist " +
+            "INNER JOIN book_wishlist ON wishlist.wishlist_id = book_wishlist.book_wishlist_wishlist_id " +
+            "INNER JOIN book ON book.book_id = book_wishlist.book_wishlist_book_id " +
             "INNER JOIN reader r ON book.book_reader = r.reader_id " +
-            "INNER JOIN friend f on book.book_friend = f.friend_id;";
+            "INNER JOIN friend f ON book.book_friend = f.friend_id;";
 
-    private final String SELECT_JOIN_BY_ID = "SELECT * FROM wishlist inner join book_wishlist on wishlist.wishlist_id = book_wishlist.book_wishlist_wishlist_id inner join book on book.book_id = book_wishlist.book_wishlist_book_id INNER JOIN reader r ON book.book_reader = r.reader_id INNER JOIN friend f on book.book_friend = f.friend_id;";
+    private final String SELECT_JOIN_BY_ID = "SELECT * FROM wishlist " +
+            "INNER JOIN book_wishlist ON wishlist.wishlist_id = book_wishlist.book_wishlist_wishlist_id " +
+            "INNER JOIN book ON book.book_id = book_wishlist.book_wishlist_book_id " +
+            "INNER JOIN reader r ON book.book_reader = r.reader_id " +
+            "INNER JOIN friend f ON book.book_friend = f.friend_id " +
+            "WHERE wishlist_id = ?;";
 
 
     public WishlistRepositoryImpl(JdbcTemplate jdbcTemplate) {
@@ -58,7 +63,7 @@ public class WishlistRepositoryImpl implements WishlistRepository {
     @Override
     public Wishlist findWishlistById(Long id) {
         Wishlist wishlist = this.jdbcTemplate.queryForObject(SELECT_BY_ID, new Object [] {id}, new WishlistMapper());
-        Map<Long, List<Book>> booksMap = this.jdbcTemplate.query(SELECT_JOIN_BY_ID, new WishlistMapExtractor());
+        Map<Long, List<Book>> booksMap = this.jdbcTemplate.query(SELECT_JOIN_BY_ID, new Object [] {id}, new WishlistMapExtractor());
         wishlist.setBooks(booksMap.get(wishlist.getId()));
         return wishlist;
     }
