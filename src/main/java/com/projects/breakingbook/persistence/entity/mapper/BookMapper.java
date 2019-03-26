@@ -41,12 +41,13 @@ public class BookMapper implements RowMapper<Book> {
                 .language(resultSet.getString("book_language"))
                 .publisher(resultSet.getString("book_publisher"))
                 .datePublished(resultSet.getDate("book_date_published"))
-                .pages(resultSet.getInt("book_page"))
+                .pages(resultSet.getInt("book_pages"))
                 .synopsis(resultSet.getString("book_synopsis"))
                 .owned(resultSet.getBoolean("book_owned"))
                 .rating(resultSet.getInt("book_rating"))
                 .comment(resultSet.getString("book_comment"))
                 .friend(friend)
+                .reader(reader)
                 .build();
     }
 }

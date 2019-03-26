@@ -29,6 +29,7 @@ public class Book {
     private int rating;
     private String comment;
     private Friend friend;
+    private Reader reader;
 
     @Override
     public boolean equals(Object o) {
@@ -48,12 +49,13 @@ public class Book {
                 Objects.equals(datePublished, book.datePublished) &&
                 Objects.equals(synopsis, book.synopsis) &&
                 Objects.equals(comment, book.comment) &&
-                Objects.equals(friend, book.friend);
+                Objects.equals(friend, book.friend) &&
+                Objects.equals(reader, book.reader);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, authors, isbn, image, language, publisher, datePublished, pages, synopsis, owned, rating, comment, friend);
+        return Objects.hash(id, title, authors, isbn, image, language, publisher, datePublished, pages, synopsis, owned, rating, comment, friend, reader);
     }
 
     @Override
@@ -73,6 +75,7 @@ public class Book {
                 ", rating=" + rating +
                 ", comment='" + comment + '\'' +
                 ", friend=" + friend +
+                ", reader=" + reader +
                 '}';
     }
 }

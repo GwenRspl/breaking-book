@@ -50,6 +50,7 @@ public class CollectionMapExtractor implements ResultSetExtractor<Map<Long, List
                     .rating(resultSet.getInt("book_rating"))
                     .comment(resultSet.getString("book_comment"))
                     .friend(friend)
+                    .reader(reader)
                     .build();
 
             List<Book> books = booksMap.get(collectionId);
