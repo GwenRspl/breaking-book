@@ -1,6 +1,8 @@
 package com.projects.breakingbook.persistence.repository.implementation;
 
+import com.projects.breakingbook.persistence.entity.Book;
 import com.projects.breakingbook.persistence.entity.Wishlist;
+import com.projects.breakingbook.persistence.entity.mapper.WishlistMapExtractor;
 import com.projects.breakingbook.persistence.entity.mapper.WishlistMapper;
 import com.projects.breakingbook.persistence.repository.WishlistRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 @Transactional
@@ -23,13 +26,27 @@ public class WishlistRepositoryImpl implements WishlistRepository {
     private final String DELETE_ALL = "DELETE FROM wishlist";
     private final String UPDATE = "UPDATE wishlist SET wishlist_name = ? WHERE wishlist_id = ?";
 
+    private final String SELECT_JOIN  = "select * from wishlist " +
+            "inner join book_wishlist on wishlist.wishlist_id = book_wishlist.book_wishlist_wishlist_id " +
+            "inner join book on book.book_id = book_wishlist.book_wishlist_book_id " +
+            "INNER JOIN reader r ON book.book_reader = r.reader_id " +
+            "INNER JOIN friend f on book.book_friend = f.friend_id;";
+
+    private final String SELECT_JOIN_BY_ID = "SELECT * FROM wishlist inner join book_wishlist on wishlist.wishlist_id = book_wishlist.book_wishlist_wishlist_id inner join book on book.book_id = book_wishlist.book_wishlist_book_id INNER JOIN reader r ON book.book_reader = r.reader_id INNER JOIN friend f on book.book_friend = f.friend_id;";
+
+
     public WishlistRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     public List<Wishlist> findAllWishlists() {
-        return this.jdbcTemplate.query(SELECT_ALL, new WishlistMapper());
+        List<Wishlist> wishlists =  this.jdbcTemplate.query(SELECT_ALL, new WishlistMapper());
+        Map<Long, List<Book>> booksMap = this.jdbcTemplate.query(SELECT_JOIN, new WishlistMapExtractor());
+        for (Wishlist wishlist : wishlists) {
+            wishlist.setBooks(booksMap.get(wishlist.getId()));
+        }
+        return wishlists;
     }
 
     @Override
@@ -40,7 +57,10 @@ public class WishlistRepositoryImpl implements WishlistRepository {
 
     @Override
     public Wishlist findWishlistById(Long id) {
-        return this.jdbcTemplate.queryForObject(SELECT_BY_ID, new Object [] {id}, new WishlistMapper());
+        Wishlist wishlist = this.jdbcTemplate.queryForObject(SELECT_BY_ID, new Object [] {id}, new WishlistMapper());
+        Map<Long, List<Book>> booksMap = this.jdbcTemplate.query(SELECT_JOIN_BY_ID, new WishlistMapExtractor());
+        wishlist.setBooks(booksMap.get(wishlist.getId()));
+        return wishlist;
     }
 
     @Override

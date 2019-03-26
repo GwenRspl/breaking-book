@@ -10,12 +10,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-public class CollectionMapExtractor implements ResultSetExtractor<Map<Long, List<Book>>>{
+public class WishlistMapExtractor implements ResultSetExtractor<Map<Long, List<Book>>> {
     @Override
     public Map<Long, List<Book>> extractData(ResultSet resultSet) throws SQLException, DataAccessException {
         Map<Long, List<Book>> booksMap = new HashMap<>();
         while (resultSet.next()) {
-            Long collectionId = resultSet.getLong("collection_id");
+            Long wishlistId = resultSet.getLong("wishlist_id");
 
             Reader reader = Reader.builder()
                     .id(resultSet.getLong("reader_id"))
@@ -36,7 +36,7 @@ public class CollectionMapExtractor implements ResultSetExtractor<Map<Long, List
             ArrayList<String> authors = new ArrayList<>(Arrays.asList(authorsArray));
 
             Book book =  Book.builder()
-                    .id(resultSet.getLong("book_collection_book_id"))
+                    .id(resultSet.getLong("book_wishlist_book_id"))
                     .title(resultSet.getString("book_title"))
                     .authors(authors)
                     .isbn(resultSet.getString("book_isbn"))
@@ -53,12 +53,12 @@ public class CollectionMapExtractor implements ResultSetExtractor<Map<Long, List
                     .reader(reader)
                     .build();
 
-            List<Book> books = booksMap.get(collectionId);
+            List<Book> books = booksMap.get(wishlistId);
             if (books == null) {
                 List<Book> newBooks = new ArrayList<>();
 
                 newBooks.add(book);
-                booksMap.put(collectionId, newBooks);
+                booksMap.put(wishlistId, newBooks);
             } else {
                 books.add(book);
             }
