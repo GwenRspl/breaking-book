@@ -1,6 +1,10 @@
 package com.projects.breakingbook.persistence.repository.implementation;
 
+import com.projects.breakingbook.persistence.entity.Book;
+import com.projects.breakingbook.persistence.entity.Collection;
 import com.projects.breakingbook.persistence.entity.Friend;
+import com.projects.breakingbook.persistence.entity.mapper.CollectionMapExtractor;
+import com.projects.breakingbook.persistence.entity.mapper.FriendMapExtractor;
 import com.projects.breakingbook.persistence.entity.mapper.FriendMapper;
 import com.projects.breakingbook.persistence.repository.FriendRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -8,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 @Transactional
@@ -23,13 +28,29 @@ public class FriendRepositoryImpl implements FriendRepository {
     private final String UPDATE = "UPDATE friend SET friend_name = ?, friend_avatar = ?, friend_reader = ? WHERE " +
             "friend_id = ?";
 
+    private final String SELECT_JOIN  = "SELECT * FROM friend " +
+            "INNER JOIN book_friend ON friend.friend_id = book_friend.book_friend_friend_id " +
+            "INNER JOIN book ON book.book_id = book_friend.book_friend_book_id " +
+            "INNER JOIN reader r ON book.book_reader = r.reader_id ";
+
+    private final String SELECT_JOIN_BY_ID = "SELECT * FROM friend " +
+            "INNER JOIN book_friend ON friend.friend_id = book_friend.book_friend_friend_id " +
+            "INNER JOIN book ON book.book_id = book_friend.book_friend_book_id " +
+            "INNER JOIN reader r ON book.book_reader = r.reader_id " +
+            "WHERE friend.friend_id = ?;";
+
     public FriendRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     public List<Friend> findAllFriends() {
-        return this.jdbcTemplate.query(SELECT_ALL, new FriendMapper());
+        List<Friend> friends = this.jdbcTemplate.query(SELECT_ALL, new FriendMapper());
+        Map<Long, List<Book>> booksMap = this.jdbcTemplate.query(SELECT_JOIN, new FriendMapExtractor());
+        for (Friend friend : friends) {
+            friend.setHistory(booksMap.get(friend.getId()));
+        }
+        return friends;
     }
 
     @Override
@@ -40,7 +61,10 @@ public class FriendRepositoryImpl implements FriendRepository {
 
     @Override
     public Friend findFriendById(Long id) {
-        return this.jdbcTemplate.queryForObject(SELECT_BY_ID, new Object [] {id}, new FriendMapper());
+        Friend friend = this.jdbcTemplate.queryForObject(SELECT_BY_ID, new Object [] {id}, new FriendMapper());
+        Map<Long, List<Book>> booksMap = this.jdbcTemplate.query(SELECT_JOIN_BY_ID, new Object [] {id}, new FriendMapExtractor());
+        friend.setHistory(booksMap.get(friend.getId()));
+        return friend;
     }
 
     @Override

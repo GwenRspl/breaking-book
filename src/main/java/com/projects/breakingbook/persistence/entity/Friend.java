@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Objects;
 
 @Data
@@ -16,9 +17,21 @@ public class Friend {
     private String name;
     private String avatar;
     private Reader reader;
+    private List<Book> history;
 
     public Friend(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "Friend{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", reader=" + reader +
+                ", history=" + history +
+                '}';
     }
 
     @Override
@@ -29,21 +42,12 @@ public class Friend {
         return Objects.equals(id, friend.id) &&
                 Objects.equals(name, friend.name) &&
                 Objects.equals(avatar, friend.avatar) &&
-                Objects.equals(reader, friend.reader);
+                Objects.equals(reader, friend.reader) &&
+                Objects.equals(history, friend.history);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, avatar, reader);
-    }
-
-    @Override
-    public String toString() {
-        return "Friend{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", avatar='" + avatar + '\'' +
-                ", reader=" + reader +
-                '}';
+        return Objects.hash(id, name, avatar, reader, history);
     }
 }
