@@ -8,8 +8,8 @@ VALUES ('friend', 'avatar', 1);
 
 INSERT INTO public.book(
   book_title, book_authors, book_isbn, book_image, book_language, book_publisher, book_date_published, book_pages,
-  book_synopsis, book_rating, book_comment, book_owned, book_reader, book_friend)
-VALUES ('titre', '{author 1, author 2}', 7984653, 'image', 'language','publisher', '2013-06-01', 123, 'synopsis', 3, 'blabla', TRUE, 1, 1);
+  book_synopsis, book_rating, book_comment, book_read, book_owned, book_reader, book_friend)
+VALUES ('titre', '{author 1, author 2}', 7984653, 'image', 'language','publisher', '2013-06-01', 123, 'synopsis', 3, 'blabla',FALSE, TRUE, 1, 1);
 
 INSERT INTO public.collection(
   collection_name)

@@ -44,6 +44,7 @@ public class BookMapper implements RowMapper<Book> {
                 .pages(resultSet.getInt("book_pages"))
                 .synopsis(resultSet.getString("book_synopsis"))
                 .owned(resultSet.getBoolean("book_owned"))
+                .read(resultSet.getBoolean("book_read"))
                 .rating(resultSet.getInt("book_rating"))
                 .comment(resultSet.getString("book_comment"))
                 .friend(friend)

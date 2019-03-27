@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS book (
   book_rating integer,
   book_comment text,
   book_owned boolean,
+  book_read boolean,
   book_reader bigint references reader(reader_id) ON DELETE CASCADE,
   book_friend bigint references friend(friend_id)
 );

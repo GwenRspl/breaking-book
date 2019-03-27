@@ -48,6 +48,7 @@ public class WishlistMapExtractor implements ResultSetExtractor<Map<Long, List<B
                     .synopsis(resultSet.getString("book_synopsis"))
                     .owned(resultSet.getBoolean("book_owned"))
                     .rating(resultSet.getInt("book_rating"))
+                    .read(resultSet.getBoolean("book_read"))
                     .comment(resultSet.getString("book_comment"))
                     .friend(friend)
                     .reader(reader)
