@@ -60,4 +60,10 @@ CREATE TABLE IF NOT EXISTS book_wishlist (
   book_wishlist_wishlist_id bigint references wishlist(wishlist_id) ON DELETE CASCADE
 );
 
+DROP TABLE IF EXISTS book_friend;
+CREATE TABLE IF NOT EXISTS book_friend (
+  book_friend_book_id bigint references book(book_id) ON DELETE CASCADE,
+  book_friend_friend_id bigint references friend(friend_id) ON DELETE CASCADE
+);
+
 
