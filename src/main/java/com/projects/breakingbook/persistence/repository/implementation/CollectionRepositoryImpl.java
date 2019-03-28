@@ -6,6 +6,7 @@ import com.projects.breakingbook.persistence.entity.mapper.CollectionMapExtracto
 import com.projects.breakingbook.persistence.entity.mapper.CollectionMapper;
 import com.projects.breakingbook.persistence.repository.BookRepository;
 import com.projects.breakingbook.persistence.repository.CollectionRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 @Transactional
@@ -27,7 +29,7 @@ public class CollectionRepositoryImpl implements CollectionRepository {
     private final String DELETE_ALL = "DELETE FROM collection";
     private final String UPDATE = "UPDATE collection SET collection_name = ? WHERE collection_id = ?";
 
-    private final String SELECT_JOIN  = "SELECT * FROM collection " +
+    private final String SELECT_JOIN = "SELECT * FROM collection " +
             "INNER JOIN book_collection ON collection.collection_id = book_collection.book_collection_collection_id " +
             "INNER JOIN book ON book.book_id = book_collection.book_collection_book_id " +
             "INNER JOIN reader r ON book.book_reader = r.reader_id " +
@@ -61,11 +63,15 @@ public class CollectionRepositoryImpl implements CollectionRepository {
     }
 
     @Override
-    public Collection findCollectionById(Long id) {
-        Collection collection =  this.jdbcTemplate.queryForObject(SELECT_BY_ID, new Object [] {id}, new CollectionMapper());
-        Map<Long, List<Book>> booksMap = this.jdbcTemplate.query(SELECT_JOIN_BY_ID, new Object [] {id}, new CollectionMapExtractor());
-        collection.setBooks(booksMap.get(collection.getId()));
-        return collection;
+    public Optional<Collection> findCollectionById(Long id) {
+        try {
+            Collection collection = this.jdbcTemplate.queryForObject(SELECT_BY_ID, new Object[]{id}, new CollectionMapper());
+            Map<Long, List<Book>> booksMap = this.jdbcTemplate.query(SELECT_JOIN_BY_ID, new Object[]{id}, new CollectionMapExtractor());
+            collection.setBooks(booksMap.get(collection.getId()));
+            return Optional.ofNullable(collection);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     @Override

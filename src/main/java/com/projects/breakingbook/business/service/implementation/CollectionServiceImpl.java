@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -27,7 +28,7 @@ public class CollectionServiceImpl implements CollectionService {
     }
 
     @Override
-    public Collection getOne(Long id) {
+    public Optional<Collection> getOne(Long id) {
         return collectionRepository.findCollectionById(id);
     }
 
