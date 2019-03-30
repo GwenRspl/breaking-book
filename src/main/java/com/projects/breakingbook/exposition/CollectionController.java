@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/collections")
@@ -24,7 +25,7 @@ public class CollectionController  {
     }
 
     @GetMapping("/{id}")
-    public Collection getOne(@PathVariable final Long id) {
+    public Optional<Collection> getOne(@PathVariable final Long id) {
         return this.CollectionService.getOne(id);
     }
 

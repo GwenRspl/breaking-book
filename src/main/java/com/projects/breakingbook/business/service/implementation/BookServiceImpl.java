@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -24,7 +25,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book getOne(Long id) {
+    public Optional<Book> getOne(Long id) {
         return bookRepository.findBookById(id);
     }
 
@@ -35,7 +36,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public boolean update(Long id, Book book) {
-        Book originalBook = this.bookRepository.findBookById(id);
+        Optional<Book> optionalBook = this.bookRepository.findBookById(id);
+        Book originalBook = null;
+        if (optionalBook.isPresent())  optionalBook.get();
         if(book.getTitle() == null) book.setTitle(originalBook.getTitle());
         if(book.getAuthors() == null) book.setAuthors(originalBook.getAuthors());
         if(book.getIsbn() == null) book.setIsbn(originalBook.getIsbn());

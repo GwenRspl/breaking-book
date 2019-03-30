@@ -3,6 +3,7 @@ package com.projects.breakingbook.persistence.repository.implementation;
 import com.projects.breakingbook.persistence.entity.Book;
 import com.projects.breakingbook.persistence.entity.mapper.BookMapper;
 import com.projects.breakingbook.persistence.repository.BookRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +12,7 @@ import javax.sql.DataSource;
 import java.sql.Array;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Transactional
@@ -47,8 +49,12 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public Book findBookById(Long id) {
-        return this.jdbcTemplate.queryForObject(SELECT_BY_ID, new Object [] {id}, new BookMapper());
+    public Optional<Book> findBookById(Long id) {
+        try {
+            return Optional.of(this.jdbcTemplate.queryForObject(SELECT_BY_ID, new Object [] {id}, new BookMapper()));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
