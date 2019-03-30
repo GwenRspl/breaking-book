@@ -51,7 +51,7 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public Optional<Book> findBookById(Long id) {
         try {
-            return Optional.ofNullable(this.jdbcTemplate.queryForObject(SELECT_BY_ID, new Object [] {id}, new BookMapper()));
+            return Optional.of(this.jdbcTemplate.queryForObject(SELECT_BY_ID, new Object [] {id}, new BookMapper()));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }

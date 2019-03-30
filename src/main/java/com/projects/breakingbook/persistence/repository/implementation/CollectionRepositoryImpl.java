@@ -68,7 +68,7 @@ public class CollectionRepositoryImpl implements CollectionRepository {
             Collection collection = this.jdbcTemplate.queryForObject(SELECT_BY_ID, new Object[]{id}, new CollectionMapper());
             Map<Long, List<Book>> booksMap = this.jdbcTemplate.query(SELECT_JOIN_BY_ID, new Object[]{id}, new CollectionMapExtractor());
             collection.setBooks(booksMap.get(collection.getId()));
-            return Optional.ofNullable(collection);
+            return Optional.of(collection);
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
