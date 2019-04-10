@@ -68,7 +68,7 @@ public class AuthRestAPIs {
 					HttpStatus.BAD_REQUEST);
 		}
 
-		User user = new User(signUpRequest.getName(), signUpRequest.getUsername(), signUpRequest.getEmail(),
+		User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(),
 				encoder.encode(signUpRequest.getPassword()));
 
 		String stringRole = signUpRequest.getRole();

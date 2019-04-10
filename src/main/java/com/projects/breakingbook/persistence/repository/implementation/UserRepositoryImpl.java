@@ -28,18 +28,18 @@ public class UserRepositoryImpl implements UserRepository {
 
     private static final Logger logger = LoggerFactory.getLogger(UserRepositoryImpl.class);
 
-    private final static String INSERT_SQL = "insert into reader(reader_name, reader_username, reader_email, reader_password, reader_role) values (?, ?, ?, ?, ?)";
-    private final static String SELECT_ALL_SQL = "select reader_id, reader_name, reader_username, reader_email, reader_password, reader_role from reader";
-    private final static String SELECT_BY_ID_SQL = "select reader_id, reader_name, reader_username, reader_email, reader_password, reader_role from reader where reader_id = ?";
+    private final static String INSERT_SQL = "insert into reader(reader_username, reader_email, reader_password, reader_role) values (?, ?, ?, ?)";
+    private final static String SELECT_ALL_SQL = "select reader_id, reader_username, reader_email, reader_password, reader_role from reader";
+    private final static String SELECT_BY_ID_SQL = "select reader_id, reader_username, reader_email, reader_password, reader_role from reader where reader_id = ?";
     private final static String DELETE_BY_ID_SQL = "delete from reader where reader_id = ?";
     private final static String DELETE_ALL_SQL = "delete from reader";
-    private final static String UPDATE_BY_PUT_SQL = "update reader set reader_name = ?, reader_username = ?, reader_email = ?, reader_password = ?  where reader_id = ?";
+    private final static String UPDATE_BY_PUT_SQL = "update reader set reader_username = ?, reader_email = ?, reader_password = ?  where reader_id = ?";
     private final static String SELECT_ALL_USERNAMES_SQL = "select reader_username from reader";
     private final static String SELECT_ALL_EMAILS_SQL = "select reader_email from reader";
 
     @Override
     public void createUser(User user) {
-        jdbcTemplate.update(INSERT_SQL,user.getName(), user.getUsername(), user.getEmail(), user.getPassword(), user.getRole().toString());
+        jdbcTemplate.update(INSERT_SQL, user.getUsername(), user.getEmail(), user.getPassword(), user.getRole().toString());
     }
 
     @Override

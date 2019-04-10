@@ -1,7 +1,6 @@
 DROP TABLE IF EXISTS reader CASCADE;
 CREATE TABLE IF NOT EXISTS reader (
   reader_id serial primary key,
-  reader_name character varying(255),
   reader_username character varying(255),
   reader_avatar character varying(255),
   reader_email character varying(255),
