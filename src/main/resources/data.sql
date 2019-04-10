@@ -1,6 +1,6 @@
 INSERT INTO public.reader(
-  reader_name, reader_avatar, reader_email, reader_password)
-VALUES ('name', 'avatar', 'mail', 'mdp');
+  reader_name, reader_username, reader_avatar, reader_email, reader_password, reader_role)
+VALUES ('Paul', 'username', 'avatar', 'mail', 'mdp', 'ROLE_USER');
 
 INSERT INTO public.friend(
   friend_name, friend_avatar, friend_reader)
