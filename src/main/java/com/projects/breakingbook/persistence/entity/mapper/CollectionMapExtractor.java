@@ -2,7 +2,8 @@ package com.projects.breakingbook.persistence.entity.mapper;
 
 import com.projects.breakingbook.persistence.entity.Book;
 import com.projects.breakingbook.persistence.entity.Friend;
-import com.projects.breakingbook.persistence.entity.Reader;
+import com.projects.breakingbook.persistence.entity.RoleName;
+import com.projects.breakingbook.persistence.entity.User;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
@@ -17,19 +18,21 @@ public class CollectionMapExtractor implements ResultSetExtractor<Map<Long, List
         while (resultSet.next()) {
             Long collectionId = resultSet.getLong("collection_id");
 
-            Reader reader = Reader.builder()
+            User user = User.builder()
                     .id(resultSet.getLong("reader_id"))
-                    .name(resultSet.getString("reader_name"))
+                    .username(resultSet.getString("reader_username"))
                     .avatar(resultSet.getString("reader_avatar"))
                     .email(resultSet.getString("reader_email"))
                     .password(resultSet.getString("reader_password"))
                     .build();
+            String role = (resultSet.getString("reader_role"));
+            user.setRole(RoleName.valueOf(role));
 
             Friend friend = Friend.builder()
                     .id(resultSet.getLong("book_friend"))
                     .name(resultSet.getString("friend_name"))
                     .avatar(resultSet.getString("friend_avatar"))
-                    .reader(reader)
+                    .user(user)
                     .build();
 
             String[] authorsArray = (String[]) resultSet.getArray("book_authors").getArray();
@@ -51,7 +54,7 @@ public class CollectionMapExtractor implements ResultSetExtractor<Map<Long, List
                     .rating(resultSet.getInt("book_rating"))
                     .comment(resultSet.getString("book_comment"))
                     .friend(friend)
-                    .reader(reader)
+                    .user(user)
                     .build();
 
             List<Book> books = booksMap.get(collectionId);

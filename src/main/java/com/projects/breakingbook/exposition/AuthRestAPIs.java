@@ -83,7 +83,7 @@ public class AuthRestAPIs {
 		}
 
 		user.setRole(role);
-		userService.createUser(user);
+		userService.create(user);
 
 		return new ResponseEntity<>(new ResponseMessage("User registered successfully!"), HttpStatus.OK);
 	}

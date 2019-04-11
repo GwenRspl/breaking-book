@@ -1,30 +1,21 @@
 package com.projects.breakingbook.persistence.repository;
 
 import com.projects.breakingbook.persistence.entity.User;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public interface UserRepository {
 
-    void createUser(User user);
-
-    List<User> getUsers();
-
-    List<String> getUsernames();
-
-    List<String> getEmails();
-
-    User updateUser(Long id, User user);
-
-    boolean deleteUser(int id);
+    List<User> findAllUsers();
+    boolean createUser(User user);
 
     Optional<User> findUserByUsername(String username);
 
-    Optional<User> findUserById(Long id);
-
+    User findUserById(Long id);
+    boolean deleteUserById(Long id);
+    boolean deleteAllUsers();
+    boolean updateUser(Long id, User user);
     Boolean existsByUsername(String username);
-        Boolean existsByEmail(String email);
+    Boolean existsByEmail(String email);
 }

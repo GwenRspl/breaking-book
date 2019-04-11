@@ -6,21 +6,14 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    void createUser(User user);
 
-    List<User> getUsers();
-
-    List<String> getUsernames();
-
-    List<String> getEmails();
-
-    User updateUser(Long id, User user);
-
-    boolean deleteUser(int id);
-
+    List<User> getAll();
+    User getOne(final Long id);
+    boolean create(final User user);
     Optional<User> findUserByUsername(String username);
-
-    Optional<User> findUserById(Long id);
+    boolean update(final Long id, final User user);
+    boolean delete(final Long id);
+    boolean deleteAll();
 
     Boolean existsByUsername(String username);
 

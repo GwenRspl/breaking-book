@@ -38,7 +38,7 @@ public class FriendServiceImpl implements FriendService {
         Friend originalFriend = this.friendRepository.findFriendById(id);
         if(friend.getName() == null) friend.setName(originalFriend.getName());
         if(friend.getAvatar() == null) friend.setAvatar(originalFriend.getAvatar());
-        if(friend.getReader() == null) friend.setReader(originalFriend.getReader());
+        if(friend.getUser() == null) friend.setUser(originalFriend.getUser());
         return this.friendRepository.updateFriend(id, friend);
     }
 

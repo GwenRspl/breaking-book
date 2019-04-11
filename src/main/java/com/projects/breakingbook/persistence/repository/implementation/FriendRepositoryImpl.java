@@ -1,9 +1,7 @@
 package com.projects.breakingbook.persistence.repository.implementation;
 
 import com.projects.breakingbook.persistence.entity.Book;
-import com.projects.breakingbook.persistence.entity.Collection;
 import com.projects.breakingbook.persistence.entity.Friend;
-import com.projects.breakingbook.persistence.entity.mapper.CollectionMapExtractor;
 import com.projects.breakingbook.persistence.entity.mapper.FriendMapExtractor;
 import com.projects.breakingbook.persistence.entity.mapper.FriendMapper;
 import com.projects.breakingbook.persistence.repository.FriendRepository;
@@ -55,7 +53,7 @@ public class FriendRepositoryImpl implements FriendRepository {
 
     @Override
     public boolean createFriend(Friend friend) {
-        int result = this.jdbcTemplate.update(INSERT, friend.getName(), friend.getAvatar(), friend.getReader().getId());
+        int result = this.jdbcTemplate.update(INSERT, friend.getName(), friend.getAvatar(), friend.getUser().getId());
         return result != 0;
     }
 
@@ -81,7 +79,7 @@ public class FriendRepositoryImpl implements FriendRepository {
 
     @Override
     public boolean updateFriend(Long id, Friend friend) {
-        int result = this.jdbcTemplate.update(UPDATE, friend.getName(), friend.getAvatar(), friend.getReader().getId(), id);
+        int result = this.jdbcTemplate.update(UPDATE, friend.getName(), friend.getAvatar(), friend.getUser().getId(), id);
         return result != 0;
     }
 }

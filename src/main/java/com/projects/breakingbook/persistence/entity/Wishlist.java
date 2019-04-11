@@ -15,7 +15,7 @@ import java.util.Objects;
 public class Wishlist {
     private Long id;
     private String name;
-    private Reader reader;
+    private User user;
     private List<Book> books;
 
     @Override
@@ -25,21 +25,21 @@ public class Wishlist {
         Wishlist wishlist = (Wishlist) o;
         return Objects.equals(id, wishlist.id) &&
                 Objects.equals(name, wishlist.name) &&
-                Objects.equals(reader, wishlist.reader) &&
+                Objects.equals(user, wishlist.user) &&
                 Objects.equals(books, wishlist.books);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, reader, books);
+        return Objects.hash(id, name, user, books);
     }
 
     @Override
     public String toString() {
         return "Wishlist{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", reader=" + reader +
+                ", username='" + name + '\'' +
+                ", user=" + user +
                 ", books=" + books +
                 '}';
     }

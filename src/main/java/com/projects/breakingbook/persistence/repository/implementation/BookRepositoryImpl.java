@@ -44,7 +44,7 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public boolean createBook(Book book) {
         int result = this.jdbcTemplate.update(INSERT, book.getTitle(), convertListToSqlArray(book.getAuthors()), book.getIsbn(), book.getImage(),
-                book.getLanguage(), book.getPublisher(), book.getDatePublished(), book.getPages(), book.getSynopsis(), book.getReader().getId(), book.getFriend().getId(), book.isOwned(), book.getRating(), book.getComment());
+                book.getLanguage(), book.getPublisher(), book.getDatePublished(), book.getPages(), book.getSynopsis(), book.getUser().getId(), book.getFriend().getId(), book.isOwned(), book.getRating(), book.getComment());
         return result != 0;
     }
 
@@ -71,7 +71,7 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public boolean updateBook(Long id, Book book) {
-        int result = this.jdbcTemplate.update(UPDATE, book.getTitle(), convertListToSqlArray(book.getAuthors()), book.getIsbn(), book.getImage(), book.getLanguage(), book.getPublisher(), book.getDatePublished(), book.getPages(), book.getSynopsis(), book.getReader().getId(), book.getFriend().getId(), book.isOwned(), book.getRating(), book.getComment(), id);
+        int result = this.jdbcTemplate.update(UPDATE, book.getTitle(), convertListToSqlArray(book.getAuthors()), book.getIsbn(), book.getImage(), book.getLanguage(), book.getPublisher(), book.getDatePublished(), book.getPages(), book.getSynopsis(), book.getUser().getId(), book.getFriend().getId(), book.isOwned(), book.getRating(), book.getComment(), id);
         return result != 0;
     }
 

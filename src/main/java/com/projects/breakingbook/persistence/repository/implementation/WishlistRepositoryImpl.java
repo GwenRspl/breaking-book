@@ -56,7 +56,7 @@ public class WishlistRepositoryImpl implements WishlistRepository {
 
     @Override
     public boolean createWishlist(Wishlist wishlist) {
-        int result = this.jdbcTemplate.update(INSERT, wishlist.getName(), wishlist.getReader().getId());
+        int result = this.jdbcTemplate.update(INSERT, wishlist.getName(), wishlist.getUser().getId());
         return result != 0;
     }
 
