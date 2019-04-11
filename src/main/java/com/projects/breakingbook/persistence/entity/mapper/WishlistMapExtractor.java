@@ -19,13 +19,13 @@ public class WishlistMapExtractor implements ResultSetExtractor<Map<Long, List<B
             Long wishlistId = resultSet.getLong("wishlist_id");
 
             User user = User.builder()
-                    .id(resultSet.getLong("reader_id"))
-                    .username(resultSet.getString("reader_username"))
-                    .avatar(resultSet.getString("reader_avatar"))
-                    .email(resultSet.getString("reader_email"))
-                    .password(resultSet.getString("reader_password"))
+                    .id(resultSet.getLong("breaking_book_user_id"))
+                    .username(resultSet.getString("breaking_book_user_username"))
+                    .avatar(resultSet.getString("breaking_book_user_avatar"))
+                    .email(resultSet.getString("breaking_book_user_email"))
+                    .password(resultSet.getString("breaking_book_user_password"))
                     .build();
-            String role = (resultSet.getString("reader_role"));
+            String role = (resultSet.getString("breaking_book_user_role"));
             user.setRole(RoleName.valueOf(role));
 
             Friend friend = Friend.builder()

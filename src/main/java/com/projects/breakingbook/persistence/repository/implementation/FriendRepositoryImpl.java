@@ -17,24 +17,24 @@ import java.util.Map;
 public class FriendRepositoryImpl implements FriendRepository {
 
     private final JdbcTemplate jdbcTemplate;
-    private final String INSERT = "INSERT INTO friend(friend_name, friend_avatar, friend_reader) VALUES (?, ?, ?)";
-    private final String SELECT_ALL = "SELECT * FROM friend INNER JOIN reader r ON friend.friend_reader = r.reader_id";
-    private final String SELECT_BY_ID = "SELECT * FROM friend INNER JOIN reader r ON friend.friend_reader = r.reader_id " +
+    private final String INSERT = "INSERT INTO friend(friend_name, friend_avatar, friend_breaking_book_user) VALUES (?, ?, ?)";
+    private final String SELECT_ALL = "SELECT * FROM friend INNER JOIN breaking_book_user r ON friend.friend_breaking_book_user = r.breaking_book_user_id";
+    private final String SELECT_BY_ID = "SELECT * FROM friend INNER JOIN breaking_book_user r ON friend.friend_breaking_book_user = r.breaking_book_user_id " +
             "WHERE friend_id = ?";
     private final String DELETE_BY_ID = "DELETE FROM friend WHERE friend_id = ?";
     private final String DELETE_ALL = "DELETE FROM friend";
-    private final String UPDATE = "UPDATE friend SET friend_name = ?, friend_avatar = ?, friend_reader = ? WHERE " +
+    private final String UPDATE = "UPDATE friend SET friend_name = ?, friend_avatar = ?, friend_breaking_book_user = ? WHERE " +
             "friend_id = ?";
 
     private final String SELECT_JOIN  = "SELECT * FROM friend " +
             "INNER JOIN book_friend ON friend.friend_id = book_friend.book_friend_friend_id " +
             "INNER JOIN book ON book.book_id = book_friend.book_friend_book_id " +
-            "INNER JOIN reader r ON book.book_reader = r.reader_id ";
+            "INNER JOIN breaking_book_user r ON book.book_breaking_book_user = r.breaking_book_user_id ";
 
     private final String SELECT_JOIN_BY_ID = "SELECT * FROM friend " +
             "INNER JOIN book_friend ON friend.friend_id = book_friend.book_friend_friend_id " +
             "INNER JOIN book ON book.book_id = book_friend.book_friend_book_id " +
-            "INNER JOIN reader r ON book.book_reader = r.reader_id " +
+            "INNER JOIN breaking_book_user r ON book.book_breaking_book_user = r.breaking_book_user_id " +
             "WHERE friend.friend_id = ?;";
 
     public FriendRepositoryImpl(JdbcTemplate jdbcTemplate) {
