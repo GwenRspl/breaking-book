@@ -12,4 +12,6 @@ public interface FriendService {
     boolean update(final Long id, final Friend friend);
     boolean delete(final Long id);
     boolean deleteAll();
+
+    Long getBorrowedBook(Long id);
 }

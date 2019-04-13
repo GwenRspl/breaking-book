@@ -65,4 +65,14 @@ public class BookServiceImpl implements BookService {
     public boolean deleteAll() {
         return bookRepository.deleteAllBooks();
     }
+
+    @Override
+    public boolean toggleOwned(Long id) {
+        return bookRepository.toggleOwned(id);
+    }
+
+    @Override
+    public boolean updateFriend(Long bookId, Long friendId) {
+        return bookRepository.updateFriend(bookId, friendId);
+    }
 }

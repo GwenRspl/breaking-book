@@ -32,6 +32,9 @@ public class BookRepositoryImpl implements BookRepository {
             "book_language = ?, book_publisher = ?, book_date_published = ?, book_pages = ?, book_synopsis = ?, " +
             "book_breaking_book_user = ?, book_friend = ?, book_owned = ?, book_rating = ?, book_comment = ? WHERE book_id = ?";
 
+    private final String UPDATE_OWNED = "UPDATE book SET book_owned = ? WHERE book_id = ?";
+    private final String UPDATE_FRIEND = "UPDATE book SET book_friend = ? WHERE book_id = ?";
+
     public BookRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -72,6 +75,26 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public boolean updateBook(Long id, Book book) {
         int result = this.jdbcTemplate.update(UPDATE, book.getTitle(), convertListToSqlArray(book.getAuthors()), book.getIsbn(), book.getImage(), book.getLanguage(), book.getPublisher(), book.getDatePublished(), book.getPages(), book.getSynopsis(), book.getUser().getId(), book.getFriend().getId(), book.isOwned(), book.getRating(), book.getComment(), id);
+        return result != 0;
+    }
+
+    @Override
+    public boolean toggleOwned(Long id) {
+        Optional<Book> optionalBook = findBookById(id);
+        Book book = null;
+        if(optionalBook.isPresent()){
+            book = optionalBook.get();
+            int result = this.jdbcTemplate.update(UPDATE_OWNED, !book.isOwned(), id);
+            return result != 0;
+        } else {
+            return false;
+        }
+
+    }
+
+    @Override
+    public boolean updateFriend(Long bookId, Long friendId) {
+                int result = this.jdbcTemplate.update(UPDATE_FRIEND, friendId, bookId);
         return result != 0;
     }
 

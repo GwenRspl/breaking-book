@@ -1,8 +1,10 @@
 package com.projects.breakingbook.business.service.implementation;
 
+import com.projects.breakingbook.business.service.BookService;
 import com.projects.breakingbook.business.service.FriendService;
 import com.projects.breakingbook.persistence.entity.Friend;
 import com.projects.breakingbook.persistence.repository.FriendRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,9 +15,11 @@ import java.util.List;
 public class FriendServiceImpl implements FriendService {
 
     private FriendRepository friendRepository;
+    private BookService bookService;
 
-    public FriendServiceImpl(FriendRepository friendRepository) {
+    public FriendServiceImpl(FriendRepository friendRepository, BookService bookService) {
         this.friendRepository = friendRepository;
+        this.bookService = bookService;
     }
 
     @Override
@@ -36,19 +40,51 @@ public class FriendServiceImpl implements FriendService {
     @Override
     public boolean update(Long id, Friend friend) {
         Friend originalFriend = this.friendRepository.findFriendById(id);
-        if(friend.getName() == null) friend.setName(originalFriend.getName());
-        if(friend.getAvatar() == null) friend.setAvatar(originalFriend.getAvatar());
-        if(friend.getUser() == null) friend.setUser(originalFriend.getUser());
+        if (friend.getName() == null) friend.setName(originalFriend.getName());
+        if (friend.getAvatar() == null) friend.setAvatar(originalFriend.getAvatar());
+        if (friend.getUser() == null) friend.setUser(originalFriend.getUser());
         return this.friendRepository.updateFriend(id, friend);
     }
 
     @Override
     public boolean delete(Long id) {
+      /*  Long bookId;
+        try {
+            bookId = this.friendRepository.getBorrowedBook(id);
+        } catch (EmptyResultDataAccessException e) {
+            System.out.println(e);
+            bookId = null;
+        }
+        if(bookId == null) {
+            System.out.println("FriendServiceImpl --> delete --> bookId = null");
+            return this.friendRepository.deleteFriendById(id);
+        } else {
+            System.out.println("FriendServiceImpl --> delete --> bookId !null");
+            boolean resultUpdateFriend = this.bookService.updateFriend(bookId, null);
+            boolean resultToggleOwned = this.bookService.toggleOwned(bookId);
+            return this.friendRepository.deleteFriendById(id);
+        }*/
         return this.friendRepository.deleteFriendById(id);
     }
 
     @Override
     public boolean deleteAll() {
-        return this.friendRepository.deleteAllFriends();
+/*        System.out.println("FriendServiceImpl --> deleteAll");
+        List<Friend> friends = getAll();
+        System.out.println("FriendServiceImpl --> deleteAll --> getAll: " + friends);
+        for (Friend friend : friends) {
+            boolean result = delete(friend.getId());
+            System.out.println("FriendServiceImpl --> deleteAll --> forEach" + result);
+            if (!result) {
+                return false;
+            }
+        }
+        return true;*/
+return false;
+    }
+
+    @Override
+    public Long getBorrowedBook(Long id) {
+        return this.friendRepository.getBorrowedBook(id);
     }
 }
