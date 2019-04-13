@@ -1,14 +1,14 @@
-INSERT INTO public.reader(
-  reader_name, reader_avatar, reader_email, reader_password)
-VALUES ('name', 'avatar', 'mail', 'mdp');
+INSERT INTO public.breaking_book_user(
+  breaking_book_user_username, breaking_book_user_avatar, breaking_book_user_email, breaking_book_user_password, breaking_book_user_role)
+VALUES ('username', 'avatar', 'mail', 'mdp', 'ROLE_USER');
 
 INSERT INTO public.friend(
-  friend_name, friend_avatar, friend_reader)
+  friend_name, friend_avatar, friend_breaking_book_user)
 VALUES ('friend', 'avatar', 1);
 
 INSERT INTO public.book(
   book_title, book_authors, book_isbn, book_image, book_language, book_publisher, book_date_published, book_pages,
-  book_synopsis, book_rating, book_comment, book_read, book_owned, book_reader, book_friend)
+  book_synopsis, book_rating, book_comment, book_read, book_owned, book_breaking_book_user, book_friend)
 VALUES ('titre', '{author 1, author 2}', 7984653, 'image', 'language','publisher', '2013-06-01', 123, 'synopsis', 3, 'blabla', FALSE, TRUE, 1, 1),
        ('titre2', '{author 1, author 2}', 98456845414, 'image2', 'language5','publisher', '2013-06-01', 488, 'synopsis', 2, 'blabla', TRUE, TRUE, 1, null);
 
@@ -17,7 +17,7 @@ INSERT INTO public.collection(
 VALUES ('collection 1');
 
 INSERT INTO public.wishlist(
-  wishlist_name, wishlist_reader)
+  wishlist_name, wishlist_breaking_book_user)
 VALUES ('wishlist 1', 1);
 
 INSERT INTO public.book_collection(

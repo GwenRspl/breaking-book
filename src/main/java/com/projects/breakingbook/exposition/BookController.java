@@ -4,6 +4,7 @@ import com.projects.breakingbook.business.service.BookService;
 import com.projects.breakingbook.persistence.entity.Book;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class BookController {
     public Optional<Book> getOne(@PathVariable final Long id) {
         return this.bookService.getOne(id);
     }
+
 
     @PostMapping("")
     public ResponseEntity<?> create(@RequestBody final Book book) {

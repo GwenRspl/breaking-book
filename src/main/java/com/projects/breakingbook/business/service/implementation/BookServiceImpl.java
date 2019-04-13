@@ -38,7 +38,7 @@ public class BookServiceImpl implements BookService {
     public boolean update(Long id, Book book) {
         Optional<Book> optionalBook = this.bookRepository.findBookById(id);
         Book originalBook = null;
-        if (optionalBook.isPresent())  optionalBook.get();
+        if (optionalBook.isPresent())  originalBook = optionalBook.get();
         if(book.getTitle() == null) book.setTitle(originalBook.getTitle());
         if(book.getAuthors() == null) book.setAuthors(originalBook.getAuthors());
         if(book.getIsbn() == null) book.setIsbn(originalBook.getIsbn());
@@ -48,7 +48,7 @@ public class BookServiceImpl implements BookService {
         if(book.getDatePublished() == null) book.setDatePublished(originalBook.getDatePublished());
         if(book.getPages() == 0) book.setPages(originalBook.getPages());
         if(book.getSynopsis() == null) book.setSynopsis(originalBook.getSynopsis());
-        if(book.getReader() == null) book.setReader(originalBook.getReader());
+        if(book.getUser() == null) book.setUser(originalBook.getUser());
         if(book.getFriend() == null) book.setFriend(originalBook.getFriend());
         book.setOwned(originalBook.isOwned());
         book.setRating(originalBook.getRating());

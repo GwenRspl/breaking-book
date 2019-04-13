@@ -16,7 +16,7 @@ public class Friend {
     private Long id;
     private String name;
     private String avatar;
-    private Reader reader;
+    private User user;
     private List<Book> history;
 
     public Friend(Long id) {
@@ -27,9 +27,9 @@ public class Friend {
     public String toString() {
         return "Friend{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", username='" + name + '\'' +
                 ", avatar='" + avatar + '\'' +
-                ", reader=" + reader +
+                ", user=" + user +
                 ", history=" + history +
                 '}';
     }
@@ -42,12 +42,12 @@ public class Friend {
         return Objects.equals(id, friend.id) &&
                 Objects.equals(name, friend.name) &&
                 Objects.equals(avatar, friend.avatar) &&
-                Objects.equals(reader, friend.reader) &&
+                Objects.equals(user, friend.user) &&
                 Objects.equals(history, friend.history);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, avatar, reader, history);
+        return Objects.hash(id, name, avatar, user, history);
     }
 }

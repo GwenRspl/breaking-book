@@ -32,13 +32,13 @@ public class CollectionRepositoryImpl implements CollectionRepository {
     private final String SELECT_JOIN = "SELECT * FROM collection " +
             "INNER JOIN book_collection ON collection.collection_id = book_collection.book_collection_collection_id " +
             "INNER JOIN book ON book.book_id = book_collection.book_collection_book_id " +
-            "INNER JOIN reader r ON book.book_reader = r.reader_id " +
+            "INNER JOIN breaking_book_user r ON book.book_breaking_book_user = r.breaking_book_user_id " +
             "INNER JOIN friend f ON book.book_friend = f.friend_id;";
 
     private final String SELECT_JOIN_BY_ID = "SELECT * FROM collection " +
             "INNER JOIN book_collection ON collection.collection_id = book_collection.book_collection_collection_id " +
             "INNER JOIN book ON book.book_id = book_collection.book_collection_book_id " +
-            "INNER JOIN reader r ON book.book_reader = r.reader_id " +
+            "INNER JOIN breaking_book_user r ON book.book_breaking_book_user = r.breaking_book_user_id " +
             "INNER JOIN friend f ON book.book_friend = f.friend_id " +
             "WHERE collection_id = ?;";
 

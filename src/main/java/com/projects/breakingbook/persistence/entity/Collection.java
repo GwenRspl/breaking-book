@@ -36,7 +36,7 @@ public class Collection {
     public String toString() {
         return "Collection{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", username='" + name + '\'' +
                 ", books=" + books +
                 '}';
     }

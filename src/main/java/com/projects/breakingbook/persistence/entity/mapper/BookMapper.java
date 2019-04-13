@@ -2,7 +2,8 @@ package com.projects.breakingbook.persistence.entity.mapper;
 
 import com.projects.breakingbook.persistence.entity.Book;
 import com.projects.breakingbook.persistence.entity.Friend;
-import com.projects.breakingbook.persistence.entity.Reader;
+import com.projects.breakingbook.persistence.entity.RoleName;
+import com.projects.breakingbook.persistence.entity.User;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -14,19 +15,21 @@ public class BookMapper implements RowMapper<Book> {
     @Override
     public Book mapRow(ResultSet resultSet, int i) throws SQLException {
 
-        Reader reader = Reader.builder()
-                .id(resultSet.getLong("reader_id"))
-                .name(resultSet.getString("reader_name"))
-                .avatar(resultSet.getString("reader_avatar"))
-                .email(resultSet.getString("reader_email"))
-                .password(resultSet.getString("reader_password"))
+        User user = User.builder()
+                .id(resultSet.getLong("breaking_book_user_id"))
+                .username(resultSet.getString("breaking_book_user_username"))
+                .avatar(resultSet.getString("breaking_book_user_avatar"))
+                .email(resultSet.getString("breaking_book_user_email"))
+                .password(resultSet.getString("breaking_book_user_password"))
                 .build();
+        String role = (resultSet.getString("breaking_book_user_role"));
+        user.setRole(RoleName.valueOf(role));
 
         Friend friend = Friend.builder()
                 .id(resultSet.getLong("book_friend"))
                 .name(resultSet.getString("friend_name"))
                 .avatar(resultSet.getString("friend_avatar"))
-                .reader(reader)
+                .user(user)
                 .build();
 
         String[] authorsArray = (String[]) resultSet.getArray("book_authors").getArray();
@@ -48,7 +51,7 @@ public class BookMapper implements RowMapper<Book> {
                 .rating(resultSet.getInt("book_rating"))
                 .comment(resultSet.getString("book_comment"))
                 .friend(friend)
-                .reader(reader)
+                .user(user)
                 .build();
     }
 }
