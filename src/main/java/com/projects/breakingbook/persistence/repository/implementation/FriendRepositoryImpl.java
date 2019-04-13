@@ -5,6 +5,7 @@ import com.projects.breakingbook.persistence.entity.Friend;
 import com.projects.breakingbook.persistence.entity.mapper.FriendMapExtractor;
 import com.projects.breakingbook.persistence.entity.mapper.FriendMapper;
 import com.projects.breakingbook.persistence.repository.FriendRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +37,8 @@ public class FriendRepositoryImpl implements FriendRepository {
             "INNER JOIN book ON book.book_id = book_friend.book_friend_book_id " +
             "INNER JOIN breaking_book_user r ON book.book_breaking_book_user = r.breaking_book_user_id " +
             "WHERE friend.friend_id = ?;";
+
+    private final String SELECT_BOOK_BY_FRIEND_ID = "SELECT book_id FROM book WHERE book_friend = ?";
 
     public FriendRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -81,5 +84,15 @@ public class FriendRepositoryImpl implements FriendRepository {
     public boolean updateFriend(Long id, Friend friend) {
         int result = this.jdbcTemplate.update(UPDATE, friend.getName(), friend.getAvatar(), friend.getUser().getId(), id);
         return result != 0;
+    }
+
+    @Override
+    public Long getBorrowedBook(Long friendId) {
+        try {
+            return this.jdbcTemplate.queryForObject(SELECT_BOOK_BY_FRIEND_ID, new Object[]{friendId}, Long.class);
+        } catch (EmptyResultDataAccessException e) {
+            System.out.println(e);
+            return null;
+        }
     }
 }

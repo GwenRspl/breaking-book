@@ -1,5 +1,6 @@
 package com.projects.breakingbook.persistence.repository;
 
+import com.projects.breakingbook.persistence.entity.Book;
 import com.projects.breakingbook.persistence.entity.Friend;
 
 import java.util.List;
@@ -12,4 +13,5 @@ public interface FriendRepository {
     boolean deleteFriendById(Long id);
     boolean deleteAllFriends();
     boolean updateFriend(Long id, Friend friend);
+    Long getBorrowedBook(Long friendId);
 }

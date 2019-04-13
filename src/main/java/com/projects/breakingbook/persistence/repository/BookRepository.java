@@ -13,4 +13,6 @@ public interface BookRepository {
     boolean deleteBookById(Long id);
     boolean deleteAllBooks();
     boolean updateBook(Long id, Book book);
+    boolean toggleOwned(Long id);
+    boolean updateFriend(Long bookId, Long friendId);
 }
