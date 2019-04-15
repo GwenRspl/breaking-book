@@ -111,8 +111,8 @@ public class BookController {
 
     private Book convertToEntity(BookDTO bookDTO) throws ParseException {
         Book book = modelMapper.map(bookDTO, Book.class);
-        book.setFriend(this.friendService.getOne(bookDTO.getFriendId()));
-        book.setUser(this.userService.getOne(bookDTO.getUserId()));
+        if(bookDTO.getFriendId() != null) book.setFriend(this.friendService.getOne(bookDTO.getFriendId()));
+        if(bookDTO.getUserId() != null) book.setUser(this.userService.getOne(bookDTO.getUserId()));
         return book;
     }
 }
