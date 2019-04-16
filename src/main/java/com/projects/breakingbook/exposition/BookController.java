@@ -7,6 +7,7 @@ import com.projects.breakingbook.exception.BookNotCreatedException;
 import com.projects.breakingbook.exception.BookNotUpdatedException;
 import com.projects.breakingbook.exposition.DTO.BookDTO;
 import com.projects.breakingbook.persistence.entity.Book;
+import com.projects.breakingbook.persistence.entity.Friend;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,7 +45,8 @@ public class BookController {
         List<Book> books = this.bookService.getAll();
         return books.stream()
                 .map(this::convertToDTO)
-                .collect(Collectors.toList());}
+                .collect(Collectors.toList());
+    }
 
     @GetMapping("/{id}")
     public BookDTO getOne(@PathVariable final Long id) {
@@ -111,7 +113,14 @@ public class BookController {
 
     private Book convertToEntity(BookDTO bookDTO) throws ParseException {
         Book book = modelMapper.map(bookDTO, Book.class);
-        if(bookDTO.getFriendId() != null) book.setFriend(this.friendService.getOne(bookDTO.getFriendId()));
+        if(bookDTO.getFriendId() != null) {
+            Optional<Friend> optionalFriend = this.friendService.getOne(bookDTO.getFriendId());
+            if (optionalFriend.isPresent()) {
+                book.setFriend(optionalFriend.get());
+            } else {
+                book.setFriend(null);
+            }
+        }
         if(bookDTO.getUserId() != null) book.setUser(this.userService.getOne(bookDTO.getUserId()));
         return book;
     }
