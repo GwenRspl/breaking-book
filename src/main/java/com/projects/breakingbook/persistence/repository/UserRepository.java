@@ -12,7 +12,7 @@ public interface UserRepository {
 
     Optional<User> findUserByUsername(String username);
 
-    User findUserById(Long id);
+    Optional<User> findUserById(Long id);
     boolean deleteUserById(Long id);
     boolean deleteAllUsers();
     boolean updateUser(Long id, User user);

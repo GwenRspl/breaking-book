@@ -8,6 +8,7 @@ import com.projects.breakingbook.exception.FriendNotUpdatedException;
 import com.projects.breakingbook.exposition.DTO.FriendDTO;
 import com.projects.breakingbook.persistence.entity.Book;
 import com.projects.breakingbook.persistence.entity.Friend;
+import com.projects.breakingbook.persistence.entity.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -66,7 +67,7 @@ public class FriendController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable final Long id, @RequestBody final FriendDTO friendDTO) {
-        boolean result = false;
+        boolean result;
         try {
             result = this.friendService.update(id, convertToEntity(friendDTO));
             if(result) {
@@ -134,7 +135,8 @@ public class FriendController {
     private Friend convertToEntity(FriendDTO friendDTO) throws ParseException {
         Friend friend = modelMapper.map(friendDTO, Friend.class);
         if(friendDTO.getUserId() != null) {
-            friend.setUser(this.userService.getOne(friendDTO.getUserId()));
+            Optional<User> optionalUser = this.userService.getOne(friendDTO.getUserId());
+            optionalUser.ifPresent(friend::setUser);
         }
         if(friendDTO.getHistoryBookIds() != null) {
             List<Book> history = friendDTO.getHistoryBookIds().stream()

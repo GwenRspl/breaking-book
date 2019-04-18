@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getOne(Long id) {
+    public Optional<User> getOne(Long id) {
         return this.userRepository.findUserById(id);
     }
 
@@ -41,12 +41,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean update(Long id, User user) {
-        User originalUser = this.userRepository.findUserById(id);
-        if(user.getUsername() == null) user.setUsername(originalUser.getUsername());
-        if(user.getAvatar() == null) user.setAvatar(originalUser.getAvatar());
-        if(user.getEmail() == null) user.setEmail(originalUser.getEmail());
-        if(user.getPassword() == null) user.setPassword(originalUser.getPassword());
-        return this.userRepository.updateUser(id, user);
+        Optional<User> optionalUser = this.userRepository.findUserById(id);
+        if(optionalUser.isPresent()) {
+            User originalUser = optionalUser.get();
+            if (user.getUsername() == null) user.setUsername(originalUser.getUsername());
+            if (user.getAvatar() == null) user.setAvatar(originalUser.getAvatar());
+            if (user.getEmail() == null) user.setEmail(originalUser.getEmail());
+            if (user.getPassword() == null) user.setPassword(originalUser.getPassword());
+            return this.userRepository.updateUser(id, user);
+        } else {
+            return false;
+        }
     }
 
     @Override
