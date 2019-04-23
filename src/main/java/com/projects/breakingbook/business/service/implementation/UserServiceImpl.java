@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean update(Long id, User user) {
         Optional<User> optionalUser = this.userRepository.findUserById(id);
-        if (optionalUser.isPresent()) {
+        if(optionalUser.isPresent()) {
             if (user.getUsername() == null) user.setUsername(optionalUser.get().getUsername());
             if (user.getAvatar() == null) user.setAvatar(optionalUser.get().getAvatar());
             if (user.getEmail() == null) user.setEmail(optionalUser.get().getEmail());
