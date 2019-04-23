@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
@@ -51,7 +52,7 @@ public class FriendController {
     }
 
     @PostMapping("")
-    public ResponseEntity<?> create(@RequestBody final FriendDTO friendDTO) {
+    public ResponseEntity<?> create(@Valid @RequestBody final FriendDTO friendDTO) {
         boolean result = false;
         try {
             result = this.friendService.create(convertToEntity(friendDTO));

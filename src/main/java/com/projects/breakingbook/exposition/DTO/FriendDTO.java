@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
@@ -14,6 +16,8 @@ import java.util.List;
 @Builder
 public class FriendDTO {
     private Long id;
+    @NotNull
+    @NotEmpty
     private String name;
     private String avatar;
     private Long userId;
