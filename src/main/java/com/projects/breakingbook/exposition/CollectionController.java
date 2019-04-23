@@ -2,7 +2,6 @@ package com.projects.breakingbook.exposition;
 
 import com.projects.breakingbook.business.service.BookService;
 import com.projects.breakingbook.business.service.CollectionService;
-import com.projects.breakingbook.exception.BookNotUpdatedException;
 import com.projects.breakingbook.exception.CollectionNotCreatedException;
 import com.projects.breakingbook.exception.CollectionNotUpdatedException;
 import com.projects.breakingbook.exposition.DTO.CollectionDTO;

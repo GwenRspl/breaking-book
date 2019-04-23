@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -94,8 +95,8 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public User getOne(@PathVariable final Long id) {
-
-        return this.userService.getOne(id);
+        Optional<User> optionalUser = this.userService.getOne(id);
+        return optionalUser.orElse(null);
     }
 
     @PutMapping("/users/{id}")

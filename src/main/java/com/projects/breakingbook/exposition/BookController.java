@@ -7,6 +7,7 @@ import com.projects.breakingbook.exception.BookNotCreatedException;
 import com.projects.breakingbook.exception.BookNotUpdatedException;
 import com.projects.breakingbook.exposition.DTO.BookDTO;
 import com.projects.breakingbook.persistence.entity.Book;
+import com.projects.breakingbook.persistence.entity.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -112,7 +113,10 @@ public class BookController {
     private Book convertToEntity(BookDTO bookDTO) throws ParseException {
         Book book = modelMapper.map(bookDTO, Book.class);
         if(bookDTO.getFriendId() != null) book.setFriend(this.friendService.getOne(bookDTO.getFriendId()));
-        if(bookDTO.getUserId() != null) book.setUser(this.userService.getOne(bookDTO.getUserId()));
+        if(bookDTO.getUserId() != null) {
+            Optional<User> optionalUser = this.userService.getOne(bookDTO.getUserId());
+            optionalUser.ifPresent(book::setUser);
+        }
         return book;
     }
 }
