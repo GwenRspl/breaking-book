@@ -18,7 +18,6 @@ public class User {
     private String username;
     private String avatar;
     private String email;
-    @JsonIgnore
     private String password;
     private List<Book> books;
     private RoleName role;

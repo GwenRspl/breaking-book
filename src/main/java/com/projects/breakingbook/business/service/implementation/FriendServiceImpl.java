@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -28,7 +29,7 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public Friend getOne(Long id) {
+    public Optional<Friend> getOne(Long id) {
         return this.friendRepository.findFriendById(id);
     }
 
@@ -39,11 +40,15 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     public boolean update(Long id, Friend friend) {
-        Friend originalFriend = this.friendRepository.findFriendById(id);
-        if (friend.getName() == null) friend.setName(originalFriend.getName());
-        if (friend.getAvatar() == null) friend.setAvatar(originalFriend.getAvatar());
-        if (friend.getUser() == null) friend.setUser(originalFriend.getUser());
-        return this.friendRepository.updateFriend(id, friend);
+        Optional<Friend> optionalFriend = this.friendRepository.findFriendById(id);
+        if(optionalFriend.isPresent()) {
+            if (friend.getName() == null) friend.setName(optionalFriend.get().getName());
+            if (friend.getAvatar() == null) friend.setAvatar(optionalFriend.get().getAvatar());
+            if (friend.getUser() == null) friend.setUser(optionalFriend.get().getUser());
+            return this.friendRepository.updateFriend(id, friend);
+        } else {
+            return false;
+        }
     }
 
     @Override

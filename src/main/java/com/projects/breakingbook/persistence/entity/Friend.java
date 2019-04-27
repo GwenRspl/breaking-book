@@ -30,7 +30,7 @@ public class Friend {
                 ", username='" + name + '\'' +
                 ", avatar='" + avatar + '\'' +
                 ", user=" + user +
-                ", history=" + history +
+                ", historyBookIds=" + history +
                 '}';
     }
 

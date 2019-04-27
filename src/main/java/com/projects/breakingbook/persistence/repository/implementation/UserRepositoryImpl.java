@@ -5,6 +5,7 @@ import com.projects.breakingbook.persistence.entity.User;
 import com.projects.breakingbook.persistence.entity.mapper.UserMapExtractor;
 import com.projects.breakingbook.persistence.entity.mapper.UserMapper;
 import com.projects.breakingbook.persistence.repository.UserRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,11 +64,15 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User findUserById(Long id) {
-        User user = this.jdbcTemplate.queryForObject(SELECT_BY_ID, new Object [] {id}, new UserMapper());
-        Map<Long, List<Book>> booksMap = this.jdbcTemplate.query(SELECT_JOIN_BY_ID, new Object [] {id}, new UserMapExtractor());
-        user.setBooks(booksMap.get(user.getId()));
-        return user;
+    public Optional<User> findUserById(Long id) {
+        try {
+            User user = this.jdbcTemplate.queryForObject(SELECT_BY_ID, new Object[]{id}, new UserMapper());
+            Map<Long, List<Book>> booksMap = this.jdbcTemplate.query(SELECT_JOIN_BY_ID, new Object[]{id}, new UserMapExtractor());
+            user.setBooks(booksMap.get(user.getId()));
+            return Optional.of(user);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     @Override

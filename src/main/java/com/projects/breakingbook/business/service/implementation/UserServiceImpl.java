@@ -6,6 +6,7 @@ import com.projects.breakingbook.persistence.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +26,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getOne(Long id) {
+    public Optional<User> getOne(Long id) {
         return this.userRepository.findUserById(id);
     }
 
@@ -41,12 +42,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean update(Long id, User user) {
-        User originalUser = this.userRepository.findUserById(id);
-        if(user.getUsername() == null) user.setUsername(originalUser.getUsername());
-        if(user.getAvatar() == null) user.setAvatar(originalUser.getAvatar());
-        if(user.getEmail() == null) user.setEmail(originalUser.getEmail());
-        if(user.getPassword() == null) user.setPassword(originalUser.getPassword());
-        return this.userRepository.updateUser(id, user);
+        Optional<User> optionalUser = this.userRepository.findUserById(id);
+        if(optionalUser.isPresent()) {
+            if (user.getUsername() == null) user.setUsername(optionalUser.get().getUsername());
+            if (user.getAvatar() == null) user.setAvatar(optionalUser.get().getAvatar());
+            if (user.getEmail() == null) user.setEmail(optionalUser.get().getEmail());
+            if (user.getPassword() == null) user.setPassword(optionalUser.get().getPassword());
+            return this.userRepository.updateUser(id, user);
+        } else {
+            return false;
+        }
     }
 
     @Override

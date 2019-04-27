@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 @Transactional
@@ -61,11 +62,15 @@ public class FriendRepositoryImpl implements FriendRepository {
     }
 
     @Override
-    public Friend findFriendById(Long id) {
-        Friend friend = this.jdbcTemplate.queryForObject(SELECT_BY_ID, new Object [] {id}, new FriendMapper());
-        Map<Long, List<Book>> booksMap = this.jdbcTemplate.query(SELECT_JOIN_BY_ID, new Object [] {id}, new FriendMapExtractor());
-        friend.setHistory(booksMap.get(friend.getId()));
-        return friend;
+    public Optional<Friend> findFriendById(Long id) {
+        try {
+            Friend friend = this.jdbcTemplate.queryForObject(SELECT_BY_ID, new Object [] {id}, new FriendMapper());
+            Map<Long, List<Book>> booksMap = this.jdbcTemplate.query(SELECT_JOIN_BY_ID, new Object [] {id}, new FriendMapExtractor());
+            friend.setHistory(booksMap.get(friend.getId()));
+            return Optional.of(friend);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     @Override

@@ -5,12 +5,14 @@ import com.projects.breakingbook.persistence.entity.Wishlist;
 import com.projects.breakingbook.persistence.entity.mapper.WishlistMapExtractor;
 import com.projects.breakingbook.persistence.entity.mapper.WishlistMapper;
 import com.projects.breakingbook.persistence.repository.WishlistRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 @Transactional
@@ -61,11 +63,15 @@ public class WishlistRepositoryImpl implements WishlistRepository {
     }
 
     @Override
-    public Wishlist findWishlistById(Long id) {
-        Wishlist wishlist = this.jdbcTemplate.queryForObject(SELECT_BY_ID, new Object [] {id}, new WishlistMapper());
-        Map<Long, List<Book>> booksMap = this.jdbcTemplate.query(SELECT_JOIN_BY_ID, new Object [] {id}, new WishlistMapExtractor());
-        wishlist.setBooks(booksMap.get(wishlist.getId()));
-        return wishlist;
+    public Optional<Wishlist> findWishlistById(Long id) {
+        try {
+            Wishlist wishlist = this.jdbcTemplate.queryForObject(SELECT_BY_ID, new Object[]{id}, new WishlistMapper());
+            Map<Long, List<Book>> booksMap = this.jdbcTemplate.query(SELECT_JOIN_BY_ID, new Object[]{id}, new WishlistMapExtractor());
+            wishlist.setBooks(booksMap.get(wishlist.getId()));
+            return Optional.of(wishlist);
+        } catch (EmptyResultDataAccessException e){
+            return Optional.empty();
+        }
     }
 
     @Override
