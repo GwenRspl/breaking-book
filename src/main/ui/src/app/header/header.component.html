@@ -1,0 +1,28 @@
+<ion-toolbar>
+  <ion-title slot="start">
+    Breaking-Book
+  </ion-title>
+  <ion-buttons slot="primary">
+    <ion-button>
+      <ion-icon slot="start" name="book"></ion-icon>
+      Library
+    </ion-button>
+    <ion-button>
+      <ion-icon slot="start" name="filing"></ion-icon>
+      Collections
+    </ion-button>
+    <ion-button>
+      <ion-icon slot="start" name="basket"></ion-icon>
+      Wishlists
+    </ion-button>
+    <ion-button>
+      <ion-icon slot="start" name="people"></ion-icon>
+      Friends
+    </ion-button>
+  </ion-buttons>
+  <ion-buttons class="header-toolbar-cog" slot="end">
+    <ion-button (click)="onCogClick($event)">
+      <ion-icon slot="end" name="cog"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>
