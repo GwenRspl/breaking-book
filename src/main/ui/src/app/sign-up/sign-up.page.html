@@ -1,9 +1,66 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>sign-up</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
+    <ion-grid>
+        <ion-row>
+            <ion-col size="12" size-lg="4" offset-lg="4" size-sm="8" offset-sm="2">
+                <ion-card>
+                    <ion-card-header text-center>
+                        <ion-card-title>Sign Up</ion-card-title>
+                    </ion-card-header>
+                    <form>
 
+                        <ion-item class="form-item">
+                            <ion-label position="floating">
+                                <ion-icon slot="start" name="person"></ion-icon>
+                                Username
+                            </ion-label>
+                            <ion-input>
+                            </ion-input>
+                        </ion-item>
+
+                        <ion-item class="form-item">
+                            <ion-label position="floating">
+                                <ion-icon slot="start" name="mail"></ion-icon>
+                                Email
+                            </ion-label>
+                            <ion-input>
+                            </ion-input>
+                        </ion-item>
+
+                        <ion-item class="form-item">
+                            <ion-label position="floating">
+                                <ion-icon slot="start" name="lock"></ion-icon>
+                                Password
+                            </ion-label>
+                            <ion-input>
+                            </ion-input>
+                        </ion-item>
+
+                        <ion-item class="form-item">
+                            <ion-label position="floating">
+                                <ion-icon slot="start" name="lock"></ion-icon>
+                                Confirm Password
+                            </ion-label>
+                            <ion-input>
+                            </ion-input>
+                        </ion-item >
+
+                        <ion-grid>
+                            <ion-row>
+                                <ion-col text-center>
+                                    <ion-button padding>
+                                    Sign up
+                                </ion-button>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+
+                        <ion-card-content text-right>
+                            Already have an account? <a href="#">Sign in!</a>
+                        </ion-card-content>
+
+                    </form>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 </ion-content>
