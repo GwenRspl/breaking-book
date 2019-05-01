@@ -17,7 +17,7 @@ import {SettingsComponent} from "./header/settings/settings.component";
   declarations: [AppComponent,
     HeaderComponent,
     FooterComponent,
-    SettingsComponent
+    SettingsComponent,
   ],
   entryComponents: [SettingsComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
