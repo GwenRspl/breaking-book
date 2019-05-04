@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
 import { SignUpPage } from './sign-up.page';
+import {AuthenticationService} from "../service/authentication.service";
+import {HttpClientModule} from "@angular/common/http";
 
 const routes: Routes = [
   {
@@ -18,9 +20,12 @@ const routes: Routes = [
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     IonicModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    HttpClientModule
   ],
-  declarations: [SignUpPage]
+  declarations: [SignUpPage],
+  providers:[AuthenticationService]
 })
 export class SignUpPageModule {}

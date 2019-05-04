@@ -1,0 +1,25 @@
+ion-card {
+  margin-top: 8em;
+}
+ion-card-title {
+  padding-top: 1.5em;
+}
+.form-item {
+  padding-left: 5em;
+  padding-right: 5em;
+}
+.form-error-message {
+  font-size: smaller;
+  font-style: italic;
+  padding-left: 7em;
+  margin-bottom: 1.5em;
+}
+
+.signIn {
+  cursor: pointer;
+}
+
+.signIn:hover {
+  text-decoration: underline;
+}
+
