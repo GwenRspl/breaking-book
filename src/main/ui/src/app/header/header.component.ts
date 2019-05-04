@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {PopoverController} from "@ionic/angular";
 import {SettingsComponent} from "./settings/settings.component";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-header',
@@ -9,7 +10,8 @@ import {SettingsComponent} from "./settings/settings.component";
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private popoverCtrl: PopoverController) { }
+  constructor(private popoverCtrl: PopoverController,
+              private router: Router) { }
 
   ngOnInit() {}
 
@@ -21,4 +23,7 @@ export class HeaderComponent implements OnInit {
     return await popover.present();
   }
 
+    goToHome() {
+        this.router.navigateByUrl('/home');
+    }
 }
