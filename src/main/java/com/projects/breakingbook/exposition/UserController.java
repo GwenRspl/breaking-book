@@ -73,12 +73,12 @@ public class UserController {
     @PostMapping("/auth/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpForm signUpRequest) {
         if (userService.existsByUsername(signUpRequest.getUsername())) {
-            return new ResponseEntity<>(new ResponseMessage("Fail -> Username is already taken!"),
+            return new ResponseEntity<>(new ResponseMessage("Username is already taken!"),
                     HttpStatus.BAD_REQUEST);
         }
 
         if (userService.existsByEmail(signUpRequest.getEmail())) {
-            return new ResponseEntity<>(new ResponseMessage("Fail -> Email is already in use!"),
+            return new ResponseEntity<>(new ResponseMessage("Email is already taken!"),
                     HttpStatus.BAD_REQUEST);
         }
 
@@ -88,12 +88,10 @@ public class UserController {
         String stringRole = signUpRequest.getRole();
         RoleName role;
 
-        switch (stringRole) {
-            case "admin":
-                role = RoleName.ROLE_ADMIN;
-                break;
-            default:
-                role = RoleName.ROLE_USER;
+        if ("admin".equals(stringRole)) {
+            role = RoleName.ROLE_ADMIN;
+        } else {
+            role = RoleName.ROLE_USER;
         }
 
         user.setRole(role);

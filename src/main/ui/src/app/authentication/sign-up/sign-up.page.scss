@@ -1,5 +1,5 @@
 ion-card {
-  margin-top: 10em;
+  margin-top: 8em;
 }
 ion-card-title {
   padding-top: 1.5em;
@@ -13,5 +13,13 @@ ion-card-title {
   font-style: italic;
   padding-left: 7em;
   margin-bottom: 1.5em;
+}
+
+.signIn {
+  cursor: pointer;
+}
+
+.signIn:hover {
+  text-decoration: underline;
 }
 

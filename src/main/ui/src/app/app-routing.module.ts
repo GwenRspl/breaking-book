@@ -10,8 +10,8 @@ const routes: Routes = [
   { path: 'friends', loadChildren: './friends/friends.module#FriendsPageModule' },
   { path: 'account', loadChildren: './account/account.module#AccountPageModule' },
   { path: 'contact', loadChildren: './contact/contact.module#ContactPageModule' },
-  { path: 'sign-up', loadChildren: './sign-up/sign-up.module#SignUpPageModule' },
-  { path: 'sign-in', loadChildren: './sign-in/sign-in.module#SignInPageModule' }
+  { path: 'sign-up', loadChildren: './authentication/sign-up/sign-up.module#SignUpPageModule' },
+  { path: 'sign-in', loadChildren: './authentication/sign-in/sign-in.module#SignInPageModule' }
 ];
 
 @NgModule({
