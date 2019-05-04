@@ -1,21 +1,21 @@
 <ion-toolbar>
-  <ion-title slot="start">
+  <ion-title slot="start" (click)="goToHome()">
     Breaking-Book
   </ion-title>
   <ion-buttons slot="primary">
-    <ion-button>
+    <ion-button [routerLink]="['/', 'library']">
       <ion-icon slot="start" name="book"></ion-icon>
       Library
     </ion-button>
-    <ion-button>
+    <ion-button [routerLink]="['/', 'collections']">
       <ion-icon slot="start" name="filing"></ion-icon>
       Collections
     </ion-button>
-    <ion-button>
+    <ion-button [routerLink]="['/', 'wishlists']">
       <ion-icon slot="start" name="basket"></ion-icon>
       Wishlists
     </ion-button>
-    <ion-button>
+    <ion-button [routerLink]="['/', 'friends']">
       <ion-icon slot="start" name="people"></ion-icon>
       Friends
     </ion-button>
