@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 import {AuthenticationService} from '../service/authentication.service';
 import {ToastController} from '@ionic/angular';
 import {TokenStorageService} from '../token-storage.service';
+import {HeaderService} from '../../header/header.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -16,12 +17,13 @@ export class SignInPage implements OnInit {
   submitted: boolean;
   isLoginFailed = false;
   private signInInfo: SignInInfo;
-  
+
   constructor(private formBuilder: FormBuilder,
               private router: Router,
               private authService: AuthenticationService,
               private toastCtrl: ToastController,
-              private tokenStorage: TokenStorageService) { }
+              private tokenStorage: TokenStorageService,
+              private headerService: HeaderService) { }
 
   ngOnInit() {
     this.initSignInForm();
@@ -51,8 +53,8 @@ export class SignInPage implements OnInit {
         this.tokenStorage.saveUsername(data.username);
         this.tokenStorage.saveAuthorities(data.authorities);
         this.isLoginFailed = false;
+        this.headerService.refreshNavBar(data.username);
         this.router.navigateByUrl('/library');
-
       },
       error => {
         console.log(error);

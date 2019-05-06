@@ -2,7 +2,9 @@
   <ion-title slot="start" (click)="goToHome()">
     Breaking-Book
   </ion-title>
-  <ion-buttons slot="primary">
+
+
+  <ion-buttons slot="primary" *ngIf="username; else SignedOut">
     <ion-button [routerLink]="['/', 'library']" routerLinkActive="active-link">
       <ion-icon slot="start" name="book"></ion-icon>
       Library
@@ -20,9 +22,24 @@
       Friends
     </ion-button>
   </ion-buttons>
-  <ion-buttons class="header-toolbar-cog" slot="end">
+
+  <ion-buttons class="header-toolbar-cog" slot="end" *ngIf="username">
+    <ion-text class="bb-username">Welcome {{username}} !</ion-text>
     <ion-button (click)="onCogClick($event)">
       <ion-icon slot="end" name="cog"></ion-icon>
     </ion-button>
   </ion-buttons>
+
+  <ng-template #SignedOut>
+  <ion-buttons slot="primary">
+    <ion-button [routerLink]="['/', 'sign-in']" routerLinkActive="active-link">
+      <ion-icon slot="start" name="log-in"></ion-icon>
+      Sign In
+    </ion-button>
+    <ion-button [routerLink]="['/', 'sign-up']" routerLinkActive="active-link">
+      <ion-icon slot="start" name="list-box"></ion-icon>
+      Register
+    </ion-button>
+  </ion-buttons>
+  </ng-template>
 </ion-toolbar>

@@ -11,6 +11,8 @@ import { AppRoutingModule } from './app-routing.module';
 import {HeaderComponent} from "./header/header.component";
 import {FooterComponent} from "./footer/footer.component";
 import {SettingsComponent} from "./header/settings/settings.component";
+import {TokenStorageService} from './authentication/token-storage.service';
+import {HeaderService} from './header/header.service';
 
 
 @NgModule({
@@ -24,7 +26,9 @@ import {SettingsComponent} from "./header/settings/settings.component";
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    TokenStorageService,
+    HeaderService
   ],
   bootstrap: [AppComponent]
 })
