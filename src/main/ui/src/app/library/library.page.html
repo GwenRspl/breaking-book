@@ -1,9 +1,55 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>library</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6" offset="3">
+        <div class="search-bar-div" padding>
+          Search Bar
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="6" offset="3">
+        <div class="currently-div" padding>
+          <h1>Currently reading</h1>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="2" offset="1">
+        <div class="genre-div" padding>
+          <ion-list>
+            <ion-list-header>
+              <h1>Genres</h1>
+            </ion-list-header>
+            <ion-item>
+              <ion-label>See all</ion-label>
+            </ion-item>
+            <ion-item *ngFor="let genre of genreList">
+              <ion-icon slot="end" name="create"></ion-icon>
+              <ion-label>{{genre}}</ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
+      </ion-col>
+      <ion-col size="6">
+        <div class="library-div" padding>
+          <h1>Library</h1>
+          <ion-grid>
+            <ion-row>
+              <ion-col *ngFor="let book of books" size="3" class="book-row">
+                <ion-card class="book-card">
+                  <ion-img [src]="book.image"></ion-img>
+                  <ion-card-header>
+                    <ion-card-subtitle>{{book.authors[0]}}</ion-card-subtitle>
+                    <ion-card-title>{{book.title}}</ion-card-title>
+                  </ion-card-header>
+                </ion-card>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
+
