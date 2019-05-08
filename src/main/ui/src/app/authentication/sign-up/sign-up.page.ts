@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AuthenticationService} from "../service/authentication.service";
-import {SignUpInfo} from "../sign-up-info.model";
+import {SignUpInfo} from "../sign-up-info";
 import {ToastController} from "@ionic/angular";
 import {Router} from "@angular/router";
 
@@ -46,7 +46,6 @@ export class SignUpPage implements OnInit {
       console.log('invalid form');
       return;
     }
-    console.log(this.registerForm.getRawValue());
     let signUpInfo: SignUpInfo = new SignUpInfo(
         this.registerForm.value.username,
         this.registerForm.value.email,

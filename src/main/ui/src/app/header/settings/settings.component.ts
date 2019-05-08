@@ -14,7 +14,11 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit() {}
 
-  async closePopover() {
-    await this.popoverCtrl.dismiss();
+  closePopover() {
+    this.popoverCtrl.dismiss();
+  }
+
+  signOut() {
+    this.popoverCtrl.dismiss(null, 'sign-out');
   }
 }

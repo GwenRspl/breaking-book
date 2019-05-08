@@ -1,9 +1,58 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>sign-in</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-lg="4" offset-lg="4" size-sm="8" offset-sm="2">
+        <ion-card>
+          <ion-card-header text-center>
+            <ion-card-title>Sign In</ion-card-title>
+          </ion-card-header>
+          <form [formGroup]="signInForm">
 
+            <ion-item class="form-item">
+              <ion-label position="floating">
+                <ion-icon slot="start" name="person"></ion-icon>
+                Username
+              </ion-label>
+              <ion-input formControlName="username" type="text" (keyup.enter)="signInUser()">
+              </ion-input>
+            </ion-item>
+            <ion-text color="danger" *ngIf="submitted && f.username.errors">
+              <p *ngIf="f.username.errors.minlength" class="form-error-message">Username should be at least 3 characters long.</p>
+              <p *ngIf="f.username.errors.required" class="form-error-message">This field is required.</p>
+            </ion-text>
+
+            <ion-item class="form-item">
+              <ion-label position="floating">
+                <ion-icon slot="start" name="lock"></ion-icon>
+                Password
+              </ion-label>
+              <ion-input formControlName="password" type="password" (keyup.enter)="signInUser()">
+              </ion-input>
+            </ion-item>
+            <ion-text color="danger" *ngIf="submitted && f.password.errors">
+              <p *ngIf="f.password.errors.minlength" class="form-error-message">The password should be at least 6 characters long.</p>
+              <p *ngIf="f.password.errors.required" class="form-error-message">This field is required.</p>
+            </ion-text>
+
+            <ion-grid>
+              <ion-row>
+                <ion-col text-center>
+                  <ion-button padding (click)="signInUser()">
+                    Sign In
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+
+            <ion-card-content text-right>
+              <ion-text>
+                Don't have an account? <a class="signUp" (click)="goToSignUp()">Sign up!</a>
+              </ion-text>
+            </ion-card-content>
+
+          </form>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
