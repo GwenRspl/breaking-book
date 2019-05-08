@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Book} from './book.model';
 import {Friend} from './friend.model';
 import {User} from './user.model';
+import {IonSlides} from '@ionic/angular';
 
 @Component({
   selector: 'app-library',
@@ -9,9 +10,17 @@ import {User} from './user.model';
   styleUrls: ['./library.page.scss'],
 })
 export class LibraryPage implements OnInit {
+  @ViewChild('slideWithButtons') slideWithNav: IonSlides;
+
   private _genreList: string[] =[];
   private _books: Book[] = [];
   private _currentlyReading: Book[] = [];
+  private _sortOptions: string[] = ['Author', 'Title', 'Rating'];
+  slideOpts = {
+    initialSlide: 1,
+    slidesPerView: 4,
+    speed: 400
+  };
 
   constructor() { }
 
@@ -39,6 +48,13 @@ export class LibraryPage implements OnInit {
   retrieveCurrentlyReading(){
     this._currentlyReading = [
       new Book(1, 'Royal Assassin', ['Hobb'], '', 'https://www.babelio.com/couv/CVT_LAssassin-royal-Tome-1--Lapprenti-assassin_4514.jpeg', '', '', new Date("February 4, 2016 10:13:00"), 123, '', true, true, 5, '', new Friend(), new User()),
+      new Book(1, 'Royal Assassin', ['Hobb'], '', 'https://www.babelio.com/couv/CVT_LAssassin-royal-Tome-1--Lapprenti-assassin_4514.jpeg', '', '', new Date("February 4, 2016 10:13:00"), 123, '', true, true, 5, '', new Friend(), new User()),
+      new Book(1, 'Royal Assassin', ['Hobb'], '', 'https://www.babelio.com/couv/CVT_LAssassin-royal-Tome-1--Lapprenti-assassin_4514.jpeg', '', '', new Date("February 4, 2016 10:13:00"), 123, '', true, true, 5, '', new Friend(), new User()),
+      new Book(1, 'Royal Assassin', ['Hobb'], '', 'https://www.babelio.com/couv/CVT_LAssassin-royal-Tome-1--Lapprenti-assassin_4514.jpeg', '', '', new Date("February 4, 2016 10:13:00"), 123, '', true, true, 5, '', new Friend(), new User()),
+      new Book(1, 'Royal Assassin', ['Hobb'], '', 'https://www.babelio.com/couv/CVT_LAssassin-royal-Tome-1--Lapprenti-assassin_4514.jpeg', '', '', new Date("February 4, 2016 10:13:00"), 123, '', true, true, 5, '', new Friend(), new User()),
+      new Book(1, 'Aladdin', ['Disney'], '', 'https://about.canva.com/wp-content/uploads/sites/3/2015/01/art_bookcover.png', '', '', new Date("February 4, 2016 10:13:00"), 123, '', true, true, 5, '', new Friend(), new User()),
+      new Book(1, 'Aladdin', ['Disney'], '', 'https://about.canva.com/wp-content/uploads/sites/3/2015/01/art_bookcover.png', '', '', new Date("February 4, 2016 10:13:00"), 123, '', true, true, 5, '', new Friend(), new User()),
+      new Book(1, 'Aladdin', ['Disney'], '', 'https://about.canva.com/wp-content/uploads/sites/3/2015/01/art_bookcover.png', '', '', new Date("February 4, 2016 10:13:00"), 123, '', true, true, 5, '', new Friend(), new User()),
       new Book(1, 'Aladdin', ['Disney'], '', 'https://about.canva.com/wp-content/uploads/sites/3/2015/01/art_bookcover.png', '', '', new Date("February 4, 2016 10:13:00"), 123, '', true, true, 5, '', new Friend(), new User())
     ];
   }
@@ -55,4 +71,17 @@ export class LibraryPage implements OnInit {
   get currentlyReading(): Book[] {
     return this._currentlyReading;
   }
+
+  get sortOptions(): string[] {
+    return this._sortOptions;
+  }
+
+  nextSlide(slideView) {
+    slideView.slideNext(500);
+  }
+
+  previousSlide(slideView) {
+    slideView.slidePrev(500);
+  }
+
 }
