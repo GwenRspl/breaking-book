@@ -2,13 +2,6 @@
   <ion-grid>
     <ion-row>
       <ion-col size="6" offset="3">
-        <div class="search-bar-div" padding>
-          <ion-searchbar placeholder="Search a book ..."></ion-searchbar>
-        </div>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="6" offset="3">
         <div class="currently-div" padding>
           <h1>Currently reading</h1>
           <ion-grid>
@@ -26,15 +19,19 @@
                 </ion-slides>
               </ion-col>
               <ion-col size="1">
-                <ion-button fill="outline" class="carousel-button" (click)="nextSlide(slideWithButtons)">
+                <ion-button fill="clear" class="carousel-button" (click)="nextSlide(slideWithButtons)">
                   <ion-icon name="arrow-dropright" slot="icon-only"></ion-icon>
                 </ion-button>
               </ion-col>
             </ion-row>
           </ion-grid>
-          <div>
-
-          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="6" offset="3">
+        <div class="search-bar-div" padding>
+          <ion-searchbar placeholder="Search a book"></ion-searchbar>
         </div>
       </ion-col>
     </ion-row>
@@ -65,11 +62,8 @@
             </ion-button>
               <ion-item class="select-sort ion-float-right">
                 <ion-label>Sort by</ion-label>
-                <ion-select value="author" interface="popover">
-                  <ion-select-option *ngFor="let option of sortOptions" value="option">{{option}}</ion-select-option>
-                  <ion-select-option value="author">Author</ion-select-option>
-                  <ion-select-option value="title">Title</ion-select-option>
-                  <ion-select-option value="rating">Rating</ion-select-option>
+                <ion-select [value]="sortOptions[0]" interface="popover">
+                  <ion-select-option *ngFor="let option of sortOptions" [value]="option">{{option}}</ion-select-option>
                 </ion-select>
               </ion-item>
           </div>
@@ -79,7 +73,7 @@
                 <ion-card class="book-card">
                   <ion-img [src]="book.image"></ion-img>
                   <ion-card-header>
-                    <ion-card-subtitle>{{book.authors[0]}}</ion-card-subtitle>
+                    <ion-card-subtitle>{{book.authors}}</ion-card-subtitle>
                     <ion-card-title>{{book.title}}</ion-card-title>
                   </ion-card-header>
                 </ion-card>

@@ -6,6 +6,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { LibraryPage } from './library.page';
+import {BooksService} from './books.service';
+import {HttpClientModule} from '@angular/common/http';
 
 const routes: Routes = [
   {
@@ -19,8 +21,10 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    HttpClientModule
   ],
-  declarations: [LibraryPage]
+  declarations: [LibraryPage],
+  providers: [BooksService]
 })
 export class LibraryPageModule {}

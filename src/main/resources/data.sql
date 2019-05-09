@@ -35,6 +35,18 @@ INSERT INTO public.book_wishlist(book_wishlist_book_id, book_wishlist_wishlist_i
 VALUES (1, 1),
        (2, 1);
 
+<<<<<<< HEAD
 INSERT INTO public.book_friend(book_friend_book_id, book_friend_friend_id
 )
+=======
+INSERT INTO public.book_friend(book_friend_book_id, book_friend_friend_id
+)
+>>>>>>>
+fix
+sort
+options
+&
+add
+books
+service
 VALUES (2, 1);
