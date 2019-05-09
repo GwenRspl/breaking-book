@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {SignUpInfo} from '../sign-up-info';
 import {SignInInfo} from '../sign-in-info';
 import {JwtResponse} from '../jwt-response';
+import {User} from '../user.model';
 
 const httpOptions ={
   headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -15,6 +16,7 @@ const httpOptions ={
 export class AuthenticationService {
   private signUpURL: string = 'http://localhost:8080/api/auth/signup';
   private signInURL: string = 'http://localhost:8080/api/auth/signin';
+  private usersURL: string = 'http://localhost:8080/api/users/username/';
 
   constructor(private httpClient: HttpClient) { }
 
@@ -24,6 +26,10 @@ export class AuthenticationService {
 
   attemptAuthentication(credentials: SignInInfo): Observable<JwtResponse> {
     return this.httpClient.post<JwtResponse>(this.signInURL, credentials, httpOptions);
+  }
 
+  getUserByUsername(username: string){
+    const path = this.usersURL + username;
+    return this.httpClient.get<User>(path);
   }
 }

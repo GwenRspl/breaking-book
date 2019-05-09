@@ -52,9 +52,17 @@ export class SignInPage implements OnInit {
         this.tokenStorage.saveToken(data.token);
         this.tokenStorage.saveUsername(data.username);
         this.tokenStorage.saveAuthorities(data.authorities);
-        this.isLoginFailed = false;
-        this.headerService.refreshNavBar(data.username);
-        this.router.navigateByUrl('/library');
+        this.authService.getUserByUsername(data.username).subscribe(
+          data => {
+            this.tokenStorage.saveUserId(data.id.toString());
+            this.isLoginFailed = false;
+            this.headerService.refreshNavBar(data.username);
+            this.router.navigateByUrl('/library');
+          },
+          error => {
+            console.log(error);
+          }
+        );
       },
       error => {
         console.log(error);

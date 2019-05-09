@@ -109,6 +109,12 @@ public class UserController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/users/username/{username}")
+    public UserDTO getOneByUsername(@PathVariable final String username) {
+        Optional<User> optionalUser = this.userService.findUserByUsername(username);
+        return optionalUser.map(this::convertToDTO).orElse(null);
+    }
+
     @GetMapping("/users/{id}")
     public UserDTO getOne(@PathVariable final Long id) {
         Optional<User> optionalUser = this.userService.getOne(id);
