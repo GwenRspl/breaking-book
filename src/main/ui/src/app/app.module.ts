@@ -20,7 +20,7 @@ import {SignInPageModule} from './authentication/sign-in/sign-in.module';
   declarations: [AppComponent,
     HeaderComponent,
     FooterComponent,
-    SettingsComponent,
+    SettingsComponent
   ],
   entryComponents: [SettingsComponent],
   imports: [BrowserModule,
