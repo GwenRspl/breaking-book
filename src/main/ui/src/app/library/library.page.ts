@@ -3,7 +3,7 @@ import {Book} from './book.model';
 import {Friend} from './friend.model';
 import {User} from './user.model';
 import {IonSlides} from '@ionic/angular';
-import {BooksService} from './books.service';
+import {BooksService} from './services/books.service';
 
 @Component({
   selector: 'app-library',
