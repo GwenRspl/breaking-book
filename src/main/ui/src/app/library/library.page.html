@@ -31,7 +31,7 @@
     <ion-row>
       <ion-col size="6" offset="3">
         <div class="search-bar-div" padding>
-          <ion-searchbar placeholder="Search a book"></ion-searchbar>
+          <ion-searchbar placeholder="Search a book" [(ngModel)]="userInput" (ionChange)="filter()"></ion-searchbar>
         </div>
       </ion-col>
     </ion-row>
@@ -69,7 +69,7 @@
           </div>
           <ion-grid>
             <ion-row>
-              <ion-col *ngFor="let book of books" size="3" class="book-row">
+              <ion-col *ngFor="let book of currentSelection" size="3" class="book-row">
                 <ion-card class="book-card">
                   <ion-img [src]="book.image"></ion-img>
                   <ion-card-header>

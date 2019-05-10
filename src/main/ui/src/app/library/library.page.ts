@@ -19,7 +19,7 @@ export class LibraryPage implements OnInit {
   private _genreList: string[] =[];
   private _currentSelection: Book[] = [];
   private _sortOptions: string[] = ['Author', 'Title', 'Rating'];
-
+  private userInput: string = '';
   slideOpts = {
     initialSlide: 1,
     slidesPerView: 4,
@@ -29,7 +29,7 @@ export class LibraryPage implements OnInit {
   constructor(private booksService: BooksService) { }
 
   ngOnInit() {
-    this.retrieveUserId()
+    this.retrieveUserId();
     this.retrieveGenreList();
     this.retrieveBooks();
     this.retrieveCurrentlyReading()
@@ -47,6 +47,7 @@ export class LibraryPage implements OnInit {
     this.booksService.getBooks(this.userId).subscribe(
       data => {
         this._books = data;
+        this._currentSelection = this.books;
         console.log(data);
 
       },
@@ -54,14 +55,6 @@ export class LibraryPage implements OnInit {
         console.log(error);
       }
     );
-    // this._books = [
-    //   new Book(1, 'Royal Assassin', ['Hobb'], '', 'https://www.babelio.com/couv/CVT_LAssassin-royal-Tome-1--Lapprenti-assassin_4514.jpeg', '', '', new Date("February 4, 2016 10:13:00"), 123, '', true, true, 5, '', new Friend(), new User()),
-    //   new Book(1, 'Aladdin', ['Disney'], '', 'https://about.canva.com/wp-content/uploads/sites/3/2015/01/art_bookcover.png', '', '', new Date("February 4, 2016 10:13:00"), 123, '', true, true, 5, '', new Friend(), new User()),
-    //   new Book(1, 'The lord of the rings', ['Bidule'], '', 'https://about.canva.com/wp-content/uploads/sites/3/2015/01/art_bookcover.png', '', '', new Date("February 4, 2016 10:13:00"), 123, '', true, true, 5, '', new Friend(), new User()),
-    //   new Book(1, 'Bilbo', ['retret'], '', 'https://about.canva.com/wp-content/uploads/sites/3/2015/01/art_bookcover.png', '', '', new Date("February 4, 2016 10:13:00"), 123, '', true, true, 5, '', new Friend(), new User()),
-    //   new Book(1, 'Babar', ['retert'], '', 'https://about.canva.com/wp-content/uploads/sites/3/2015/01/art_bookcover.png', '', '', new Date("February 4, 2016 10:13:00"), 123, '', true, true, 5, '', new Friend(), new User()),
-    //   new Book(1, 'Addams', ['ertret'], '', 'https://about.canva.com/wp-content/uploads/sites/3/2015/01/art_bookcover.png', '', '', new Date("February 4, 2016 10:13:00"), 123, '', true, true, 5, '', new Friend(), new User())
-    // ];
   }
 
   retrieveCurrentlyReading(){
@@ -112,4 +105,10 @@ export class LibraryPage implements OnInit {
   }
 
 
+  filter() {
+    this._currentSelection = this.books.filter(book => {
+      return book.title.toLowerCase().indexOf(this.userInput.toLowerCase()) > -1 ||
+        book.authors.toString().toLowerCase().indexOf(this.userInput.toLowerCase()) > -1;
+    })
+  }
 }

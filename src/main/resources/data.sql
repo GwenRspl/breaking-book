@@ -12,9 +12,12 @@ INSERT INTO public.book(book_title, book_authors, book_isbn, book_image, book_la
                         book_synopsis, book_rating, book_comment, book_status, book_owned, book_breaking_book_user,
                         book_friend
 )
-VALUES ('titre', '{author 1, author 2}', 7984653, 'image', 'language', 'publisher', '2013-06-01', 123, 'synopsis', 3,
+VALUES ('titre', '{author 1, author 2}', 7984653,
+        'http://books.google.com/books/content?id=oc2KMwEACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api',
+        'language', 'publisher', '2013-06-01', 123, 'synopsis', 3,
         'blabla', 'UNREAD', TRUE, 1, 1),
-       ('titre2', '{author 1, author 2}', 98456845414, 'image2', 'language5', 'publisher', '2013-06-01', 488,
+       ('titre2', '{author 1, author 2}', 98456845414, 'https://memegenerator.net/img/images/16143029.jpg', 'language5',
+        'publisher', '2013-06-01', 488,
         'synopsis', 2, 'blabla', 'ONGOING', TRUE, 1, null);
 
 INSERT INTO public.collection(collection_name, collection_breaking_book_user
@@ -35,18 +38,6 @@ INSERT INTO public.book_wishlist(book_wishlist_book_id, book_wishlist_wishlist_i
 VALUES (1, 1),
        (2, 1);
 
-<<<<<<< HEAD
 INSERT INTO public.book_friend(book_friend_book_id, book_friend_friend_id
 )
-=======
-INSERT INTO public.book_friend(book_friend_book_id, book_friend_friend_id
-)
->>>>>>>
-fix
-sort
-options
-&
-add
-books
-service
 VALUES (2, 1);
