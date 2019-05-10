@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SignInInfo} from '../sign-in-info';
 import {Router} from '@angular/router';
-import {AuthenticationService} from '../service/authentication.service';
+import {AuthenticationService} from '../services/authentication.service';
 import {ToastController} from '@ionic/angular';
-import {TokenStorageService} from '../token-storage.service';
-import {HeaderService} from '../../header/header.service';
+import {TokenStorageService} from '../services/token-storage.service';
+import {HeaderService} from '../../header/services/header.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -49,12 +49,20 @@ export class SignInPage implements OnInit {
     this.signInInfo = new SignInInfo(this.signInForm.value.username, this.signInForm.value.password);
     this.authService.attemptAuthentication(this.signInInfo).subscribe(
       data => {
-        this.tokenStorage.saveToken(data.token);
+        this.tokenStorage.saveToken(data.accessToken);
         this.tokenStorage.saveUsername(data.username);
         this.tokenStorage.saveAuthorities(data.authorities);
-        this.isLoginFailed = false;
-        this.headerService.refreshNavBar(data.username);
-        this.router.navigateByUrl('/library');
+        this.authService.getUserByUsername(data.username).subscribe(
+          data => {
+            this.tokenStorage.saveUserId(data.id.toString());
+            this.isLoginFailed = false;
+            this.headerService.refreshNavBar(data.username);
+            this.router.navigateByUrl('/library');
+          },
+          error => {
+            console.log(error);
+          }
+        );
       },
       error => {
         console.log(error);

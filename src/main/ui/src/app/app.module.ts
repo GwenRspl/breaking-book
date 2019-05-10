@@ -11,23 +11,26 @@ import { AppRoutingModule } from './app-routing.module';
 import {HeaderComponent} from "./header/header.component";
 import {FooterComponent} from "./footer/footer.component";
 import {SettingsComponent} from "./header/settings/settings.component";
-import {TokenStorageService} from './authentication/token-storage.service';
-import {HeaderService} from './header/header.service';
+import {TokenStorageService} from './authentication/services/token-storage.service';
+import {HeaderService} from './header/services/header.service';
+import {SignInPageModule} from './authentication/sign-in/sign-in.module';
 
 
 @NgModule({
   declarations: [AppComponent,
     HeaderComponent,
     FooterComponent,
-    SettingsComponent,
+    SettingsComponent
   ],
   entryComponents: [SettingsComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
+  imports: [BrowserModule,
+    IonicModule.forRoot(),
+    AppRoutingModule,
+    SignInPageModule.forRoot()],
   providers: [
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    TokenStorageService,
     HeaderService
   ],
   bootstrap: [AppComponent]

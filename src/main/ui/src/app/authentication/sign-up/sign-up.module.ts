@@ -6,7 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { SignUpPage } from './sign-up.page';
-import {AuthenticationService} from "../service/authentication.service";
+import {AuthenticationService} from "../services/authentication.service";
 import {HttpClientModule} from "@angular/common/http";
 
 const routes: Routes = [
@@ -25,7 +25,6 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     HttpClientModule
   ],
-  declarations: [SignUpPage],
-  providers:[AuthenticationService]
+  declarations: [SignUpPage]
 })
 export class SignUpPageModule {}
