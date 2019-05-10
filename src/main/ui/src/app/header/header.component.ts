@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {PopoverController} from "@ionic/angular";
-import {SettingsComponent} from "./settings/settings.component";
-import {Router} from "@angular/router";
-import {TokenStorageService} from '../authentication/token-storage.service';
-import {HeaderService} from './header.service';
+import {SettingsComponent} from './settings/settings.component';
+import {Router} from '@angular/router';
+import {TokenStorageService} from '../authentication/services/token-storage.service';
+import {HeaderService} from './services/header.service';
 
 @Component({
   selector: 'app-header',

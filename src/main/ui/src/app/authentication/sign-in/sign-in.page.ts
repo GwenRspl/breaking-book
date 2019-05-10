@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SignInInfo} from '../sign-in-info';
 import {Router} from '@angular/router';
-import {AuthenticationService} from '../service/authentication.service';
+import {AuthenticationService} from '../services/authentication.service';
 import {ToastController} from '@ionic/angular';
-import {TokenStorageService} from '../token-storage.service';
-import {HeaderService} from '../../header/header.service';
+import {TokenStorageService} from '../services/token-storage.service';
+import {HeaderService} from '../../header/services/header.service';
 
 @Component({
   selector: 'app-sign-in',

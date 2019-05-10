@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {AuthenticationService} from "../service/authentication.service";
+import {AuthenticationService} from "../services/authentication.service";
 import {SignUpInfo} from "../sign-up-info";
 import {ToastController} from "@ionic/angular";
 import {Router} from "@angular/router";
