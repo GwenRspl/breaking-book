@@ -49,7 +49,7 @@ export class SignInPage implements OnInit {
     this.signInInfo = new SignInInfo(this.signInForm.value.username, this.signInForm.value.password);
     this.authService.attemptAuthentication(this.signInInfo).subscribe(
       data => {
-        this.tokenStorage.saveToken(data.token);
+        this.tokenStorage.saveToken(data.accessToken);
         this.tokenStorage.saveUsername(data.username);
         this.tokenStorage.saveAuthorities(data.authorities);
         this.authService.getUserByUsername(data.username).subscribe(

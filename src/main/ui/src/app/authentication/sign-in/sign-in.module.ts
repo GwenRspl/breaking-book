@@ -9,6 +9,7 @@ import { SignInPage } from './sign-in.page';
 import {AuthenticationService} from '../services/authentication.service';
 import {HttpClientModule} from '@angular/common/http';
 import {TokenStorageService} from '../services/token-storage.service';
+import {HttpInterceptorProviders} from '../services/auth-interceptor';
 
 const routes: Routes = [
   {
@@ -34,7 +35,8 @@ export class SignInPageModule {
       ngModule: SignInPageModule,
       providers: [
         AuthenticationService,
-        TokenStorageService
+        TokenStorageService,
+        HttpInterceptorProviders
       ]
     }
   }
