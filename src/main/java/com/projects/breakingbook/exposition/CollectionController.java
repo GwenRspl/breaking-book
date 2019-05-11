@@ -21,27 +21,27 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/collections")
 @CrossOrigin(origins = "*")
 public class CollectionController {
-    private CollectionService collectionService;
-    private ModelMapper modelMapper;
-    private BookService bookService;
+    private final CollectionService collectionService;
+    private final ModelMapper modelMapper;
+    private final BookService bookService;
 
-    public CollectionController(CollectionService collectionService, ModelMapper modelMapper, BookService bookService) {
+    public CollectionController(final CollectionService collectionService, final ModelMapper modelMapper, final BookService bookService) {
         this.collectionService = collectionService;
         this.modelMapper = modelMapper;
         this.bookService = bookService;
     }
 
     @GetMapping("")
-    public List<CollectionDTO> getAll() {
-       List<Collection> collections = this.collectionService.getAll();
-       return collections.stream()
-               .map(this::convertToDTO)
-               .collect(Collectors.toList());
+    public List<CollectionDTO> getAll(@RequestParam final Long userId) {
+        final List<Collection> collections = this.collectionService.getAll(userId);
+        return collections.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
     public CollectionDTO getOne(@PathVariable final Long id) {
-        Optional<Collection> optionalCollection = this.collectionService.getOne(id);
+        final Optional<Collection> optionalCollection = this.collectionService.getOne(id);
         return optionalCollection.map(this::convertToDTO).orElse(null);
     }
 
@@ -49,13 +49,13 @@ public class CollectionController {
     public ResponseEntity<?> create(@RequestBody final CollectionDTO collectionDTO) {
         boolean result = false;
         try {
-            result = this.collectionService.create(convertToEntity(collectionDTO));
-            if(result) {
+            result = this.collectionService.create(this.convertToEntity(collectionDTO));
+            if (result) {
                 return new ResponseEntity<>("Collection successfully created", HttpStatus.OK);
             } else {
                 throw new CollectionNotCreatedException("Collection not created");
             }
-        } catch (ParseException | CollectionNotCreatedException e) {
+        } catch (final ParseException | CollectionNotCreatedException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -64,20 +64,20 @@ public class CollectionController {
     public ResponseEntity<?> update(@PathVariable final Long id, @RequestBody final CollectionDTO collectionDTO) {
         boolean result = false;
         try {
-            result = this.collectionService.update(id, convertToEntity(collectionDTO));
-            if(result) {
+            result = this.collectionService.update(id, this.convertToEntity(collectionDTO));
+            if (result) {
                 return new ResponseEntity<>("Collection updated successfully", HttpStatus.OK);
             } else {
                 throw new CollectionNotUpdatedException("Collection not updated");
             }
-        } catch (ParseException | CollectionNotUpdatedException e) {
+        } catch (final ParseException | CollectionNotUpdatedException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable final Long id) {
-        boolean result = this.collectionService.delete(id);
+        final boolean result = this.collectionService.delete(id);
         if (result) {
             return new ResponseEntity<>("Collection deleted successfully", HttpStatus.OK);
         } else {
@@ -87,7 +87,7 @@ public class CollectionController {
 
     @DeleteMapping("")
     public ResponseEntity<?> deleteAll() {
-        boolean result = this.collectionService.deleteAll();
+        final boolean result = this.collectionService.deleteAll();
         if (result) {
             return new ResponseEntity<>("All Collections deleted successfully", HttpStatus.OK);
         } else {
@@ -95,10 +95,10 @@ public class CollectionController {
         }
     }
 
-    private CollectionDTO convertToDTO(Collection collection) {
-        CollectionDTO collectionDTO = modelMapper.map(collection, CollectionDTO.class);
-        if(collection.getBooks() != null) {
-            List<Long> booksIds = collection.getBooks()
+    private CollectionDTO convertToDTO(final Collection collection) {
+        final CollectionDTO collectionDTO = this.modelMapper.map(collection, CollectionDTO.class);
+        if (collection.getBooks() != null) {
+            final List<Long> booksIds = collection.getBooks()
                     .stream()
                     .map(Book::getId)
                     .collect(Collectors.toList());
@@ -107,10 +107,10 @@ public class CollectionController {
         return collectionDTO;
     }
 
-    private Collection convertToEntity(CollectionDTO collectionDTO) throws ParseException {
-        Collection collection = modelMapper.map(collectionDTO, Collection.class);
-        if(collectionDTO.getBooksIds() != null) {
-            List<Book> books = collectionDTO.getBooksIds().stream()
+    private Collection convertToEntity(final CollectionDTO collectionDTO) throws ParseException {
+        final Collection collection = this.modelMapper.map(collectionDTO, Collection.class);
+        if (collectionDTO.getBooksIds() != null) {
+            final List<Book> books = collectionDTO.getBooksIds().stream()
                     .map(id -> this.bookService.getOne(id))
                     .filter(Optional::isPresent)
                     .map(Optional::get)

@@ -13,37 +13,39 @@ import java.util.Optional;
 @Transactional
 public class CollectionServiceImpl implements CollectionService {
 
-    private CollectionRepository collectionRepository;
+    private final CollectionRepository collectionRepository;
 
-    public CollectionServiceImpl(CollectionRepository collectionRepository) { this.collectionRepository = collectionRepository; }
-
-    @Override
-    public List<Collection> getAll() {
-        return collectionRepository.findAllCollections();
+    public CollectionServiceImpl(final CollectionRepository collectionRepository) {
+        this.collectionRepository = collectionRepository;
     }
 
     @Override
-    public boolean create(Collection collection) {
-        return collectionRepository.createCollection(collection);
+    public List<Collection> getAll(final Long userId) {
+        return this.collectionRepository.findAllCollections(userId);
     }
 
     @Override
-    public Optional<Collection> getOne(Long id) {
-        return collectionRepository.findCollectionById(id);
+    public boolean create(final Collection collection) {
+        return this.collectionRepository.createCollection(collection);
     }
 
     @Override
-    public boolean delete(Long id) {
-        return collectionRepository.deleteCollectionById(id);
+    public Optional<Collection> getOne(final Long id) {
+        return this.collectionRepository.findCollectionById(id);
+    }
+
+    @Override
+    public boolean delete(final Long id) {
+        return this.collectionRepository.deleteCollectionById(id);
     }
 
     @Override
     public boolean deleteAll() {
-        return collectionRepository.deleteAllCollections();
+        return this.collectionRepository.deleteAllCollections();
     }
 
     @Override
-    public boolean update(Long id, Collection collection) {
-        return collectionRepository.updateCollection(id, collection);
+    public boolean update(final Long id, final Collection collection) {
+        return this.collectionRepository.updateCollection(id, collection);
     }
 }

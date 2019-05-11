@@ -4,7 +4,6 @@ import com.projects.breakingbook.business.service.BookService;
 import com.projects.breakingbook.business.service.FriendService;
 import com.projects.breakingbook.persistence.entity.Friend;
 import com.projects.breakingbook.persistence.repository.FriendRepository;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,36 +14,42 @@ import java.util.Optional;
 @Transactional
 public class FriendServiceImpl implements FriendService {
 
-    private FriendRepository friendRepository;
-    private BookService bookService;
+    private final FriendRepository friendRepository;
+    private final BookService bookService;
 
-    public FriendServiceImpl(FriendRepository friendRepository, BookService bookService) {
+    public FriendServiceImpl(final FriendRepository friendRepository, final BookService bookService) {
         this.friendRepository = friendRepository;
         this.bookService = bookService;
     }
 
     @Override
-    public List<Friend> getAll() {
-        return this.friendRepository.findAllFriends();
+    public List<Friend> getAll(final Long userId) {
+        return this.friendRepository.findAllFriends(userId);
     }
 
     @Override
-    public Optional<Friend> getOne(Long id) {
+    public Optional<Friend> getOne(final Long id) {
         return this.friendRepository.findFriendById(id);
     }
 
     @Override
-    public boolean create(Friend friend) {
+    public boolean create(final Friend friend) {
         return this.friendRepository.createFriend(friend);
     }
 
     @Override
-    public boolean update(Long id, Friend friend) {
-        Optional<Friend> optionalFriend = this.friendRepository.findFriendById(id);
-        if(optionalFriend.isPresent()) {
-            if (friend.getName() == null) friend.setName(optionalFriend.get().getName());
-            if (friend.getAvatar() == null) friend.setAvatar(optionalFriend.get().getAvatar());
-            if (friend.getUser() == null) friend.setUser(optionalFriend.get().getUser());
+    public boolean update(final Long id, final Friend friend) {
+        final Optional<Friend> optionalFriend = this.friendRepository.findFriendById(id);
+        if (optionalFriend.isPresent()) {
+            if (friend.getName() == null) {
+                friend.setName(optionalFriend.get().getName());
+            }
+            if (friend.getAvatar() == null) {
+                friend.setAvatar(optionalFriend.get().getAvatar());
+            }
+            if (friend.getUser() == null) {
+                friend.setUser(optionalFriend.get().getUser());
+            }
             return this.friendRepository.updateFriend(id, friend);
         } else {
             return false;
@@ -52,7 +57,7 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public boolean delete(Long id) {
+    public boolean delete(final Long id) {
       /*  Long bookId;
         try {
             bookId = this.friendRepository.getBorrowedBook(id);
@@ -85,11 +90,11 @@ public class FriendServiceImpl implements FriendService {
             }
         }
         return true;*/
-return false;
+        return false;
     }
 
     @Override
-    public Long getBorrowedBook(Long id) {
+    public Long getBorrowedBook(final Long id) {
         return this.friendRepository.getBorrowedBook(id);
     }
 }

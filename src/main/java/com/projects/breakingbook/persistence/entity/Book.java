@@ -26,7 +26,7 @@ public class Book {
     private int pages;
     private String synopsis;
     private boolean owned;
-    private boolean read;
+    private BookStatus status;
     private int rating;
     private String comment;
     private Friend friend;
@@ -39,7 +39,6 @@ public class Book {
         Book book = (Book) o;
         return pages == book.pages &&
                 owned == book.owned &&
-                read == book.read &&
                 rating == book.rating &&
                 Objects.equals(id, book.id) &&
                 Objects.equals(title, book.title) &&
@@ -50,6 +49,7 @@ public class Book {
                 Objects.equals(publisher, book.publisher) &&
                 Objects.equals(datePublished, book.datePublished) &&
                 Objects.equals(synopsis, book.synopsis) &&
+                status == book.status &&
                 Objects.equals(comment, book.comment) &&
                 Objects.equals(friend, book.friend) &&
                 Objects.equals(user, book.user);
@@ -57,7 +57,7 @@ public class Book {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, authors, isbn, image, language, publisher, datePublished, pages, synopsis, owned, read, rating, comment, friend, user);
+        return Objects.hash(id, title, authors, isbn, image, language, publisher, datePublished, pages, synopsis, owned, status, rating, comment, friend, user);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class Book {
                 ", pages=" + pages +
                 ", synopsis='" + synopsis + '\'' +
                 ", owned=" + owned +
-                ", read=" + read +
+                ", status=" + status +
                 ", rating=" + rating +
                 ", comment='" + comment + '\'' +
                 ", friend=" + friend +

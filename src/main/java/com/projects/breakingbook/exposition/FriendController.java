@@ -25,12 +25,12 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "*")
 public class FriendController {
 
-    private FriendService friendService;
-    private BookService bookService;
-    private UserService userService;
-    private ModelMapper modelMapper;
+    private final FriendService friendService;
+    private final BookService bookService;
+    private final UserService userService;
+    private final ModelMapper modelMapper;
 
-    public FriendController(FriendService friendService, BookService bookService, UserService userService, ModelMapper modelMapper) {
+    public FriendController(final FriendService friendService, final BookService bookService, final UserService userService, final ModelMapper modelMapper) {
         this.friendService = friendService;
         this.bookService = bookService;
         this.userService = userService;
@@ -38,8 +38,8 @@ public class FriendController {
     }
 
     @GetMapping("")
-    public List<FriendDTO> getAll() {
-        List<Friend> friends = this.friendService.getAll();
+    public List<FriendDTO> getAll(@RequestParam final Long userId) {
+        final List<Friend> friends = this.friendService.getAll(userId);
         return friends.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
@@ -47,7 +47,7 @@ public class FriendController {
 
     @GetMapping("/{id}")
     public FriendDTO getOne(@PathVariable final Long id) {
-        Optional<Friend> optionalFriend = this.friendService.getOne(id);
+        final Optional<Friend> optionalFriend = this.friendService.getOne(id);
         return optionalFriend.map(this::convertToDTO).orElse(null);
     }
 
@@ -55,36 +55,36 @@ public class FriendController {
     public ResponseEntity<?> create(@Valid @RequestBody final FriendDTO friendDTO) {
         boolean result = false;
         try {
-            result = this.friendService.create(convertToEntity(friendDTO));
-            if(result) {
+            result = this.friendService.create(this.convertToEntity(friendDTO));
+            if (result) {
                 return new ResponseEntity<>("Friend successfully created", HttpStatus.OK);
             } else {
                 throw new FriendNotCreatedException("Friend not created");
             }
-        } catch (ParseException | FriendNotCreatedException e) {
+        } catch (final ParseException | FriendNotCreatedException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable final Long id, @RequestBody final FriendDTO friendDTO) {
-        boolean result;
+        final boolean result;
         try {
-            result = this.friendService.update(id, convertToEntity(friendDTO));
-            if(result) {
+            result = this.friendService.update(id, this.convertToEntity(friendDTO));
+            if (result) {
                 return new ResponseEntity<>("Friend updated successfully", HttpStatus.OK);
             } else {
                 throw new FriendNotUpdatedException("Book not updated");
             }
-        } catch (ParseException | FriendNotUpdatedException e) {
+        } catch (final ParseException | FriendNotUpdatedException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable final Long id) {
-        boolean result;
-        Long bookId = this.friendService.getBorrowedBook(id);
+        final boolean result;
+        final Long bookId = this.friendService.getBorrowedBook(id);
         if (bookId == null) {
             result = this.friendService.delete(id);
         } else {
@@ -100,12 +100,13 @@ public class FriendController {
         }
     }
 
+    // TODO : delete this, not very useful
     @DeleteMapping("")
-    public ResponseEntity<?> deleteAll() {
+    public ResponseEntity<?> deleteAll(final Long userId) {
         Long bookId;
-        List<Friend> friends = friendService.getAll();
+        final List<Friend> friends = this.friendService.getAll(userId);
         boolean result;
-        for (Friend friend : friends) {
+        for (final Friend friend : friends) {
             bookId = this.friendService.getBorrowedBook(friend.getId());
             if (bookId == null) {
                 result = this.friendService.delete(friend.getId());
@@ -121,11 +122,11 @@ public class FriendController {
         return new ResponseEntity<>("All friends deleted successfully", HttpStatus.OK);
     }
 
-    private FriendDTO convertToDTO(Friend friend) {
-        FriendDTO friendDTO = modelMapper.map(friend, FriendDTO.class);
+    private FriendDTO convertToDTO(final Friend friend) {
+        final FriendDTO friendDTO = this.modelMapper.map(friend, FriendDTO.class);
         friendDTO.setUserId(friend.getUser().getId());
-        if(friend.getHistory() != null) {
-            List<Long> history = friend.getHistory().stream()
+        if (friend.getHistory() != null) {
+            final List<Long> history = friend.getHistory().stream()
                     .map(Book::getId)
                     .collect(Collectors.toList());
             friendDTO.setHistoryBookIds(history);
@@ -133,14 +134,14 @@ public class FriendController {
         return friendDTO;
     }
 
-    private Friend convertToEntity(FriendDTO friendDTO) throws ParseException {
-        Friend friend = modelMapper.map(friendDTO, Friend.class);
-        if(friendDTO.getUserId() != null) {
-            Optional<User> optionalUser = this.userService.getOne(friendDTO.getUserId());
+    private Friend convertToEntity(final FriendDTO friendDTO) throws ParseException {
+        final Friend friend = this.modelMapper.map(friendDTO, Friend.class);
+        if (friendDTO.getUserId() != null) {
+            final Optional<User> optionalUser = this.userService.getOne(friendDTO.getUserId());
             optionalUser.ifPresent(friend::setUser);
         }
-        if(friendDTO.getHistoryBookIds() != null) {
-            List<Book> history = friendDTO.getHistoryBookIds().stream()
+        if (friendDTO.getHistoryBookIds() != null) {
+            final List<Book> history = friendDTO.getHistoryBookIds().stream()
                     .map(id -> this.bookService.getOne(id))
                     .filter(Optional::isPresent)
                     .map(Optional::get)

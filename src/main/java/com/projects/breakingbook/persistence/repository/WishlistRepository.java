@@ -7,10 +7,15 @@ import java.util.Optional;
 
 public interface WishlistRepository {
 
-    List<Wishlist> findAllWishlists();
+    List<Wishlist> findAllWishlists(Long userId);
+
     boolean createWishlist(Wishlist wishlist);
+
     Optional<Wishlist> findWishlistById(Long id);
+
     boolean deleteWishlistById(Long id);
+
     boolean deleteAllWishlists();
+
     boolean updateWishlist(Long id, Wishlist wishlist);
 }

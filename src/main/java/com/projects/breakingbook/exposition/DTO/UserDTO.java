@@ -16,17 +16,8 @@ public class UserDTO {
     private Long id;
     private String username;
     private String avatar;
+    private String email;
     private List<Long> bookIds;
     private RoleName role;
 
-    @Override
-    public String toString() {
-        return "UserDTO{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", avatar='" + avatar + '\'' +
-                ", bookIds=" + bookIds +
-                ", role=" + role +
-                '}';
-    }
 }

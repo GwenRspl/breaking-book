@@ -42,8 +42,8 @@ public class BookController {
     }
 
     @GetMapping("")
-    public List<BookDTO> getAll() {
-        List<Book> books = this.bookService.getAll();
+    public List<BookDTO> getAll(@RequestParam final Long userId) {
+        List<Book> books = this.bookService.getAll(userId);
         return books.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());

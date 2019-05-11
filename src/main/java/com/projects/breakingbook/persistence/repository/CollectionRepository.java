@@ -7,10 +7,15 @@ import java.util.Optional;
 
 public interface CollectionRepository {
 
-    List<Collection> findAllCollections();
+    List<Collection> findAllCollections(Long userId);
+
     boolean createCollection(Collection collection);
+
     Optional<Collection> findCollectionById(Long id);
+
     boolean deleteCollectionById(Long id);
+
     boolean deleteAllCollections();
+
     boolean updateCollection(Long id, Collection collection);
 }

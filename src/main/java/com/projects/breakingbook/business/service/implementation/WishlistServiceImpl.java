@@ -13,34 +13,34 @@ import java.util.Optional;
 @Transactional
 public class WishlistServiceImpl implements WishlistService {
 
-    private WishlistRepository wishlistRepository;
+    private final WishlistRepository wishlistRepository;
 
-    public WishlistServiceImpl(WishlistRepository wishlistRepository) {
+    public WishlistServiceImpl(final WishlistRepository wishlistRepository) {
         this.wishlistRepository = wishlistRepository;
     }
 
     @Override
-    public List<Wishlist> getAll() {
-        return this.wishlistRepository.findAllWishlists();
+    public List<Wishlist> getAll(final Long userId) {
+        return this.wishlistRepository.findAllWishlists(userId);
     }
 
     @Override
-    public Optional<Wishlist> getOne(Long id) {
+    public Optional<Wishlist> getOne(final Long id) {
         return this.wishlistRepository.findWishlistById(id);
     }
 
     @Override
-    public boolean create(Wishlist wishlist) {
+    public boolean create(final Wishlist wishlist) {
         return this.wishlistRepository.createWishlist(wishlist);
     }
 
     @Override
-    public boolean update(Long id, Wishlist wishlist) {
+    public boolean update(final Long id, final Wishlist wishlist) {
         return this.wishlistRepository.updateWishlist(id, wishlist);
     }
 
     @Override
-    public boolean delete(Long id) {
+    public boolean delete(final Long id) {
         return this.wishlistRepository.deleteWishlistById(id);
     }
 
