@@ -19,5 +19,5 @@ public class UserDTO {
     private String email;
     private List<Long> bookIds;
     private RoleName role;
-    
+
 }

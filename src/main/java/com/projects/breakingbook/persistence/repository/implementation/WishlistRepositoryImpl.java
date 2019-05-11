@@ -32,13 +32,13 @@ public class WishlistRepositoryImpl implements WishlistRepository {
             "INNER JOIN book_wishlist ON wishlist.wishlist_id = book_wishlist.book_wishlist_wishlist_id " +
             "INNER JOIN book ON book.book_id = book_wishlist.book_wishlist_book_id " +
             "INNER JOIN breaking_book_user r ON book.book_breaking_book_user = r.breaking_book_user_id " +
-            "INNER JOIN friend f ON book.book_friend = f.friend_id;";
+            "FULL OUTER JOIN friend f ON book.book_friend = f.friend_id;";
 
     private final String SELECT_JOIN_BY_ID = "SELECT * FROM wishlist " +
             "INNER JOIN book_wishlist ON wishlist.wishlist_id = book_wishlist.book_wishlist_wishlist_id " +
             "INNER JOIN book ON book.book_id = book_wishlist.book_wishlist_book_id " +
             "INNER JOIN breaking_book_user r ON book.book_breaking_book_user = r.breaking_book_user_id " +
-            "INNER JOIN friend f ON book.book_friend = f.friend_id " +
+            "FULL OUTER JOIN friend f ON book.book_friend = f.friend_id " +
             "WHERE wishlist_id = ?;";
 
 

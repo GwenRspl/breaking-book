@@ -22,11 +22,13 @@ VALUES ('wishlist 1', 1);
 
 INSERT INTO public.book_collection(
   book_collection_book_id, book_collection_collection_id)
-VALUES (1, 1);
+VALUES (1, 1),
+       (2, 1);
 
 INSERT INTO public.book_wishlist(
   book_wishlist_book_id, book_wishlist_wishlist_id)
-VALUES (1, 1);
+VALUES (1, 1),
+       (2, 1);
 
 INSERT INTO public.book_friend(
   book_friend_book_id, book_friend_friend_id)

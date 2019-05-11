@@ -22,9 +22,9 @@ public class BookRepositoryImpl implements BookRepository {
     private final String INSERT = "INSERT INTO book(book_title, book_authors, book_isbn, book_image, book_language, " +
             "book_publisher, book_date_published, book_pages, book_synopsis, book_breaking_book_user, book_friend, book_owned, book_rating, book_comment, book_status) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private final String SELECT_ALL = "SELECT * FROM book INNER JOIN breaking_book_user r ON book.book_breaking_book_user = r.breaking_book_user_id INNER JOIN " +
+    private final String SELECT_ALL = "SELECT * FROM book INNER JOIN breaking_book_user r ON book.book_breaking_book_user = r.breaking_book_user_id FULL OUTER JOIN " +
             "friend f on book.book_friend = f.friend_id";
-    private final String SELECT_BY_ID = "SELECT * FROM book INNER JOIN breaking_book_user r ON book.book_breaking_book_user = r.breaking_book_user_id INNER JOIN " +
+    private final String SELECT_BY_ID = "SELECT * FROM book INNER JOIN breaking_book_user r ON book.book_breaking_book_user = r.breaking_book_user_id FULL OUTER JOIN " +
             "friend f on book.book_friend = f.friend_id WHERE book_id = ?";
     private final String DELETE_BY_ID = "DELETE FROM book WHERE book_id = ?";
     private final String DELETE_ALL = "DELETE FROM book";
