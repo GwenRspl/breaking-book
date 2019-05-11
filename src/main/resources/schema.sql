@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS book (
                                   book_rating integer,
                                   book_comment text,
                                   book_owned boolean,
-                                  book_read boolean,
+                                  book_status character varying(255),
                                   book_breaking_book_user bigint references breaking_book_user(breaking_book_user_id) ON DELETE CASCADE,
                                   book_friend bigint references friend(friend_id)
 );

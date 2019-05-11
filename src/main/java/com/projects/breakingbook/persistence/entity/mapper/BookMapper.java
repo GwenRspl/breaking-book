@@ -1,9 +1,6 @@
 package com.projects.breakingbook.persistence.entity.mapper;
 
-import com.projects.breakingbook.persistence.entity.Book;
-import com.projects.breakingbook.persistence.entity.Friend;
-import com.projects.breakingbook.persistence.entity.RoleName;
-import com.projects.breakingbook.persistence.entity.User;
+import com.projects.breakingbook.persistence.entity.*;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -35,7 +32,7 @@ public class BookMapper implements RowMapper<Book> {
         String[] authorsArray = (String[]) resultSet.getArray("book_authors").getArray();
         ArrayList<String> authors = new ArrayList<>(Arrays.asList(authorsArray));
 
-        return Book.builder()
+        Book book = Book.builder()
                 .id(resultSet.getLong("book_id"))
                 .title(resultSet.getString("book_title"))
                 .authors(authors)
@@ -47,11 +44,14 @@ public class BookMapper implements RowMapper<Book> {
                 .pages(resultSet.getInt("book_pages"))
                 .synopsis(resultSet.getString("book_synopsis"))
                 .owned(resultSet.getBoolean("book_owned"))
-                .read(resultSet.getBoolean("book_read"))
                 .rating(resultSet.getInt("book_rating"))
                 .comment(resultSet.getString("book_comment"))
                 .friend(friend)
                 .user(user)
                 .build();
+        String status = (resultSet.getString("book_status"));
+        book.setStatus(BookStatus.valueOf(status));
+
+        return book;
     }
 }

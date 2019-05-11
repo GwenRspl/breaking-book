@@ -1,9 +1,6 @@
 package com.projects.breakingbook.persistence.entity.mapper;
 
-import com.projects.breakingbook.persistence.entity.Book;
-import com.projects.breakingbook.persistence.entity.Friend;
-import com.projects.breakingbook.persistence.entity.RoleName;
-import com.projects.breakingbook.persistence.entity.User;
+import com.projects.breakingbook.persistence.entity.*;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
@@ -50,12 +47,13 @@ public class UserMapExtractor implements ResultSetExtractor<Map<Long, List<Book>
                     .pages(resultSet.getInt("book_pages"))
                     .synopsis(resultSet.getString("book_synopsis"))
                     .owned(resultSet.getBoolean("book_owned"))
-                    .read(resultSet.getBoolean("book_read"))
                     .rating(resultSet.getInt("book_rating"))
                     .comment(resultSet.getString("book_comment"))
                     .friend(friend)
                     .user(user)
                     .build();
+            String status = (resultSet.getString("book_status"));
+            book.setStatus(BookStatus.valueOf(status));
 
             List<Book> books = booksMap.get(userId);
             if (books == null) {

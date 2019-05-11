@@ -20,8 +20,8 @@ public class BookRepositoryImpl implements BookRepository {
 
     private final JdbcTemplate jdbcTemplate;
     private final String INSERT = "INSERT INTO book(book_title, book_authors, book_isbn, book_image, book_language, " +
-            "book_publisher, book_date_published, book_pages, book_synopsis, book_breaking_book_user, book_friend, book_owned, book_rating, book_comment) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "book_publisher, book_date_published, book_pages, book_synopsis, book_breaking_book_user, book_friend, book_owned, book_rating, book_comment, book_status) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private final String SELECT_ALL = "SELECT * FROM book INNER JOIN breaking_book_user r ON book.book_breaking_book_user = r.breaking_book_user_id INNER JOIN " +
             "friend f on book.book_friend = f.friend_id";
     private final String SELECT_BY_ID = "SELECT * FROM book INNER JOIN breaking_book_user r ON book.book_breaking_book_user = r.breaking_book_user_id INNER JOIN " +
@@ -30,7 +30,7 @@ public class BookRepositoryImpl implements BookRepository {
     private final String DELETE_ALL = "DELETE FROM book";
     private final String UPDATE = "UPDATE book SET book_title = ?, book_authors = ?, book_isbn = ?, book_image = ?, " +
             "book_language = ?, book_publisher = ?, book_date_published = ?, book_pages = ?, book_synopsis = ?, " +
-            "book_breaking_book_user = ?, book_friend = ?, book_owned = ?, book_rating = ?, book_comment = ? WHERE book_id = ?";
+            "book_breaking_book_user = ?, book_friend = ?, book_owned = ?, book_rating = ?, book_comment = ?, book_status = ? WHERE book_id = ?";
 
     private final String UPDATE_OWNED = "UPDATE book SET book_owned = ? WHERE book_id = ?";
     private final String UPDATE_FRIEND = "UPDATE book SET book_friend = ? WHERE book_id = ?";
@@ -47,7 +47,7 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public boolean createBook(Book book) {
         int result = this.jdbcTemplate.update(INSERT, book.getTitle(), convertListToSqlArray(book.getAuthors()), book.getIsbn(), book.getImage(),
-                book.getLanguage(), book.getPublisher(), book.getDatePublished(), book.getPages(), book.getSynopsis(), book.getUser().getId(), book.getFriend().getId(), book.isOwned(), book.getRating(), book.getComment());
+                book.getLanguage(), book.getPublisher(), book.getDatePublished(), book.getPages(), book.getSynopsis(), book.getUser().getId(), book.getFriend().getId(), book.isOwned(), book.getRating(), book.getComment(), book.getStatus());
         return result != 0;
     }
 
@@ -74,7 +74,7 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public boolean updateBook(Long id, Book book) {
-        int result = this.jdbcTemplate.update(UPDATE, book.getTitle(), convertListToSqlArray(book.getAuthors()), book.getIsbn(), book.getImage(), book.getLanguage(), book.getPublisher(), book.getDatePublished(), book.getPages(), book.getSynopsis(), book.getUser().getId(), book.getFriend().getId(), book.isOwned(), book.getRating(), book.getComment(), id);
+        int result = this.jdbcTemplate.update(UPDATE, book.getTitle(), convertListToSqlArray(book.getAuthors()), book.getIsbn(), book.getImage(), book.getLanguage(), book.getPublisher(), book.getDatePublished(), book.getPages(), book.getSynopsis(), book.getUser().getId(), book.getFriend().getId(), book.isOwned(), book.getRating(), book.getComment(), book.getStatus(), id);
         return result != 0;
     }
 

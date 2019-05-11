@@ -1,9 +1,6 @@
 package com.projects.breakingbook.persistence.entity.mapper;
 
-import com.projects.breakingbook.persistence.entity.Book;
-import com.projects.breakingbook.persistence.entity.Friend;
-import com.projects.breakingbook.persistence.entity.RoleName;
-import com.projects.breakingbook.persistence.entity.User;
+import com.projects.breakingbook.persistence.entity.*;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
@@ -51,11 +48,12 @@ public class WishlistMapExtractor implements ResultSetExtractor<Map<Long, List<B
                     .synopsis(resultSet.getString("book_synopsis"))
                     .owned(resultSet.getBoolean("book_owned"))
                     .rating(resultSet.getInt("book_rating"))
-                    .read(resultSet.getBoolean("book_read"))
                     .comment(resultSet.getString("book_comment"))
                     .friend(friend)
                     .user(user)
                     .build();
+            String status = (resultSet.getString("book_status"));
+            book.setStatus(BookStatus.valueOf(status));
 
             List<Book> books = booksMap.get(wishlistId);
             if (books == null) {
