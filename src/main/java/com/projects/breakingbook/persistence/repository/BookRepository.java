@@ -7,12 +7,19 @@ import java.util.Optional;
 
 public interface BookRepository {
 
-    List<Book> findAllBooks();
+    List<Book> findAllBooks(Long userId);
+
     boolean createBook(Book book);
+
     Optional<Book> findBookById(Long id);
+
     boolean deleteBookById(Long id);
+
     boolean deleteAllBooks();
+
     boolean updateBook(Long id, Book book);
+
     boolean toggleOwned(Long id);
+
     boolean updateFriend(Long bookId, Long friendId);
 }

@@ -3,8 +3,6 @@ package com.projects.breakingbook.exposition;
 import com.projects.breakingbook.business.service.BookService;
 import com.projects.breakingbook.business.service.UserService;
 import com.projects.breakingbook.business.service.WishlistService;
-import com.projects.breakingbook.exception.CollectionNotCreatedException;
-import com.projects.breakingbook.exception.CollectionNotUpdatedException;
 import com.projects.breakingbook.exception.WishlistNotCreatedException;
 import com.projects.breakingbook.exception.WishlistNotUpdatedException;
 import com.projects.breakingbook.exposition.DTO.WishlistDTO;
@@ -26,12 +24,12 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "*")
 public class WishlistController {
 
-    private WishlistService wishlistService;
-    private ModelMapper modelMapper;
-    private BookService bookService;
-    private UserService userService;
+    private final WishlistService wishlistService;
+    private final ModelMapper modelMapper;
+    private final BookService bookService;
+    private final UserService userService;
 
-    public WishlistController(WishlistService wishlistService, ModelMapper modelMapper, BookService bookService, UserService userService) {
+    public WishlistController(final WishlistService wishlistService, final ModelMapper modelMapper, final BookService bookService, final UserService userService) {
         this.wishlistService = wishlistService;
         this.modelMapper = modelMapper;
         this.bookService = bookService;
@@ -39,8 +37,8 @@ public class WishlistController {
     }
 
     @GetMapping("")
-    public List<WishlistDTO> getAll() {
-        List<Wishlist> wishlists = this.wishlistService.getAll();
+    public List<WishlistDTO> getAll(@RequestParam final Long userId) {
+        final List<Wishlist> wishlists = this.wishlistService.getAll(userId);
         return wishlists.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
@@ -48,7 +46,7 @@ public class WishlistController {
 
     @GetMapping("/{id}")
     public WishlistDTO getOne(@PathVariable final Long id) {
-        Optional<Wishlist> optionalWishlist = this.wishlistService.getOne(id);
+        final Optional<Wishlist> optionalWishlist = this.wishlistService.getOne(id);
         return optionalWishlist.map(this::convertToDTO).orElse(null);
     }
 
@@ -56,13 +54,13 @@ public class WishlistController {
     public ResponseEntity<?> create(@RequestBody final WishlistDTO wishlistDTO) {
         boolean result = false;
         try {
-            result = this.wishlistService.create(convertToEntity(wishlistDTO));
-            if(result) {
+            result = this.wishlistService.create(this.convertToEntity(wishlistDTO));
+            if (result) {
                 return new ResponseEntity<>("Wishlist successfully created", HttpStatus.OK);
             } else {
                 throw new WishlistNotCreatedException("Wishlist not created");
             }
-        } catch (ParseException | WishlistNotCreatedException e) {
+        } catch (final ParseException | WishlistNotCreatedException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -71,21 +69,21 @@ public class WishlistController {
     public ResponseEntity<?> update(@PathVariable final Long id, @RequestBody final WishlistDTO wishlistDTO) {
         boolean result = false;
         try {
-            result = this.wishlistService.update(id, convertToEntity(wishlistDTO));
-            if(result) {
+            result = this.wishlistService.update(id, this.convertToEntity(wishlistDTO));
+            if (result) {
                 return new ResponseEntity<>("Wishlist updated successfully", HttpStatus.OK);
             } else {
                 throw new WishlistNotUpdatedException("Wishlist not updated");
             }
-        } catch (ParseException | WishlistNotUpdatedException e) {
+        } catch (final ParseException | WishlistNotUpdatedException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable final Long id) {
-        boolean result = this.wishlistService.delete(id);
-        if(result) {
+        final boolean result = this.wishlistService.delete(id);
+        if (result) {
             return new ResponseEntity<>("wishlist deleted successfully", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("wishlist not deleted", HttpStatus.BAD_REQUEST);
@@ -94,21 +92,21 @@ public class WishlistController {
 
     @DeleteMapping("")
     public ResponseEntity<?> deleteAll() {
-        boolean result = this.wishlistService.deleteAll();
-        if(result) {
+        final boolean result = this.wishlistService.deleteAll();
+        if (result) {
             return new ResponseEntity<>("All wishlists deleted successfully", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("No wishlist deleted", HttpStatus.BAD_REQUEST);
         }
     }
 
-    private WishlistDTO convertToDTO(Wishlist wishlist) {
-        WishlistDTO wishlistDTO = modelMapper.map(wishlist, WishlistDTO.class);
-        if(wishlist.getUser() !=null) {
+    private WishlistDTO convertToDTO(final Wishlist wishlist) {
+        final WishlistDTO wishlistDTO = this.modelMapper.map(wishlist, WishlistDTO.class);
+        if (wishlist.getUser() != null) {
             wishlistDTO.setUserId(wishlist.getUser().getId());
         }
-        if(wishlist.getBooks() != null) {
-            List<Long> booksIds = wishlist.getBooks()
+        if (wishlist.getBooks() != null) {
+            final List<Long> booksIds = wishlist.getBooks()
                     .stream()
                     .map(Book::getId)
                     .collect(Collectors.toList());
@@ -117,14 +115,14 @@ public class WishlistController {
         return wishlistDTO;
     }
 
-    private Wishlist convertToEntity(WishlistDTO wishlistDTO) throws ParseException {
-        Wishlist wishlist = modelMapper.map(wishlistDTO, Wishlist.class);
-        if(wishlistDTO.getUserId() !=null) {
-            Optional<User> optionalUser = this.userService.getOne(wishlistDTO.getUserId());
+    private Wishlist convertToEntity(final WishlistDTO wishlistDTO) throws ParseException {
+        final Wishlist wishlist = this.modelMapper.map(wishlistDTO, Wishlist.class);
+        if (wishlistDTO.getUserId() != null) {
+            final Optional<User> optionalUser = this.userService.getOne(wishlistDTO.getUserId());
             optionalUser.ifPresent(wishlist::setUser);
         }
-        if(wishlistDTO.getBooksIds() != null) {
-            List<Book> books = wishlistDTO.getBooksIds().stream()
+        if (wishlistDTO.getBooksIds() != null) {
+            final List<Book> books = wishlistDTO.getBooksIds().stream()
                     .map(id -> this.bookService.getOne(id))
                     .filter(Optional::isPresent)
                     .map(Optional::get)

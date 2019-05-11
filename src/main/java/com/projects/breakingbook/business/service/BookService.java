@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface BookService {
 
-    List<Book> getAll();
+    List<Book> getAll(final Long userId);
     Optional<Book> getOne(final Long id);
     boolean create(final Book book);
     boolean update(final Long id, final Book book);

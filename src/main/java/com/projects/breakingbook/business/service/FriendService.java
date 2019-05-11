@@ -7,11 +7,16 @@ import java.util.Optional;
 
 public interface FriendService {
 
-    List<Friend> getAll();
+    List<Friend> getAll(Long userId);
+
     Optional<Friend> getOne(final Long id);
+
     boolean create(final Friend friend);
+
     boolean update(final Long id, final Friend friend);
+
     boolean delete(final Long id);
+
     boolean deleteAll();
 
     Long getBorrowedBook(Long id);
