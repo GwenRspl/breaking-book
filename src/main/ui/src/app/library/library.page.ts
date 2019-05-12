@@ -1,9 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Book} from './book.model';
-import {Friend} from './friend.model';
-import {User} from './user.model';
 import {IonSlides} from '@ionic/angular';
 import {BooksService} from './services/books.service';
+import {TokenStorageService} from '../authentication/services/token-storage.service';
 
 @Component({
   selector: 'app-library',
@@ -12,43 +11,70 @@ import {BooksService} from './services/books.service';
 })
 export class LibraryPage implements OnInit {
   @ViewChild('slideWithButtons') slideWithNav: IonSlides;
-
-  private _userId: number;
-  private _books: Book[] = [];
-  private _currentlyReading: Book[] = [];
-  private _genreList: string[] =[];
-  private _currentSelection: Book[] = [];
-  private _sortOptions: string[] = ['Author', 'Title', 'Rating'];
-  private userInput: string = '';
   slideOpts = {
     initialSlide: 1,
     slidesPerView: 4,
     speed: 400
   };
+  private userInput: string = '';
 
-  constructor(private booksService: BooksService) { }
+  constructor(private booksService: BooksService,
+              private tokenStorageService: TokenStorageService) {
+  }
+
+  private _userId: number;
+
+  get userId(): number {
+    return this._userId;
+  }
+
+  private _books: Book[] = [];
+
+  get books(): Book[] {
+    return this._books;
+  }
+
+  private _currentlyReading: Book[] = [];
+
+  get currentlyReading(): Book[] {
+    return this._currentlyReading;
+  }
+
+  private _genreList: string[] = [];
+
+  get genreList(): string[] {
+    return this._genreList;
+  }
+
+  private _currentSelection: Book[] = [];
+
+  get currentSelection(): Book[] {
+    return this._currentSelection;
+  }
+
+  private _sortOptions: string[] = ['Author', 'Title', 'Rating'];
+
+  get sortOptions(): string[] {
+    return this._sortOptions;
+  }
 
   ngOnInit() {
     this.retrieveUserId();
-    this.retrieveGenreList();
     this.retrieveBooks();
-    this.retrieveCurrentlyReading()
+    this.retrieveGenreList();
   }
 
-  retrieveUserId(){
-    this._userId = 1;
+  retrieveUserId() {
+    this._userId = +this.tokenStorageService.getUserId();
   }
 
-  retrieveGenreList(){
-    this._genreList = ['Fantasy', 'SF', 'Fiction', 'Non-fiction', 'Short stories'];
-  }
 
-  retrieveBooks(){
+  retrieveBooks() {
     this.booksService.getBooks(this.userId).subscribe(
       data => {
         this._books = data;
         this._currentSelection = this.books;
-        console.log(data);
+        this.retrieveCurrentlyReading();
 
       },
       error => {
@@ -57,43 +83,12 @@ export class LibraryPage implements OnInit {
     );
   }
 
-  retrieveCurrentlyReading(){
-    this._currentlyReading = [
-      new Book(1, 'Royal Assassin', ['Hobb'], '', 'https://www.babelio.com/couv/CVT_LAssassin-royal-Tome-1--Lapprenti-assassin_4514.jpeg', '', '', new Date("February 4, 2016 10:13:00"), 123, '', true, true, 5, '', new Friend(), new User()),
-      new Book(1, 'Royal Assassin', ['Hobb'], '', 'https://www.babelio.com/couv/CVT_LAssassin-royal-Tome-1--Lapprenti-assassin_4514.jpeg', '', '', new Date("February 4, 2016 10:13:00"), 123, '', true, true, 5, '', new Friend(), new User()),
-      new Book(1, 'Royal Assassin', ['Hobb'], '', 'https://www.babelio.com/couv/CVT_LAssassin-royal-Tome-1--Lapprenti-assassin_4514.jpeg', '', '', new Date("February 4, 2016 10:13:00"), 123, '', true, true, 5, '', new Friend(), new User()),
-      new Book(1, 'Royal Assassin', ['Hobb'], '', 'https://www.babelio.com/couv/CVT_LAssassin-royal-Tome-1--Lapprenti-assassin_4514.jpeg', '', '', new Date("February 4, 2016 10:13:00"), 123, '', true, true, 5, '', new Friend(), new User()),
-      new Book(1, 'Royal Assassin', ['Hobb'], '', 'https://www.babelio.com/couv/CVT_LAssassin-royal-Tome-1--Lapprenti-assassin_4514.jpeg', '', '', new Date("February 4, 2016 10:13:00"), 123, '', true, true, 5, '', new Friend(), new User()),
-      new Book(1, 'Aladdin', ['Disney'], '', 'https://about.canva.com/wp-content/uploads/sites/3/2015/01/art_bookcover.png', '', '', new Date("February 4, 2016 10:13:00"), 123, '', true, true, 5, '', new Friend(), new User()),
-      new Book(1, 'Aladdin', ['Disney'], '', 'https://about.canva.com/wp-content/uploads/sites/3/2015/01/art_bookcover.png', '', '', new Date("February 4, 2016 10:13:00"), 123, '', true, true, 5, '', new Friend(), new User()),
-      new Book(1, 'Aladdin', ['Disney'], '', 'https://about.canva.com/wp-content/uploads/sites/3/2015/01/art_bookcover.png', '', '', new Date("February 4, 2016 10:13:00"), 123, '', true, true, 5, '', new Friend(), new User()),
-      new Book(1, 'Aladdin', ['Disney'], '', 'https://about.canva.com/wp-content/uploads/sites/3/2015/01/art_bookcover.png', '', '', new Date("February 4, 2016 10:13:00"), 123, '', true, true, 5, '', new Friend(), new User())
-    ];
+  retrieveGenreList() {
+    this._genreList = ['Fantasy', 'SF', 'Fiction', 'Non-fiction', 'Short stories'];
   }
 
-
-  get userId(): number {
-    return this._userId;
-  }
-
-  get currentSelection(): Book[] {
-    return this._currentSelection;
-  }
-
-  get genreList(): string[] {
-    return this._genreList;
-  }
-
-  get books(): Book[] {
-    return this._books;
-  }
-
-  get currentlyReading(): Book[] {
-    return this._currentlyReading;
-  }
-
-  get sortOptions(): string[] {
-    return this._sortOptions;
+  retrieveCurrentlyReading() {
+    this._currentlyReading = this.books.filter(book => book.status === 'ONGOING');
   }
 
   nextSlide(slideView) {
