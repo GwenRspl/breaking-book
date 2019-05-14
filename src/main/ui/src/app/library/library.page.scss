@@ -33,3 +33,13 @@
   display: block;
   vertical-align: middle;
 }
+
+.modal {
+  top: 20% !important;
+  right: 20% !important;
+  bottom: 20% !important;
+  left: 20% !important;
+  overflow: visible !important;
+  min-height: 240px !important;
+  width: 60% !important;
+}

@@ -1,7 +1,7 @@
 <ion-content>
     <ion-grid>
         <ion-row>
-            <ion-col offset="3" size="6">
+            <ion-col offset-xl="3" size-xl="6">
                 <div class="currently-div" padding>
                     <h1>Currently reading</h1>
                     <ion-grid>
@@ -30,7 +30,7 @@
             </ion-col>
         </ion-row>
         <ion-row>
-            <ion-col offset="3" size="6">
+            <ion-col offset-xl="3" size-xl="6">
                 <div class="search-bar-div" padding>
                     <ion-searchbar (ionChange)="filter()" [(ngModel)]="userInput"
                                    placeholder="Search a book"></ion-searchbar>
@@ -38,7 +38,7 @@
             </ion-col>
         </ion-row>
         <ion-row>
-            <ion-col offset="1" size="2">
+            <ion-col offset-xl="1" size-lg="3" size-md="3" size-xl="2">
                 <div class="genre-div" padding>
                     <h2>Filters</h2>
                     <ion-list>
@@ -132,11 +132,11 @@
                     </ion-list>
                 </div>
             </ion-col>
-            <ion-col size="6">
+            <ion-col size-xl="6">
                 <div class="library-div" padding>
                     <h1>Library</h1>
                     <div>
-                        <ion-button>
+                        <ion-button (click)="addNewBook()">
                             <ion-icon name="add" slot="start"></ion-icon>
                             <ion-label>Add new book</ion-label>
                         </ion-button>

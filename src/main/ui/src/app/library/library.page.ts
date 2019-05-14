@@ -1,8 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Book} from './book.model';
-import {IonSlides} from '@ionic/angular';
+import {ActionSheetController, IonSlides} from '@ionic/angular';
 import {BooksService} from './services/books.service';
 import {TokenStorageService} from '../authentication/services/token-storage.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-library',
@@ -19,7 +20,9 @@ export class LibraryPage implements OnInit {
   private userInput: string = '';
 
   constructor(private booksService: BooksService,
-              private tokenStorageService: TokenStorageService) {
+              private tokenStorageService: TokenStorageService,
+              private router: Router,
+              private actionSheetCtrl: ActionSheetController) {
   }
 
   private _userId: number;
@@ -105,5 +108,33 @@ export class LibraryPage implements OnInit {
       return book.title.toLowerCase().indexOf(this.userInput.toLowerCase()) > -1 ||
         book.authors.toString().toLowerCase().indexOf(this.userInput.toLowerCase()) > -1;
     })
+  }
+
+  addNewBook() {
+    this.actionSheetCtrl.create({
+      mode: 'ios',
+      header: 'How do you want to add a book ?',
+      buttons: [
+        {
+          text: 'Search on GoogleBooks',
+          handler: () => {
+            this.router.navigateByUrl('/library/new');
+          }
+        },
+        {
+          text: 'Fill out the form myself',
+          handler: () => {
+            this.router.navigateByUrl('/library/new');
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        }
+      ]
+    }).then(actionSheetEl => {
+      actionSheetEl.present();
+    });
+
   }
 }

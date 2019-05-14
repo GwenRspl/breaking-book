@@ -1,0 +1,209 @@
+<ion-content>
+    <ion-grid>
+        <ion-row>
+            <ion-col offset-lg="2" offset-xl="3" size-lg="8" size-xl="6">
+                <ion-card padding>
+                    <ion-card-header text-center>
+                        <ion-card-title>Add a new book</ion-card-title>
+                    </ion-card-header>
+                    <form [formGroup]="bookForm">
+                        <ion-item class="form-item">
+                            <ion-label position="floating">
+                                Title
+                            </ion-label>
+                            <ion-input (keyup.enter)="addBookToLibrary()" formControlName="title" type="text">
+                            </ion-input>
+                        </ion-item>
+                        <ion-text *ngIf="submitted && f.title.errors" color="danger">
+                            <p *ngIf="f.title.errors.required" class="form-error-message">This field is required.</p>
+                        </ion-text>
+
+                        <ion-item class="form-item">
+                            <ion-label position="floating">
+                                Authors (Multiple authors should be comma separated.)
+                            </ion-label>
+                            <ion-input (keyup.enter)="addBookToLibrary()" formControlName="authors" type="text">
+                            </ion-input>
+                        </ion-item>
+                        <ion-text *ngIf="submitted && f.authors.errors" color="danger">
+                            <p *ngIf="f.authors.errors.required" class="form-error-message">This field is required.</p>
+                        </ion-text>
+
+                        <ion-item class="form-item">
+                            <ion-label position="floating">
+                                ISBN
+                            </ion-label>
+                            <ion-input (keyup.enter)="addBookToLibrary()" formControlName="isbn" type="text">
+                            </ion-input>
+                        </ion-item>
+                        <ion-text *ngIf="submitted && f.isbn.errors" color="danger">
+                            <p *ngIf="f.isbn.errors.minlength" class="form-error-message">The ISBN should be at least 10
+                                characters long.</p>
+                            <p *ngIf="f.isbn.errors.maxlength" class="form-error-message">The ISBN should be at least 10
+                                or 13 characters long.</p>
+                        </ion-text>
+
+                        <ion-item class="form-item">
+                            <ion-label position="floating">
+                                Image
+                            </ion-label>
+                            <ion-input (keyup.enter)="addBookToLibrary()" formControlName="image" type="url">
+                            </ion-input>
+                        </ion-item>
+                        <ion-text *ngIf="submitted && f.image.errors" color="danger">
+                            <p class="form-error-message">Should be a valid URL.</p>
+                        </ion-text>
+
+                        <ion-item class="form-item">
+                            <ion-label position="floating">
+                                Language
+                            </ion-label>
+                            <ion-input (keyup.enter)="addBookToLibrary()" formControlName="language" type="text">
+                            </ion-input>
+                        </ion-item>
+                        <ion-text *ngIf="submitted && f.language.errors" color="danger">
+                            <p *ngIf="f.language.errors.minlength" class="form-error-message">The ISBN should be at
+                                least 10
+                                characters long.</p>
+                            <p *ngIf="f.language.errors.maxlength" class="form-error-message">The ISBN should be at
+                                least 10
+                                or 13 characters long.</p>
+                        </ion-text>
+
+                        <ion-item class="form-item">
+                            <ion-label position="floating">
+                                Publisher
+                            </ion-label>
+                            <ion-input (keyup.enter)="addBookToLibrary()" formControlName="publisher" type="text">
+                            </ion-input>
+                        </ion-item>
+                        <ion-text *ngIf="submitted && f.publisher.errors" color="danger">
+                            <p *ngIf="f.publisher.errors.minlength" class="form-error-message">The ISBN should be at
+                                least 10
+                                characters long.</p>
+                            <p *ngIf="f.publisher.errors.maxlength" class="form-error-message">The ISBN should be at
+                                least 10
+                                or 13 characters long.</p>
+                        </ion-text>
+                        <ion-item class="form-item">
+                            <ion-label position="floating">
+                                Date published
+                            </ion-label>
+                            <ion-input (keyup.enter)="addBookToLibrary()" formControlName="datePublished" type="text">
+                            </ion-input>
+                        </ion-item>
+                        <ion-text *ngIf="submitted && f.datePublished.errors" color="danger">
+                            <p *ngIf="f.datePublished.errors.minlength" class="form-error-message">The ISBN should be at
+                                least 10
+                                characters long.</p>
+                            <p *ngIf="f.datePublished.errors.maxlength" class="form-error-message">The ISBN should be at
+                                least 10
+                                or 13 characters long.</p>
+                        </ion-text>
+                        <ion-item class="form-item">
+                            <ion-label position="floating">
+                                Pages
+                            </ion-label>
+                            <ion-input (keyup.enter)="addBookToLibrary()" formControlName="pages" type="text">
+                            </ion-input>
+                        </ion-item>
+                        <ion-text *ngIf="submitted && f.pages.errors" color="danger">
+                            <p *ngIf="f.pages.errors.minlength" class="form-error-message">The ISBN should be at least
+                                10
+                                characters long.</p>
+                            <p *ngIf="f.pages.errors.maxlength" class="form-error-message">The ISBN should be at least
+                                10
+                                or 13 characters long.</p>
+                        </ion-text>
+                        <ion-item class="form-item">
+                            <ion-label position="floating">
+                                Synopsis
+                            </ion-label>
+                            <ion-input (keyup.enter)="addBookToLibrary()" formControlName="synopsis" type="text">
+                            </ion-input>
+                        </ion-item>
+                        <ion-text *ngIf="submitted && f.synopsis.errors" color="danger">
+                            <p *ngIf="f.synopsis.errors.minlength" class="form-error-message">The ISBN should be at
+                                least 10
+                                characters long.</p>
+                            <p *ngIf="f.synopsis.errors.maxlength" class="form-error-message">The ISBN should be at
+                                least 10
+                                or 13 characters long.</p>
+                        </ion-text>
+                        <ion-item class="form-item">
+                            <ion-label position="floating">
+                                Do you own this book ?
+                            </ion-label>
+                            <ion-input (keyup.enter)="addBookToLibrary()" formControlName="owned" type="text">
+                            </ion-input>
+                        </ion-item>
+                        <ion-text *ngIf="submitted && f.owned.errors" color="danger">
+                            <p *ngIf="f.owned.errors.minlength" class="form-error-message">The ISBN should be at least
+                                10
+                                characters long.</p>
+                            <p *ngIf="f.owned.errors.maxlength" class="form-error-message">The ISBN should be at least
+                                10
+                                or 13 characters long.</p>
+                        </ion-text>
+                        <ion-item class="form-item">
+                            <ion-label position="floating">
+                                Did you read this book ?
+                            </ion-label>
+                            <ion-input (keyup.enter)="addBookToLibrary()" formControlName="status" type="text">
+                            </ion-input>
+                        </ion-item>
+                        <ion-text *ngIf="submitted && f.status.errors" color="danger">
+                            <p *ngIf="f.status.errors.minlength" class="form-error-message">The ISBN should be at least
+                                10
+                                characters long.</p>
+                            <p *ngIf="f.status.errors.maxlength" class="form-error-message">The ISBN should be at least
+                                10
+                                or 13 characters long.</p>
+                        </ion-text>
+                        <ion-item class="form-item">
+                            <ion-label position="floating">
+                                How much did you like this book ?
+                            </ion-label>
+                            <ion-input (keyup.enter)="addBookToLibrary()" formControlName="rating" type="text">
+                            </ion-input>
+                        </ion-item>
+                        <ion-text *ngIf="submitted && f.rating.errors" color="danger">
+                            <p *ngIf="f.rating.errors.minlength" class="form-error-message">The ISBN should be at least
+                                10
+                                characters long.</p>
+                            <p *ngIf="f.rating.errors.maxlength" class="form-error-message">The ISBN should be at least
+                                10
+                                or 13 characters long.</p>
+                        </ion-text>
+                        <ion-item class="form-item">
+                            <ion-label position="floating">
+                                Comment
+                            </ion-label>
+                            <ion-input (keyup.enter)="addBookToLibrary()" formControlName="comment" type="text">
+                            </ion-input>
+                        </ion-item>
+                        <ion-text *ngIf="submitted && f.comment.errors" color="danger">
+                            <p *ngIf="f.comment.errors.minlength" class="form-error-message">The ISBN should be at least
+                                10
+                                characters long.</p>
+                            <p *ngIf="f.comment.errors.maxlength" class="form-error-message">The ISBN should be at least
+                                10
+                                or 13 characters long.</p>
+                        </ion-text>
+
+                        <ion-grid>
+                            <ion-row>
+                                <ion-col text-center>
+                                    <ion-button (click)="addBookToLibrary()" padding>
+                                        Add book to library
+                                    </ion-button>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+
+                    </form>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>
