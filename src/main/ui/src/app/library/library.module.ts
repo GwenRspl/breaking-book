@@ -7,6 +7,7 @@ import {IonicModule} from '@ionic/angular';
 
 import {LibraryPage} from './library.page';
 import {BooksService} from './services/books.service';
+import {BookResolver} from './services/book-resolver.service';
 
 
 const routes: Routes = [
@@ -43,7 +44,8 @@ export class LibraryPageModule {
     return {
       ngModule: LibraryPageModule,
       providers: [
-        BooksService
+        BooksService,
+        BookResolver
       ]
     }
   }

@@ -17,6 +17,11 @@
 
 .book-card {
   height: 100%;
+  cursor: pointer;
+
+  &:hover {
+    --background: lightcyan;
+  }
 }
 
 .book-row {

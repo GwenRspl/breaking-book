@@ -20,4 +20,9 @@ export class BooksService {
   saveBook(book: Book) {
     return this.httpClient.post<number>(this.baseURL, book);
   }
+
+  getBookById(bookId: number) {
+    const url = this.baseURL + '/' + bookId;
+    return this.httpClient.get<Book>(url);
+  }
 }

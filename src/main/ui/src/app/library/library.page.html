@@ -135,23 +135,26 @@
             <ion-col size-xl="6">
                 <div class="library-div" padding>
                     <h1>Library</h1>
-                    <div>
-                        <ion-button (click)="addNewBook()">
-                            <ion-icon name="add" slot="start"></ion-icon>
-                            <ion-label>Add new book</ion-label>
-                        </ion-button>
-                        <ion-item class="select-sort ion-float-right">
-                            <ion-label>Sort by</ion-label>
-                            <ion-select [value]="sortOptions[0]" interface="popover">
-                                <ion-select-option *ngFor="let option of sortOptions"
-                                                   [value]="option">{{option}}</ion-select-option>
-                            </ion-select>
-                        </ion-item>
-                    </div>
                     <ion-grid>
                         <ion-row>
-                            <ion-col *ngFor="let book of currentSelection" class="book-row" size="3">
-                                <ion-card class="book-card">
+                            <ion-col>
+                                <ion-button (click)="addNewBook()" class="ion-float-left">
+                                    <ion-icon name="add" slot="start"></ion-icon>
+                                    <ion-label>Add new book</ion-label>
+                                </ion-button>
+                                <ion-item class="select-sort ion-float-right">
+                                    <ion-label>Sort by</ion-label>
+                                    <ion-select [value]="sortOptions[0]" interface="popover">
+                                        <ion-select-option *ngFor="let option of sortOptions"
+                                                           [value]="option">{{option}}</ion-select-option>
+                                    </ion-select>
+                                </ion-item>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col *ngFor="let book of currentSelection" class="book-row" size-lg="4" size-md="6"
+                                     size-sm="12" size-xl="3">
+                                <ion-card (click)="showBookDetails(book.id)" class="book-card">
                                     <ion-img [src]="book.image"></ion-img>
                                     <ion-card-header>
                                         <ion-card-subtitle>{{book.authors}}</ion-card-subtitle>

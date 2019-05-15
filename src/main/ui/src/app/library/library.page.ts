@@ -18,6 +18,12 @@ export class LibraryPage implements OnInit {
     speed: 400
   };
   private userInput: string = '';
+  private _userId: number;
+  private _books: Book[] = [];
+  private _currentlyReading: Book[] = [];
+  private _genreList: string[] = [];
+  private _currentSelection: Book[] = [];
+  private _sortOptions: string[] = ['Author', 'Title', 'Rating'];
 
   constructor(private booksService: BooksService,
               private tokenStorageService: TokenStorageService,
@@ -25,47 +31,39 @@ export class LibraryPage implements OnInit {
               private actionSheetCtrl: ActionSheetController) {
   }
 
-  private _userId: number;
-
   get userId(): number {
     return this._userId;
   }
-
-  private _books: Book[] = [];
 
   get books(): Book[] {
     return this._books;
   }
 
-  private _currentlyReading: Book[] = [];
-
   get currentlyReading(): Book[] {
     return this._currentlyReading;
   }
-
-  private _genreList: string[] = [];
 
   get genreList(): string[] {
     return this._genreList;
   }
 
-  private _currentSelection: Book[] = [];
-
   get currentSelection(): Book[] {
     return this._currentSelection;
   }
-
-  private _sortOptions: string[] = ['Author', 'Title', 'Rating'];
 
   get sortOptions(): string[] {
     return this._sortOptions;
   }
 
   ngOnInit() {
+  }
+
+  ionViewWillEnter() {
     this.retrieveUserId();
     this.retrieveBooks();
     this.retrieveGenreList();
   }
+
 
   retrieveUserId() {
     this._userId = +this.tokenStorageService.getUserId();
@@ -135,6 +133,9 @@ export class LibraryPage implements OnInit {
     }).then(actionSheetEl => {
       actionSheetEl.present();
     });
+  }
 
+  showBookDetails(bookId: number) {
+    this.router.navigate((['/', 'library', 'show', bookId]));
   }
 }

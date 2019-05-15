@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Book} from '../book.model';
 import {TokenStorageService} from '../../authentication/services/token-storage.service';
 import {BooksService} from '../services/books.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-new-book',
@@ -15,7 +16,8 @@ export class NewBookPage implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
               private tokenStorageService: TokenStorageService,
-              private booksService: BooksService) {
+              private booksService: BooksService,
+              private router: Router) {
   }
 
   get f() {
@@ -72,6 +74,7 @@ export class NewBookPage implements OnInit {
     this.booksService.saveBook(newBook).subscribe(
       data => {
         console.log(data);
+        this.router.navigate((['/', 'library', 'show', data]));
       },
       error => {
         console.log(error);

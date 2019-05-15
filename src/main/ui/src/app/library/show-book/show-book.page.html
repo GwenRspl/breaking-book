@@ -1,3 +1,77 @@
 <ion-content>
-    <p>help</p>
+    <ion-grid>
+        <ion-row>
+            <ion-col offset-lg="2" offset-xl="3" size-lg="4" size-xl="3">
+                <ion-img [src]="book.image"></ion-img>
+            </ion-col>
+            <ion-col size-lg="4" size-xl="3">
+                <ion-toggle (click)="toggleEditMode()" color="primary"></ion-toggle>
+                Edit mode
+                <ion-button *ngIf="editMode === true">Save</ion-button>
+                <h1>{{book.title}}</h1>
+                <h2>by {{book.authors}}</h2>
+                <h3>Publisher</h3>
+                {{book.publisher}}
+                <h3>Release date</h3>
+                {{book.datePublished}}
+                <h3 *ngIf="book.language === 'FR'">Language: French</h3>
+                <h3 *ngIf="book.language === 'EN'">Language: English</h3>
+                <h3>ISBN</h3>
+                {{book.isbn}}
+                <ion-item *ngIf="book.pages != 0 || editMode === true" lines="none">
+                    <ion-label position="stacked">Number of pages</ion-label>
+                    <ion-input [value]="book.pages" readonly></ion-input>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col offset-lg="2" offset-xl="3" size-lg="8" size-xl="6">
+                <h2>Synopsis</h2>
+                <p>{{book.synopsis}}</p>
+
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col offset-lg="2" offset-xl="3" size-lg="8" size-xl="6">
+                <h2>Rating</h2>
+                <div *ngIf="book.rating === 5">
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                </div>
+                <div *ngIf="book.rating === 4">
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star-outline"></ion-icon>
+                </div>
+                <div *ngIf="book.rating === 3">
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star-outline"></ion-icon>
+                    <ion-icon name="star-outline"></ion-icon>
+                </div>
+                <div *ngIf="book.rating === 2">
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star-outline"></ion-icon>
+                    <ion-icon name="star-outline"></ion-icon>
+                    <ion-icon name="star-outline"></ion-icon>
+                </div>
+                <div *ngIf="book.rating === 1">
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star-outline"></ion-icon>
+                    <ion-icon name="star-outline"></ion-icon>
+                    <ion-icon name="star-outline"></ion-icon>
+                    <ion-icon name="star-outline"></ion-icon>
+                </div>
+                <p>{{book.comment}}</p>
+
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 </ion-content>
