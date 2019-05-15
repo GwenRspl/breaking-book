@@ -82,8 +82,8 @@ public class FriendServiceImpl implements FriendService {
 /*        System.out.println("FriendServiceImpl --> deleteAll");
         List<Friend> friends = getAll();
         System.out.println("FriendServiceImpl --> deleteAll --> getAll: " + friends);
-        for (Friend friend : friends) {
-            boolean result = delete(friend.getId());
+        for (Friend friendId : friends) {
+            boolean result = delete(friendId.getId());
             System.out.println("FriendServiceImpl --> deleteAll --> forEach" + result);
             if (!result) {
                 return false;

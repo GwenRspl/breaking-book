@@ -5,6 +5,8 @@ import com.projects.breakingbook.persistence.entity.mapper.BookMapper;
 import com.projects.breakingbook.persistence.repository.BookRepository;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,8 +48,13 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public boolean createBook(final Book book) {
-        final int result = this.jdbcTemplate.update(this.INSERT, book.getTitle(), this.convertListToSqlArray(book.getAuthors()), book.getIsbn(), book.getImage(),
-                book.getLanguage(), book.getPublisher(), book.getDatePublished(), book.getPages(), book.getSynopsis(), book.getUser().getId(), book.getFriend().getId(), book.isOwned(), book.getRating(), book.getComment(), book.getStatus());
+        final KeyHolder keyHolder = new GeneratedKeyHolder();
+        final int result = this.jdbcTemplate.update(this.INSERT, book.getTitle(), this.convertListToSqlArray(book.getAuthors()),
+                book.getIsbn(), book.getImage(), book.getLanguage(), book.getPublisher(), book.getDatePublished(), book.getPages(),
+                book.getSynopsis(), book.getUser().getId(),
+                book.getFriend() != null ? book.getFriend().getId() : null,
+                book.isOwned(), book.getRating(), book.getComment(), book.getStatus().getBookStatusString());
+        System.out.println(keyHolder.getKey());
         return result != 0;
     }
 
@@ -74,7 +81,7 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public boolean updateBook(final Long id, final Book book) {
-        final int result = this.jdbcTemplate.update(this.UPDATE, book.getTitle(), this.convertListToSqlArray(book.getAuthors()), book.getIsbn(), book.getImage(), book.getLanguage(), book.getPublisher(), book.getDatePublished(), book.getPages(), book.getSynopsis(), book.getUser().getId(), book.getFriend().getId(), book.isOwned(), book.getRating(), book.getComment(), book.getStatus(), id);
+        final int result = this.jdbcTemplate.update(this.UPDATE, book.getTitle(), this.convertListToSqlArray(book.getAuthors()), book.getIsbn(), book.getImage(), book.getLanguage(), book.getPublisher(), book.getDatePublished(), book.getPages(), book.getSynopsis(), book.getUser().getId(), book.getFriend().getId(), book.isOwned(), book.getRating(), book.getComment(), book.getStatus().getBookStatusString(), id);
         return result != 0;
     }
 

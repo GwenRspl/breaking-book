@@ -37,12 +37,12 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "*")
 public class UserController {
 
-    PasswordEncoder encoder;
-    JwtProvider jwtProvider;
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final BookService bookService;
     private final ModelMapper modelMapper;
+    PasswordEncoder encoder;
+    JwtProvider jwtProvider;
 
     @Autowired
     public UserController(final AuthenticationManager authenticationManager, final UserService userService, final BookService bookService, final ModelMapper modelMapper, final PasswordEncoder encoder, final JwtProvider jwtProvider) {
@@ -124,7 +124,6 @@ public class UserController {
     public ResponseEntity<?> update(@PathVariable final Long id, @RequestBody final UserDTO userDTO) {
         final boolean result;
         try {
-            System.out.println(this.convertToEntity(userDTO));
             result = this.userService.update(id, this.convertToEntity(userDTO));
             if (result) {
                 return new ResponseEntity<>("User updated successfully", HttpStatus.OK);

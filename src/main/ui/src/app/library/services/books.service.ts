@@ -16,4 +16,8 @@ export class BooksService {
     const url = this.baseURL + '?userId=' + userId;
     return this.httpClient.get<Book[]>(url);
   }
+
+  saveBook(book: Book) {
+    return this.httpClient.post<string>(this.baseURL, book);
+  }
 }

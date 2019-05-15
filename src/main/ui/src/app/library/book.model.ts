@@ -1,6 +1,3 @@
-import {Friend} from './friend.model';
-import {User} from './user.model';
-
 export class Book {
   id: number;
   title: string;
@@ -16,11 +13,11 @@ export class Book {
   status: string;
   rating: number;
   comment: string;
-  friend: Friend;
-  user: User;
+  friendId: number;
+  userId: number;
 
 
-  constructor(id: number, title: string, authors: string[], isbn: string, image: string, language: string, publisher: string, datePublished: Date, pages: number, synopsis: string, owned: boolean, status: string, rating: number, comment: string, friend: Friend, user: User) {
+  constructor(id: number, title: string, authors: string[], isbn: string, image: string, language: string, publisher: string, datePublished: Date, pages: number, synopsis: string, owned: boolean, status: string, rating: number, comment: string, friend: number, user: number) {
     this.id = id;
     this.title = title;
     this.authors = authors;
@@ -35,7 +32,7 @@ export class Book {
     this.status = status;
     this.rating = rating;
     this.comment = comment;
-    this.friend = friend;
-    this.user = user;
+    this.friendId = friend;
+    this.userId = user;
   }
 }
