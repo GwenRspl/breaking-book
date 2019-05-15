@@ -8,11 +8,18 @@ import java.util.Optional;
 public interface BookService {
 
     List<Book> getAll(final Long userId);
+
     Optional<Book> getOne(final Long id);
-    boolean create(final Book book);
+
+    Long create(final Book book);
+
     boolean update(final Long id, final Book book);
+
     boolean delete(final Long id);
+
     boolean deleteAll();
+
     boolean toggleOwned(Long id);
+
     boolean updateFriend(Long bookId, Long friendId);
 }

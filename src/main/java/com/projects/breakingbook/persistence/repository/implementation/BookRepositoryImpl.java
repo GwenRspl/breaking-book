@@ -11,8 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
-import java.sql.Array;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,15 +46,46 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public boolean createBook(final Book book) {
+    public Long createBook(final Book book) {
         final KeyHolder keyHolder = new GeneratedKeyHolder();
-        final int result = this.jdbcTemplate.update(this.INSERT, book.getTitle(), this.convertListToSqlArray(book.getAuthors()),
-                book.getIsbn(), book.getImage(), book.getLanguage(), book.getPublisher(), book.getDatePublished(), book.getPages(),
-                book.getSynopsis(), book.getUser().getId(),
-                book.getFriend() != null ? book.getFriend().getId() : null,
-                book.isOwned(), book.getRating(), book.getComment(), book.getStatus().getBookStatusString());
-        System.out.println(keyHolder.getKey());
-        return result != 0;
+
+        this.jdbcTemplate.update(connection -> {
+            final PreparedStatement ps = connection
+                    .prepareStatement(this.INSERT, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, book.getTitle());
+            ps.setArray(2, this.convertListToSqlArray(book.getAuthors()));
+            ps.setString(3, book.getIsbn());
+            ps.setString(4, book.getImage());
+            ps.setString(5, book.getLanguage());
+            ps.setString(6, book.getPublisher());
+            if (book.getDatePublished() != null) {
+                ps.setDate(7, new Date(book.getDatePublished().getTime()));
+            } else {
+                ps.setNull(7, Types.DATE);
+            }
+            ps.setInt(8, book.getPages());
+            ps.setString(9, book.getSynopsis());
+            ps.setLong(10, book.getUser().getId());
+            if (book.getFriend() != null) {
+                ps.setLong(11, book.getFriend().getId());
+            } else {
+                ps.setNull(11, Types.INTEGER);
+            }
+            ps.setBoolean(12, book.isOwned());
+            ps.setInt(13, book.getRating());
+            ps.setString(14, book.getComment());
+            ps.setString(15, book.getStatus().getBookStatusString());
+            return ps;
+        }, keyHolder);
+
+        final Long newId;
+        if (keyHolder.getKeys().size() > 1) {
+            newId = ((Integer) keyHolder.getKeys().get("book_id")).longValue();
+        } else {
+            newId = keyHolder.getKey().longValue();
+        }
+
+        return newId;
     }
 
     @Override

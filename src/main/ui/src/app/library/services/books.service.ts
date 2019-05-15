@@ -18,6 +18,6 @@ export class BooksService {
   }
 
   saveBook(book: Book) {
-    return this.httpClient.post<string>(this.baseURL, book);
+    return this.httpClient.post<number>(this.baseURL, book);
   }
 }
