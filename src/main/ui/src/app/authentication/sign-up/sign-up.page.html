@@ -1,82 +1,96 @@
 <ion-content>
     <ion-grid>
         <ion-row>
-            <ion-col size="12" size-lg="4" offset-lg="4" size-sm="8" offset-sm="2">
+            <ion-col offset-lg="4" offset-sm="2" size="12" size-lg="4" size-sm="8">
                 <ion-card>
-                    <ion-card-header text-center>
+                    <ion-card-header *ngIf="!signUpSuccess" text-center>
                         <ion-card-title>Sign Up</ion-card-title>
                     </ion-card-header>
-                    <form [formGroup]="registerForm">
+                    <form *ngIf="!signUpSuccess" [formGroup]="registerForm">
 
-                        <ion-item class="form-item">
+                        <ion-item>
                             <ion-label position="floating">
-                                <ion-icon slot="start" name="person"></ion-icon>
+                                <ion-icon name="person" slot="start"></ion-icon>
                                 Username
                             </ion-label>
-                            <ion-input formControlName="username" type="text" (keyup.enter)="registerUser()">
+                            <ion-input (keyup.enter)="registerUser()" formControlName="username" type="text">
                             </ion-input>
                         </ion-item>
-                        <ion-text color="danger" *ngIf="submitted && f.username.errors">
-                            <p *ngIf="f.username.errors.minlength" class="form-error-message">Username should be at least 3 characters long.</p>
+                        <ion-text *ngIf="submitted && f.username.errors" color="danger">
+                            <p *ngIf="f.username.errors.minlength" class="form-error-message">Username should be at
+                                least 3 characters long.</p>
                             <p *ngIf="f.username.errors.required" class="form-error-message">This field is required.</p>
                         </ion-text>
 
                         <ion-item class="form-item">
                             <ion-label position="floating">
-                                <ion-icon slot="start" name="mail"></ion-icon>
+                                <ion-icon name="mail" slot="start"></ion-icon>
                                 Email
                             </ion-label>
-                            <ion-input formControlName="email" type="email" (keyup.enter)="registerUser()">
+                            <ion-input (keyup.enter)="registerUser()" formControlName="email" type="email">
                             </ion-input>
                         </ion-item>
-                        <ion-text color="danger" *ngIf="submitted && f.email.errors">
+                        <ion-text *ngIf="submitted && f.email.errors" color="danger">
                             <p *ngIf="f.email.errors.email" class="form-error-message">This email is invalid.</p>
                             <p *ngIf="f.email.errors.required" class="form-error-message">This field is required.</p>
                         </ion-text>
 
                         <ion-item class="form-item">
                             <ion-label position="floating">
-                                <ion-icon slot="start" name="lock"></ion-icon>
+                                <ion-icon name="lock" slot="start"></ion-icon>
                                 Password
                             </ion-label>
-                            <ion-input formControlName="password" type="password" (keyup.enter)="registerUser()">
+                            <ion-input (keyup.enter)="registerUser()" formControlName="password" type="password">
                             </ion-input>
                         </ion-item>
-                        <ion-text color="danger" *ngIf="submitted && f.password.errors">
-                            <p *ngIf="f.password.errors.minlength" class="form-error-message">The password should be at least 6 characters long.</p>
+                        <ion-text *ngIf="submitted && f.password.errors" color="danger">
+                            <p *ngIf="f.password.errors.minlength" class="form-error-message">The password should be at
+                                least 6 characters long.</p>
                             <p *ngIf="f.password.errors.required" class="form-error-message">This field is required.</p>
                         </ion-text>
 
                         <ion-item class="form-item">
                             <ion-label position="floating">
-                                <ion-icon slot="start" name="lock"></ion-icon>
+                                <ion-icon name="lock" slot="start"></ion-icon>
                                 Confirm Password
                             </ion-label>
-                            <ion-input formControlName="confirmPassword" type="password" (keyup.enter)="registerUser()">
+                            <ion-input (keyup.enter)="registerUser()" formControlName="confirmPassword" type="password">
                             </ion-input>
-                        </ion-item >
-                        <ion-text color="danger" *ngIf="submitted && f.confirmPassword.errors">
-                            <p *ngIf="f.confirmPassword.errors.required" class="form-error-message">This field is required.</p>
-                            <p *ngIf="f.confirmPassword.errors.passwordsNotMatching" class="form-error-message">Passwords don't match.</p>
+                        </ion-item>
+                        <ion-text *ngIf="submitted && f.confirmPassword.errors" color="danger">
+                            <p *ngIf="f.confirmPassword.errors.required" class="form-error-message">This field is
+                                required.</p>
+                            <p *ngIf="f.confirmPassword.errors.passwordsNotMatching" class="form-error-message">
+                                Passwords don't match.</p>
                         </ion-text>
 
                         <ion-grid>
                             <ion-row>
                                 <ion-col text-center>
-                                    <ion-button padding (click)="registerUser()">
-                                    Sign up
-                                </ion-button>
+                                    <ion-button (click)="registerUser()" padding>
+                                        Sign up
+                                    </ion-button>
                                 </ion-col>
                             </ion-row>
                         </ion-grid>
 
                         <ion-card-content text-right>
                             <ion-text>
-                            Already have an account? <a class="signIn" (click)="goToSignIn()">Sign in!</a>
+                                Already have an account? <a (click)="goToSignIn()" class="signIn">Sign in!</a>
                             </ion-text>
                         </ion-card-content>
 
                     </form>
+                    <div *ngIf="signUpSuccess" padding text-center>
+                        <ion-card-header>
+                            <ion-card-title>Congrats!</ion-card-title>
+                            <ion-card-subtitle>You are now registered.</ion-card-subtitle>
+                        </ion-card-header>
+
+                        <ion-card-content>
+                            You will be redirected to the login page shortly ...
+                        </ion-card-content>
+                    </div>
                 </ion-card>
             </ion-col>
         </ion-row>
