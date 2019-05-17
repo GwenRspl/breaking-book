@@ -17,7 +17,7 @@ export class LibraryPage implements OnInit {
     slidesPerView: 4,
     speed: 400
   };
-  private userInput: string = '';
+  public userInput: string = '';
   private _userId: number;
   private _books: Book[] = [];
   private _currentlyReading: Book[] = [];
@@ -116,7 +116,7 @@ export class LibraryPage implements OnInit {
         {
           text: 'Search on GoogleBooks',
           handler: () => {
-            this.router.navigateByUrl('/library/new');
+            this.router.navigateByUrl('/library/search-via-api');
           }
         },
         {

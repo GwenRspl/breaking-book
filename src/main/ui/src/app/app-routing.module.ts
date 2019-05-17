@@ -18,6 +18,10 @@ const routes: Routes = [
     path: 'library/show/:bookId',
     loadChildren: './library/show-book/show-book.module#ShowBookPageModule',
     resolve: {book: BookResolver}
+  },
+  {
+    path: 'library/search-via-api',
+    loadChildren: './library/search-via-api/search-via-api.module#SearchViaApiPageModule'
   }
 ];
 
