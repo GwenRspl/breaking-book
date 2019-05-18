@@ -1,0 +1,41 @@
+<ion-content padding>
+    <h1 text-center>Edit Account</h1>
+    <form [formGroup]="editForm">
+
+        <ion-item class="form-item">
+            <ion-label position="floating">
+                <ion-icon name="mail" slot="start"></ion-icon>
+                Email
+            </ion-label>
+            <ion-input formControlName="email" type="email">
+            </ion-input>
+        </ion-item>
+        <ion-text *ngIf="submitted && f.email.errors" color="danger">
+            <p *ngIf="f.email.errors.email" class="form-error-message">This email is invalid.</p>
+            <p *ngIf="f.email.errors.required" class="form-error-message">This field is required.</p>
+        </ion-text>
+
+        <ion-item class="form-item">
+            <ion-label position="floating">
+                <ion-icon name="contact" slot="start"></ion-icon>
+                Avatar
+            </ion-label>
+            <ion-input formControlName="avatar" type="text">
+            </ion-input>
+        </ion-item>
+        <ion-text *ngIf="submitted && f.avatar.errors" color="danger">
+            <p *ngIf="f.avatar.errors.required" class="form-error-message">This field is required.</p>
+        </ion-text>
+
+        <ion-grid>
+            <ion-row>
+                <ion-col text-center>
+                    <ion-button (click)="editAccount()" padding>
+                        Save changes
+                    </ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+
+    </form>
+</ion-content>
