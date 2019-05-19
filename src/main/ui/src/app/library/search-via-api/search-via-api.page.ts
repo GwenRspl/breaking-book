@@ -56,7 +56,6 @@ export class SearchViaApiPage implements OnInit {
   }
 
   search() {
-    console.log(this.searchInput);
     this.booksService.searchBookViaGoogleApi(this.searchMode, this.searchInput).subscribe(
       data => {
         this._submitted = true;
@@ -64,7 +63,6 @@ export class SearchViaApiPage implements OnInit {
           this._searchResult = [];
         } else {
           this._searchResult = data.items;
-          console.log(this.searchResult);
         }
       },
       error => {
@@ -89,7 +87,7 @@ export class SearchViaApiPage implements OnInit {
       googleBook.volumeInfo.authors,
       isbn,
       thumbnail,
-      googleBook.volumeInfo.language,
+      googleBook.volumeInfo.language.toUpperCase(),
       googleBook.volumeInfo.publisher,
       new Date(googleBook.volumeInfo.publishedDate),
       googleBook.volumeInfo.pageCount,

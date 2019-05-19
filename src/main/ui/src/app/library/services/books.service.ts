@@ -12,8 +12,29 @@ export class BooksService {
   private googleApiUrl: string = 'https://www.googleapis.com/books/v1/volumes?q=';
   private googleApiKey = '&key=AIzaSyDYsB7DhlSW_l-Mn9WjmdPYm4dafvL1ly0';
 
+  private selectedBook: Book;
+  private bookReadyToPopulate = false;
+
   constructor(private httpClient: HttpClient) {
   }
+
+  getSelectedBook() {
+    return this.selectedBook;
+  }
+
+  setSelectedBook(book: Book) {
+    this.selectedBook = book;
+    this.bookReadyToPopulate = true;
+  }
+
+  isBookReadyToPopulate() {
+    return this.bookReadyToPopulate;
+  }
+
+  setIsBookReadyToPopulate(bool: boolean) {
+    this.bookReadyToPopulate = bool;
+  }
+
 
   getBooks(userId: number) {
     const url = this.baseURL + '?userId=' + userId;

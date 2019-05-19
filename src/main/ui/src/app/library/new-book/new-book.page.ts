@@ -29,22 +29,46 @@ export class NewBookPage implements OnInit {
     this.initForm();
   }
 
+  ionViewWillEnter() {
+    this.submitted = false;
+    this.initForm();
+  }
+
   initForm() {
-    this.bookForm = this.formBuilder.group({
-      title: ['', [Validators.required, Validators.minLength(3)]],
-      authors: ['', [Validators.required, Validators.minLength(3)]],
-      isbn: ['', [Validators.minLength(10), Validators.maxLength(13)]],
-      image: [''],
-      language: ['', [Validators.required]],
-      publisher: [''],
-      datePublished: [''],
-      pages: [''],
-      synopsis: [''],
-      owned: ['', [Validators.required]],
-      status: ['', [Validators.required]],
-      rating: [''],
-      comment: [''],
-    });
+    if (this.booksService.isBookReadyToPopulate()) {
+      this.book = this.booksService.getSelectedBook();
+      this.bookForm = this.formBuilder.group({
+        title: [this.book.title, [Validators.required, Validators.minLength(3)]],
+        authors: [this.book.authors.toString(), [Validators.required, Validators.minLength(3)]],
+        isbn: [this.book.isbn, [Validators.minLength(10), Validators.maxLength(13)]],
+        image: [this.book.image],
+        language: [this.book.language, [Validators.required]],
+        publisher: [this.book.publisher],
+        datePublished: [this.book.datePublished.toISOString()],
+        pages: [this.book.pages],
+        synopsis: [this.book.synopsis],
+        owned: ['', [Validators.required]],
+        status: ['', [Validators.required]],
+        rating: [''],
+        comment: [''],
+      });
+    } else {
+      this.bookForm = this.formBuilder.group({
+        title: ['', [Validators.required, Validators.minLength(3)]],
+        authors: ['', [Validators.required, Validators.minLength(3)]],
+        isbn: ['', [Validators.minLength(10), Validators.maxLength(13)]],
+        image: [''],
+        language: ['', [Validators.required]],
+        publisher: [''],
+        datePublished: [''],
+        pages: [''],
+        synopsis: [''],
+        owned: ['', [Validators.required]],
+        status: ['', [Validators.required]],
+        rating: [''],
+        comment: [''],
+      });
+    }
   }
 
   addBookToLibrary() {
@@ -53,7 +77,6 @@ export class NewBookPage implements OnInit {
       console.log('invalid form');
       return;
     }
-    console.log(this.bookForm.getRawValue());
     const newBook: Book = new Book(null,
       this.bookForm.value.title,
       this.bookForm.value.authors.split(','),
@@ -71,10 +94,11 @@ export class NewBookPage implements OnInit {
       null,
       +this.tokenStorageService.getUserId()
     );
-    console.log(newBook);
     this.booksService.saveBook(newBook).subscribe(
       data => {
-        console.log(data);
+        if (this.book != null) {
+          this.booksService.setIsBookReadyToPopulate(false);
+        }
         this.router.navigate((['/', 'library', 'show', data]));
       },
       error => {
