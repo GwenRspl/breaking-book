@@ -31,9 +31,21 @@
                     <ion-list-header>
                         <ion-label>Search result</ion-label>
                     </ion-list-header>
-                    <ion-item *ngFor="let book of searchResult">
-                        <ion-label>{{book.volumeInfo.title}}</ion-label>
+                    <ion-item *ngIf="searchResult.length < 1 && submitted === true; else result" lines="none">
+                        <ion-label>
+                            No books found
+                        </ion-label>
                     </ion-item>
+                    <ng-template #result>
+                        <ion-item *ngFor="let book of searchResult">
+                            <ion-label (click)="selectBook(book)">
+                                <h2>{{book.volumeInfo.title}}</h2>
+                                <h3>{{book.volumeInfo.authors}}</h3>
+                                <h4>{{book.volumeInfo.publisher}}</h4>
+                            </ion-label>
+                        </ion-item>
+                    </ng-template>
+
                 </ion-list>
             </ion-col>
         </ion-row>

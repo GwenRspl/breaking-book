@@ -13,6 +13,7 @@ import {Router} from '@angular/router';
 export class NewBookPage implements OnInit {
   bookForm: FormGroup;
   submitted: boolean = false;
+  book: Book;
 
   constructor(private formBuilder: FormBuilder,
               private tokenStorageService: TokenStorageService,

@@ -37,7 +37,8 @@ const routes: Routes = [
   ],
   declarations: [
     LibraryPage
-  ]
+  ],
+  entryComponents: []
 })
 export class LibraryPageModule {
   static forRoot(): ModuleWithProviders {
