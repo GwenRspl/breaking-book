@@ -32,7 +32,7 @@
         <ion-row>
             <ion-col offset-xl="3" size-xl="6">
                 <div padding>
-                    <ion-searchbar (ionChange)="filter()" [(ngModel)]="userInput"
+                    <ion-searchbar (ionChange)="searchBarFiltering()" [(ngModel)]="userInput"
                                    placeholder="Search a book"></ion-searchbar>
                 </div>
             </ion-col>
@@ -42,18 +42,18 @@
                 <div class="genre-div" padding>
                     <h2>Filters</h2>
                     <ion-list>
-                        <ion-radio-group>
+                        <ion-radio-group (ionChange)="onOwnershipChanged($event)">
                             <ion-item>
                                 <ion-label>All</ion-label>
-                                <ion-radio checked slot="start"></ion-radio>
+                                <ion-radio checked slot="start" value="all"></ion-radio>
                             </ion-item>
                             <ion-item>
                                 <ion-label>Owned</ion-label>
-                                <ion-radio slot="start"></ion-radio>
+                                <ion-radio slot="start" value="owned"></ion-radio>
                             </ion-item>
                             <ion-item>
                                 <ion-label>Not owned</ion-label>
-                                <ion-radio slot="start"></ion-radio>
+                                <ion-radio slot="start" value="notOwned"></ion-radio>
                             </ion-item>
                         </ion-radio-group>
                     </ion-list>
@@ -61,30 +61,22 @@
                         <ion-list-header>
                             Status
                         </ion-list-header>
-                        <ion-item>
-                            <ion-label>Unread</ion-label>
-                            <ion-checkbox checked slot="start"></ion-checkbox>
-                        </ion-item>
-                        <ion-item>
-                            <ion-label>Read</ion-label>
-                            <ion-checkbox checked slot="start"></ion-checkbox>
-                        </ion-item>
-                        <ion-item>
-                            <ion-label>Ongoing</ion-label>
-                            <ion-checkbox checked slot="start"></ion-checkbox>
+                        <ion-item *ngFor="let stat of status; let i = index;">
+                            <ion-label>{{stat.name}}</ion-label>
+                            <ion-checkbox [(ngModel)]="status[i].checked" checked slot="start"></ion-checkbox>
                         </ion-item>
                     </ion-list>
                     <ion-list>
                         <ion-list-header>
                             Collections
                         </ion-list-header>
-                        <ion-item *ngFor="let genre of genreList">
-                            <ion-label>{{genre}}</ion-label>
-                            <ion-checkbox slot="start"></ion-checkbox>
+                        <ion-item *ngFor="let collection of collections; let i = index;">
+                            <ion-label>{{collection.name}}</ion-label>
+                            <ion-checkbox [(ngModel)]="collections[i].checked" slot="start"></ion-checkbox>
                         </ion-item>
                     </ion-list>
                     <ion-list>
-                        <ion-radio-group>
+                        <ion-radio-group (ionChange)="onRatingsChanged($event)">
                             <ion-list-header>
                                 Ratings
                             </ion-list-header>
@@ -94,7 +86,7 @@
                                 <ion-icon name="star"></ion-icon>
                                 <ion-icon name="star"></ion-icon>
                                 <ion-icon name="star"></ion-icon>
-                                <ion-radio slot="start"></ion-radio>
+                                <ion-radio slot="start" value="5"></ion-radio>
                             </ion-item>
                             <ion-item>
                                 <ion-icon name="star"></ion-icon>
@@ -102,7 +94,7 @@
                                 <ion-icon name="star"></ion-icon>
                                 <ion-icon name="star"></ion-icon>
                                 <ion-icon name="star-outline"></ion-icon>
-                                <ion-radio slot="start"></ion-radio>
+                                <ion-radio slot="start" value="4"></ion-radio>
                             </ion-item>
                             <ion-item>
                                 <ion-icon name="star"></ion-icon>
@@ -110,7 +102,7 @@
                                 <ion-icon name="star"></ion-icon>
                                 <ion-icon name="star-outline"></ion-icon>
                                 <ion-icon name="star-outline"></ion-icon>
-                                <ion-radio slot="start"></ion-radio>
+                                <ion-radio slot="start" value="3"></ion-radio>
                             </ion-item>
                             <ion-item>
                                 <ion-icon name="star"></ion-icon>
@@ -118,7 +110,7 @@
                                 <ion-icon name="star-outline"></ion-icon>
                                 <ion-icon name="star-outline"></ion-icon>
                                 <ion-icon name="star-outline"></ion-icon>
-                                <ion-radio slot="start"></ion-radio>
+                                <ion-radio slot="start" value="2"></ion-radio>
                             </ion-item>
                             <ion-item>
                                 <ion-icon name="star"></ion-icon>
@@ -126,10 +118,11 @@
                                 <ion-icon name="star-outline"></ion-icon>
                                 <ion-icon name="star-outline"></ion-icon>
                                 <ion-icon name="star-outline"></ion-icon>
-                                <ion-radio checked slot="start"></ion-radio>
+                                <ion-radio checked slot="start" value="1"></ion-radio>
                             </ion-item>
                         </ion-radio-group>
                     </ion-list>
+                    <ion-button (click)="applyFilters()">Apply filters</ion-button>
                 </div>
             </ion-col>
             <ion-col size-xl="6">
