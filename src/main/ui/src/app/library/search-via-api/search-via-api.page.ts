@@ -59,6 +59,7 @@ export class SearchViaApiPage implements OnInit {
     this.booksService.searchBookViaGoogleApi(this.searchMode, this.searchInput).subscribe(
       data => {
         this._submitted = true;
+        console.log(data);
         if (data.totalItems == 0) {
           this._searchResult = [];
         } else {

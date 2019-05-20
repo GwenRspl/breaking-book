@@ -3,14 +3,16 @@ import {HttpClient} from '@angular/common/http';
 import {Book} from '../book.model';
 import {GoogleApiQueryResult} from '../search-via-api/googleApiQueryResult.model';
 
+const BASE_URL: string = 'http://localhost:8080/api/books';
+const GOOGLE_API_URL: string = 'https://www.googleapis.com/books/v1/volumes?q=';
+const GOOGLE_API_KEY = '&key=AIzaSyDYsB7DhlSW_l-Mn9WjmdPYm4dafvL1ly0';
+const GOOGLE_API_FIELDS = '&fields=totalItems,items(selfLink,volumeInfo(title,subtitle,authors,publisher,publishedDate,description,industryIdentifiers,pageCount,imageLinks,language))';
+const GOOGLE_API_MAX_RESULTS = '&maxResults=40';
+
 @Injectable({
   providedIn: 'root'
 })
 export class BooksService {
-
-  private baseURL: string = 'http://localhost:8080/api/books';
-  private googleApiUrl: string = 'https://www.googleapis.com/books/v1/volumes?q=';
-  private googleApiKey = '&key=AIzaSyDYsB7DhlSW_l-Mn9WjmdPYm4dafvL1ly0';
 
   private selectedBook: Book;
   private bookReadyToPopulate = false;
@@ -37,21 +39,21 @@ export class BooksService {
 
 
   getBooks(userId: number) {
-    const url = this.baseURL + '?userId=' + userId;
+    const url = BASE_URL + '?userId=' + userId;
     return this.httpClient.get<Book[]>(url);
   }
 
   saveBook(book: Book) {
-    return this.httpClient.post<number>(this.baseURL, book);
+    return this.httpClient.post<number>(BASE_URL, book);
   }
 
   getBookById(bookId: number) {
-    const url = this.baseURL + '/' + bookId;
+    const url = BASE_URL + '/' + bookId;
     return this.httpClient.get<Book>(url);
   }
 
   searchBookViaGoogleApi(mode: string, searchInput: string) {
-    const url = this.googleApiUrl + mode + ':' + searchInput + this.googleApiKey;
+    const url = GOOGLE_API_URL + mode + ':' + searchInput + GOOGLE_API_KEY + GOOGLE_API_FIELDS + GOOGLE_API_MAX_RESULTS;
     console.log(url);
     return this.httpClient.get<GoogleApiQueryResult>(url);
   }
