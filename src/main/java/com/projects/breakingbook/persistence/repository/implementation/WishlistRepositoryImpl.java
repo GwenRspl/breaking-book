@@ -29,9 +29,9 @@ public class WishlistRepositoryImpl implements WishlistRepository {
     private final String UPDATE = "UPDATE wishlist SET wishlist_name = ? WHERE wishlist_id = ?";
 
     private final String SELECT_JOIN = "SELECT * FROM wishlist " +
-            "INNER JOIN book_wishlist ON wishlist.wishlist_id = book_wishlist.book_wishlist_wishlist_id " +
-            "INNER JOIN book ON book.book_id = book_wishlist.book_wishlist_book_id " +
-            "INNER JOIN breaking_book_user r ON book.book_breaking_book_user = r.breaking_book_user_id " +
+            "LEFT JOIN book_wishlist ON wishlist.wishlist_id = book_wishlist.book_wishlist_wishlist_id " +
+            "LEFT JOIN breaking_book_user r ON wishlist.wishlist_breaking_book_user = r.breaking_book_user_id " +
+            "LEFT JOIN book ON book.book_id = book_wishlist.book_wishlist_book_id " +
             "FULL OUTER JOIN friend f ON book.book_friend = f.friend_id;";
 
     private final String SELECT_JOIN_BY_ID = "SELECT * FROM wishlist " +
@@ -49,9 +49,14 @@ public class WishlistRepositoryImpl implements WishlistRepository {
     @Override
     public List<Wishlist> findAllWishlists(final Long userId) {
         final List<Wishlist> wishlists = this.jdbcTemplate.query(this.SELECT_ALL, new Object[]{userId}, new WishlistMapper());
+        if (wishlists.isEmpty()) {
+            return wishlists;
+        }
         final Map<Long, List<Book>> booksMap = this.jdbcTemplate.query(this.SELECT_JOIN, new WishlistMapExtractor());
-        for (final Wishlist wishlist : wishlists) {
-            wishlist.setBooks(booksMap.get(wishlist.getId()));
+        if (!booksMap.isEmpty()) {
+            for (final Wishlist wishlist : wishlists) {
+                wishlist.setBooks(booksMap.get(wishlist.getId()));
+            }
         }
         return wishlists;
     }
