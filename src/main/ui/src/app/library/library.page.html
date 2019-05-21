@@ -138,7 +138,8 @@
                                 </ion-button>
                                 <ion-item class="select-sort ion-float-right">
                                     <ion-label>Sort by</ion-label>
-                                    <ion-select [value]="sortOptions[0]" interface="popover">
+                                    <ion-select (ionChange)="sortBooks($event)" [value]="sortOptions[0]"
+                                                interface="popover">
                                         <ion-select-option *ngFor="let option of sortOptions"
                                                            [value]="option">{{option}}</ion-select-option>
                                     </ion-select>

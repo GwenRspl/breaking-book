@@ -57,16 +57,16 @@ export class LibraryPage implements OnInit {
     return this._userId;
   }
 
-  get collections(): Collection[] {
-    return this._collections;
-  }
-
   get books(): Book[] {
     return this._books;
   }
 
   get currentlyReading(): Book[] {
     return this._currentlyReading;
+  }
+
+  get collections(): Collection[] {
+    return this._collections;
   }
 
   get collectionsCheckbox(): CollectionCheckbox[] {
@@ -132,6 +132,10 @@ export class LibraryPage implements OnInit {
     );
   }
 
+  showBookDetails(bookId: number) {
+    this.router.navigate((['/', 'library', 'show', bookId]));
+  }
+
   addNewBook() {
     this.actionSheetCtrl.create({
       mode: 'ios',
@@ -159,10 +163,6 @@ export class LibraryPage implements OnInit {
     });
   }
 
-  showBookDetails(bookId: number) {
-    this.router.navigate((['/', 'library', 'show', bookId]));
-  }
-
   /*
   Carousel methods
    */
@@ -178,47 +178,12 @@ export class LibraryPage implements OnInit {
   Filters methods
    */
 
-  onOwnershipChanged(event: any) {
-    switch (event.detail.value) {
-      case 'all': {
-        this.selectedOwnership = 'all';
-        break;
-      }
-      case 'owned': {
-        this.selectedOwnership = 'owned';
-        break;
-      }
-      case 'notOwned': {
-        this.selectedOwnership = 'notOwned';
-        break;
-      }
+  searchBarFiltering() {
+    this._currentSelection = this.applyFilters().filter(book => {
+      return book.title.toLowerCase().indexOf(this.userInput.toLowerCase()) > -1 ||
+        book.authors.toString().toLowerCase().indexOf(this.userInput.toLowerCase()) > -1;
+    });
 
-    }
-  }
-
-  onRatingsChanged(event: any) {
-    switch (event.detail.value) {
-      case '1': {
-        this.selectedRatings = 1;
-        break;
-      }
-      case '2': {
-        this.selectedRatings = 2;
-        break;
-      }
-      case '3': {
-        this.selectedRatings = 3;
-        break;
-      }
-      case '4': {
-        this.selectedRatings = 4;
-        break;
-      }
-      case '5': {
-        this.selectedRatings = 5;
-        break;
-      }
-    }
   }
 
   applyFilters() {
@@ -285,12 +250,102 @@ export class LibraryPage implements OnInit {
     return tempBooks;
   }
 
-  searchBarFiltering() {
-    this._currentSelection = this.applyFilters().filter(book => {
-      return book.title.toLowerCase().indexOf(this.userInput.toLowerCase()) > -1 ||
-        book.authors.toString().toLowerCase().indexOf(this.userInput.toLowerCase()) > -1;
-    });
+  onOwnershipChanged(event: any) {
+    switch (event.detail.value) {
+      case 'all': {
+        this.selectedOwnership = 'all';
+        break;
+      }
+      case 'owned': {
+        this.selectedOwnership = 'owned';
+        break;
+      }
+      case 'notOwned': {
+        this.selectedOwnership = 'notOwned';
+        break;
+      }
 
+    }
+  }
+
+  onRatingsChanged(event: any) {
+    switch (event.detail.value) {
+      case '1': {
+        this.selectedRatings = 1;
+        break;
+      }
+      case '2': {
+        this.selectedRatings = 2;
+        break;
+      }
+      case '3': {
+        this.selectedRatings = 3;
+        break;
+      }
+      case '4': {
+        this.selectedRatings = 4;
+        break;
+      }
+      case '5': {
+        this.selectedRatings = 5;
+        break;
+      }
+    }
+  }
+
+  /**
+   *  Sorting methods
+   */
+
+  sortBooks(event: any) {
+    console.log(event);
+    switch (event.detail.value) {
+      case 'Title':
+        this.sortByTitle();
+        break;
+      case 'Author':
+        this.sortByAuthor();
+        break;
+      case 'Rating':
+        this.sortByRating();
+        break;
+    }
+  }
+
+  sortByTitle() {
+    this.currentSelection.sort((a: Book, b: Book) => {
+      if (a.title < b.title) {
+        return -1;
+      } else if (a.title > b.title) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+  }
+
+  sortByAuthor() {
+    this.currentSelection.sort((a: Book, b: Book) => {
+      if (a.authors < b.authors) {
+        return -1;
+      } else if (a.authors > b.authors) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+  }
+
+  sortByRating() {
+    this.currentSelection.sort((a: Book, b: Book) => {
+      if (a.rating < b.rating) {
+        return 1;
+      } else if (a.rating > b.rating) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
   }
 
 }
