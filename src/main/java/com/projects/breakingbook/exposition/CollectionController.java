@@ -2,11 +2,13 @@ package com.projects.breakingbook.exposition;
 
 import com.projects.breakingbook.business.service.BookService;
 import com.projects.breakingbook.business.service.CollectionService;
+import com.projects.breakingbook.business.service.UserService;
 import com.projects.breakingbook.exception.CollectionNotCreatedException;
 import com.projects.breakingbook.exception.CollectionNotUpdatedException;
 import com.projects.breakingbook.exposition.DTO.CollectionDTO;
 import com.projects.breakingbook.persistence.entity.Book;
 import com.projects.breakingbook.persistence.entity.Collection;
+import com.projects.breakingbook.persistence.entity.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,11 +26,13 @@ public class CollectionController {
     private final CollectionService collectionService;
     private final ModelMapper modelMapper;
     private final BookService bookService;
+    private final UserService userService;
 
-    public CollectionController(final CollectionService collectionService, final ModelMapper modelMapper, final BookService bookService) {
+    public CollectionController(final CollectionService collectionService, final ModelMapper modelMapper, final BookService bookService, final UserService userService) {
         this.collectionService = collectionService;
         this.modelMapper = modelMapper;
         this.bookService = bookService;
+        this.userService = userService;
     }
 
     @GetMapping("")
@@ -97,6 +101,9 @@ public class CollectionController {
 
     private CollectionDTO convertToDTO(final Collection collection) {
         final CollectionDTO collectionDTO = this.modelMapper.map(collection, CollectionDTO.class);
+        if (collection.getUser() != null) {
+            collectionDTO.setUserId(collection.getUser().getId());
+        }
         if (collection.getBooks() != null) {
             final List<Long> booksIds = collection.getBooks()
                     .stream()
@@ -109,6 +116,11 @@ public class CollectionController {
 
     private Collection convertToEntity(final CollectionDTO collectionDTO) throws ParseException {
         final Collection collection = this.modelMapper.map(collectionDTO, Collection.class);
+        if (collectionDTO.getUserId() != null) {
+            final Optional<User> optionalUser = this.userService.getOne(collectionDTO.getUserId());
+            optionalUser.ifPresent(collection::setUser);
+        }
+
         if (collectionDTO.getBooksIds() != null) {
             final List<Book> books = collectionDTO.getBooksIds().stream()
                     .map(id -> this.bookService.getOne(id))
