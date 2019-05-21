@@ -3,14 +3,12 @@ package com.projects.breakingbook.exposition;
 import com.projects.breakingbook.business.service.BookService;
 import com.projects.breakingbook.business.service.UserService;
 import com.projects.breakingbook.exception.UserNotUpdatedException;
-import com.projects.breakingbook.exposition.DTO.FriendDTO;
 import com.projects.breakingbook.exposition.DTO.UserDTO;
 import com.projects.breakingbook.message.request.LoginForm;
 import com.projects.breakingbook.message.request.SignUpForm;
 import com.projects.breakingbook.message.response.JwtResponse;
 import com.projects.breakingbook.message.response.ResponseMessage;
 import com.projects.breakingbook.persistence.entity.Book;
-import com.projects.breakingbook.persistence.entity.Friend;
 import com.projects.breakingbook.persistence.entity.RoleName;
 import com.projects.breakingbook.persistence.entity.User;
 import com.projects.breakingbook.security.jwt.JwtProvider;
@@ -39,15 +37,15 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "*")
 public class UserController {
 
-    private AuthenticationManager authenticationManager;
-    private UserService userService;
-    private BookService bookService;
-    private ModelMapper modelMapper;
     PasswordEncoder encoder;
     JwtProvider jwtProvider;
+    private final AuthenticationManager authenticationManager;
+    private final UserService userService;
+    private final BookService bookService;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public UserController(AuthenticationManager authenticationManager, UserService userService, BookService bookService, ModelMapper modelMapper, PasswordEncoder encoder, JwtProvider jwtProvider) {
+    public UserController(final AuthenticationManager authenticationManager, final UserService userService, final BookService bookService, final ModelMapper modelMapper, final PasswordEncoder encoder, final JwtProvider jwtProvider) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.bookService = bookService;
@@ -57,36 +55,36 @@ public class UserController {
     }
 
     @PostMapping("/auth/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest) {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody final LoginForm loginRequest) {
 
-        Authentication authentication = authenticationManager.authenticate(
+        final Authentication authentication = this.authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String jwt = jwtProvider.generateJwtToken(authentication);
-        UserPrinciple userDetails = (UserPrinciple) authentication.getPrincipal();
+        final String jwt = this.jwtProvider.generateJwtToken(authentication);
+        final UserPrinciple userDetails = (UserPrinciple) authentication.getPrincipal();
 
         return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities()));
     }
 
     @PostMapping("/auth/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpForm signUpRequest) {
-        if (userService.existsByUsername(signUpRequest.getUsername())) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody final SignUpForm signUpRequest) {
+        if (this.userService.existsByUsername(signUpRequest.getUsername())) {
             return new ResponseEntity<>(new ResponseMessage("Username is already taken!"),
                     HttpStatus.BAD_REQUEST);
         }
 
-        if (userService.existsByEmail(signUpRequest.getEmail())) {
+        if (this.userService.existsByEmail(signUpRequest.getEmail())) {
             return new ResponseEntity<>(new ResponseMessage("Email is already taken!"),
                     HttpStatus.BAD_REQUEST);
         }
 
-        User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()));
+        final User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(),
+                this.encoder.encode(signUpRequest.getPassword()));
 
-        String stringRole = signUpRequest.getRole();
-        RoleName role;
+        final String stringRole = signUpRequest.getRole();
+        final RoleName role;
 
         if ("admin".equals(stringRole)) {
             role = RoleName.ROLE_ADMIN;
@@ -95,7 +93,7 @@ public class UserController {
         }
 
         user.setRole(role);
-        userService.create(user);
+        this.userService.create(user);
 
         return new ResponseEntity<>(new ResponseMessage("User registered successfully!"), HttpStatus.OK);
     }
@@ -103,7 +101,7 @@ public class UserController {
     @GetMapping("/users")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public List<UserDTO> getAll() {
-        List<User> users = this.userService.getAll();
+        final List<User> users = this.userService.getAll();
         return users.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
@@ -111,30 +109,29 @@ public class UserController {
 
     @GetMapping("/users/username/{username}")
     public UserDTO getOneByUsername(@PathVariable final String username) {
-        Optional<User> optionalUser = this.userService.findUserByUsername(username);
+        final Optional<User> optionalUser = this.userService.findUserByUsername(username);
         return optionalUser.map(this::convertToDTO).orElse(null);
     }
 
     @GetMapping("/users/{id}")
     public UserDTO getOne(@PathVariable final Long id) {
-        Optional<User> optionalUser = this.userService.getOne(id);
+        final Optional<User> optionalUser = this.userService.getOne(id);
         return optionalUser.map(this::convertToDTO).orElse(null);
     }
 
     @PutMapping("/users/{id}")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> update(@PathVariable final Long id, @RequestBody final UserDTO userDTO) {
-        boolean result;
+        final boolean result;
         try {
-            System.out.println(convertToEntity(userDTO));
-            result = this.userService.update(id, convertToEntity(userDTO));
-            System.out.println(result);
+            System.out.println(this.convertToEntity(userDTO));
+            result = this.userService.update(id, this.convertToEntity(userDTO));
             if (result) {
                 return new ResponseEntity<>("User updated successfully", HttpStatus.OK);
             } else {
                 throw new UserNotUpdatedException("User not updated");
             }
-        } catch(ParseException | UserNotUpdatedException e){
+        } catch (final ParseException | UserNotUpdatedException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -142,8 +139,8 @@ public class UserController {
     @DeleteMapping("/users/{id}")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> delete(@PathVariable final Long id) {
-        boolean result = this.userService.delete(id);
-        if(result) {
+        final boolean result = this.userService.delete(id);
+        if (result) {
             return new ResponseEntity<>("User deleted successfully", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("User not deleted", HttpStatus.BAD_REQUEST);
@@ -153,18 +150,18 @@ public class UserController {
     @DeleteMapping("/users")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> deleteAll() {
-        boolean result = this.userService.deleteAll();
-        if(result) {
+        final boolean result = this.userService.deleteAll();
+        if (result) {
             return new ResponseEntity<>("All users deleted successfully", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("No user deleted", HttpStatus.BAD_REQUEST);
         }
     }
 
-    private UserDTO convertToDTO(User user) {
-        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
-        if(user.getBooks() != null) {
-            List<Long> bookIds = user.getBooks().stream()
+    private UserDTO convertToDTO(final User user) {
+        final UserDTO userDTO = this.modelMapper.map(user, UserDTO.class);
+        if (user.getBooks() != null) {
+            final List<Long> bookIds = user.getBooks().stream()
                     .map(Book::getId)
                     .collect(Collectors.toList());
             userDTO.setBookIds(bookIds);
@@ -172,10 +169,10 @@ public class UserController {
         return userDTO;
     }
 
-    private User convertToEntity(UserDTO userDTO) throws ParseException {
-        User user = modelMapper.map(userDTO, User.class);
-        if(userDTO.getBookIds() != null) {
-            List<Book> books = userDTO.getBookIds().stream()
+    private User convertToEntity(final UserDTO userDTO) throws ParseException {
+        final User user = this.modelMapper.map(userDTO, User.class);
+        if (userDTO.getBookIds() != null) {
+            final List<Book> books = userDTO.getBookIds().stream()
                     .map(id -> this.bookService.getOne(id))
                     .filter(Optional::isPresent)
                     .map(Optional::get)

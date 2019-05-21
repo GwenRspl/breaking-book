@@ -20,23 +20,25 @@ public class CollectionRepositoryImpl implements CollectionRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private final String INSERT = "INSERT INTO collection(collection_name) VALUES (?)";
-    private final String SELECT_ALL = "SELECT * FROM collection WHERE collection_breaking_book_user = ?";
-    private final String SELECT_BY_ID = "SELECT * FROM collection WHERE collection_id = ?";
+    private final String INSERT = "INSERT INTO collection(collection_name, collection_breaking_book_user) VALUES (?, ?)";
+    private final String SELECT_ALL = "SELECT * FROM collection INNER JOIN breaking_book_user r ON " +
+            "collection.collection_breaking_book_user = r.breaking_book_user_id WHERE collection_breaking_book_user = ?";
+    private final String SELECT_BY_ID = "SELECT * FROM collection INNER JOIN breaking_book_user r ON " +
+            "collection.collection_breaking_book_user = r.breaking_book_user_id  WHERE collection_id = ?";
     private final String DELETE_BY_ID = "DELETE FROM collection WHERE collection_id = ?";
     private final String DELETE_ALL = "DELETE FROM collection";
     private final String UPDATE = "UPDATE collection SET collection_name = ? WHERE collection_id = ?";
 
     private final String SELECT_JOIN = "SELECT * FROM collection " +
-            "INNER JOIN book_collection ON collection.collection_id = book_collection.book_collection_collection_id " +
-            "INNER JOIN book ON book.book_id = book_collection.book_collection_book_id " +
-            "INNER JOIN breaking_book_user r ON book.book_breaking_book_user = r.breaking_book_user_id " +
+            "LEFT JOIN book_collection ON collection.collection_id = book_collection.book_collection_collection_id " +
+            "LEFT JOIN breaking_book_user r ON collection.collection_breaking_book_user = r.breaking_book_user_id " +
+            "LEFT JOIN book ON book.book_id = book_collection.book_collection_book_id " +
             "FULL OUTER JOIN friend f ON book.book_friend = f.friend_id";
 
     private final String SELECT_JOIN_BY_ID = "SELECT * FROM collection " +
             "INNER JOIN book_collection ON collection.collection_id = book_collection.book_collection_collection_id " +
+            "INNER JOIN breaking_book_user r ON collection.collection_breaking_book_user = r.breaking_book_user_id " +
             "INNER JOIN book ON book.book_id = book_collection.book_collection_book_id " +
-            "INNER JOIN breaking_book_user r ON book.book_breaking_book_user = r.breaking_book_user_id " +
             "FULL OUTER JOIN friend f ON book.book_friend = f.friend_id " +
             "WHERE collection_id = ?;";
 
@@ -47,16 +49,21 @@ public class CollectionRepositoryImpl implements CollectionRepository {
     @Override
     public List<Collection> findAllCollections(final Long userId) {
         final List<Collection> collections = this.jdbcTemplate.query(this.SELECT_ALL, new Object[]{userId}, new CollectionMapper());
+        if (collections.isEmpty()) {
+            return collections;
+        }
         final Map<Long, List<Book>> booksMap = this.jdbcTemplate.query(this.SELECT_JOIN, new CollectionMapExtractor());
-        for (final Collection collection : collections) {
-            collection.setBooks(booksMap.get(collection.getId()));
+        if (!booksMap.isEmpty()) {
+            for (final Collection collection : collections) {
+                collection.setBooks(booksMap.get(collection.getId()));
+            }
         }
         return collections;
     }
 
     @Override
     public boolean createCollection(final Collection collection) {
-        final int result = this.jdbcTemplate.update(this.INSERT, collection.getName());
+        final int result = this.jdbcTemplate.update(this.INSERT, collection.getName(), collection.getUser().getId());
         return result != 0;
     }
 
