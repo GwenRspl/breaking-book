@@ -4,6 +4,7 @@ import {ActionSheetController, IonSlides} from '@ionic/angular';
 import {BooksService} from './services/books.service';
 import {TokenStorageService} from '../authentication/services/token-storage.service';
 import {Router} from '@angular/router';
+import {Collection} from '../collections/collection.model';
 
 interface CollectionCheckbox {
   id: number;
@@ -33,8 +34,9 @@ export class LibraryPage implements OnInit {
   public userInput: string = '';
   private _userId: number;
   private _books: Book[] = [];
+  private _collections: Collection[] = [];
   private _currentlyReading: Book[] = [];
-  private _collections: CollectionCheckbox[] = [];
+  private _collectionsCheckbox: CollectionCheckbox[] = [];
   private _status: StatusCheckbox[] = [
     {id: 0, name: 'Unread', checked: true},
     {id: 1, name: 'Read', checked: true},
@@ -55,6 +57,10 @@ export class LibraryPage implements OnInit {
     return this._userId;
   }
 
+  get collections(): Collection[] {
+    return this._collections;
+  }
+
   get books(): Book[] {
     return this._books;
   }
@@ -63,8 +69,8 @@ export class LibraryPage implements OnInit {
     return this._currentlyReading;
   }
 
-  get collections(): CollectionCheckbox[] {
-    return this._collections;
+  get collectionsCheckbox(): CollectionCheckbox[] {
+    return this._collectionsCheckbox;
   }
 
   get status(): StatusCheckbox[] {
@@ -106,34 +112,25 @@ export class LibraryPage implements OnInit {
     );
   }
 
-  retrieveCollections() {
-    let strings = ['Fantasy', 'SF', 'Fiction', 'Non-fiction', 'Short stories'];
-    let i: number;
-    for (i = 0; i < strings.length; i++) {
-      this._collections.push({id: i, name: strings[i], checked: true});
-    }
-  }
-
   retrieveCurrentlyReading() {
     this._currentlyReading = this.books.filter(book => book.status === 'ONGOING');
   }
 
-  nextSlide(slideView) {
-    slideView.slideNext(500);
+  retrieveCollections() {
+    this.booksService.getCollections(this.userId).subscribe(
+      data => {
+        this._collections = data;
+        this._collectionsCheckbox = [];
+        let i: number;
+        for (i = 0; i < this.collections.length; i++) {
+          this._collectionsCheckbox.push({id: i, name: this.collections[i].name, checked: false});
+        }
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
-
-  previousSlide(slideView) {
-    slideView.slidePrev(500);
-  }
-
-  searchBarFiltering() {
-    this._currentSelection = this.applyFilters().filter(book => {
-      return book.title.toLowerCase().indexOf(this.userInput.toLowerCase()) > -1 ||
-        book.authors.toString().toLowerCase().indexOf(this.userInput.toLowerCase()) > -1;
-    });
-
-  }
-
 
   addNewBook() {
     this.actionSheetCtrl.create({
@@ -165,6 +162,21 @@ export class LibraryPage implements OnInit {
   showBookDetails(bookId: number) {
     this.router.navigate((['/', 'library', 'show', bookId]));
   }
+
+  /*
+  Carousel methods
+   */
+  nextSlide(slideView) {
+    slideView.slideNext(500);
+  }
+
+  previousSlide(slideView) {
+    slideView.slidePrev(500);
+  }
+
+  /*
+  Filters methods
+   */
 
   onOwnershipChanged(event: any) {
     switch (event.detail.value) {
@@ -211,8 +223,6 @@ export class LibraryPage implements OnInit {
 
   applyFilters() {
     let tempBooks = this.books;
-    console.log('filtering');
-    console.log(this.collections);
 
     switch (this.selectedOwnership) {
       case 'all':
@@ -239,7 +249,6 @@ export class LibraryPage implements OnInit {
     let temp2 = [];
     selected.forEach(status => {
       let temp = tempBooks.filter(book => {
-        console.log(book.status.toLowerCase(), status.name.toLowerCase());
         return book.status.toLowerCase() === status.name.toLowerCase();
       });
       temp.forEach(book => {
@@ -249,13 +258,39 @@ export class LibraryPage implements OnInit {
     tempBooks = temp2;
 
 
-    // selected = this.collections.filter((collection) => collection.checked);
-    // temp2 = [];
-    // récupérer un array de collections et leurs books id, et push les id dans array puis filter les books par id
-    // tempBooks = temp2;
+    selected = this.collectionsCheckbox.filter((collection) => collection.checked);
+    if (selected.length != 0) {
+      temp2 = [];
+      selected.forEach(collectionCheckbox => {
+        this.collections.forEach(collection => {
+          if (collection.name == collectionCheckbox.name) {
+            collection.booksIds.forEach(book => {
+              if (!temp2.includes(book)) {
+                temp2.push(book);
+              }
+            })
+          }
+        });
+      });
+      console.log(temp2);
+
+      tempBooks = tempBooks.filter(book => {
+        return temp2.includes(book.id);
+      });
+
+    }
 
 
     this._currentSelection = tempBooks;
     return tempBooks;
   }
+
+  searchBarFiltering() {
+    this._currentSelection = this.applyFilters().filter(book => {
+      return book.title.toLowerCase().indexOf(this.userInput.toLowerCase()) > -1 ||
+        book.authors.toString().toLowerCase().indexOf(this.userInput.toLowerCase()) > -1;
+    });
+
+  }
+
 }

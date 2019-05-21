@@ -15,7 +15,8 @@
                             <ion-col size="10">
                                 <ion-slides #slideWithButtons [options]="slideOpts" pager="true">
                                     <ion-slide *ngFor="let currentBook of currentlyReading" padding>
-                                        <ion-img [src]="currentBook.image"></ion-img>
+                                        <ion-img (click)="showBookDetails(currentBook.id)" [src]="currentBook.image"
+                                                 class="clickable"></ion-img>
                                     </ion-slide>
                                 </ion-slides>
                             </ion-col>
@@ -70,9 +71,9 @@
                         <ion-list-header>
                             Collections
                         </ion-list-header>
-                        <ion-item *ngFor="let collection of collections; let i = index;">
+                        <ion-item *ngFor="let collection of collectionsCheckbox; let i = index;">
                             <ion-label>{{collection.name}}</ion-label>
-                            <ion-checkbox [(ngModel)]="collections[i].checked" slot="start"></ion-checkbox>
+                            <ion-checkbox [(ngModel)]="collectionsCheckbox[i].checked" slot="start"></ion-checkbox>
                         </ion-item>
                     </ion-list>
                     <ion-list>
@@ -147,7 +148,7 @@
                         <ion-row>
                             <ion-col *ngFor="let book of currentSelection" class="book-row" size-lg="4" size-md="6"
                                      size-sm="12" size-xl="4">
-                                <ion-card (click)="showBookDetails(book.id)" class="book-card">
+                                <ion-card (click)="showBookDetails(book.id)" class="book-card clickable">
                                     <ion-img [src]="book.image"></ion-img>
                                     <ion-card-header>
                                         <ion-card-subtitle>{{book.authors}}</ion-card-subtitle>
