@@ -37,6 +37,27 @@ export class NewBookPage implements OnInit {
   initForm() {
     if (this.booksService.isBookReadyToPopulate()) {
       this.book = this.booksService.getSelectedBook();
+      if (this.book.authors == null) {
+        this.book.authors = [''];
+      }
+      if (this.book.isbn == null) {
+        this.book.isbn = '';
+      }
+      if (this.book.image == null) {
+        this.book.image = '';
+      }
+      if (this.book.language == null) {
+        this.book.language = '';
+      }
+      if (this.book.publisher == null) {
+        this.book.publisher = '';
+      }
+      if (this.book.pages == null) {
+        this.book.pages = 0;
+      }
+      if (this.book.synopsis == null) {
+        this.book.synopsis = '';
+      }
       this.bookForm = this.formBuilder.group({
         title: [this.book.title, [Validators.required, Validators.minLength(3)]],
         authors: [this.book.authors.toString(), [Validators.required, Validators.minLength(3)]],

@@ -11,12 +11,17 @@ import {Router} from '@angular/router';
 })
 export class GoogleApiBookModalComponent implements OnInit {
   @Input() book: Book;
+  private _defaultCover = '../../../assets/default_cover.png';
 
   constructor(private modalCtrl: ModalController,
               private booksService: BooksService,
               private router: Router) {
   }
 
+
+  get defaultCover(): string {
+    return this._defaultCover;
+  }
 
   ngOnInit() {
   }

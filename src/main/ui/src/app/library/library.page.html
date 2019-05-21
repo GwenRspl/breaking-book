@@ -14,9 +14,10 @@
                             </ion-col>
                             <ion-col size="10">
                                 <ion-slides #slideWithButtons [options]="slideOpts" pager="true">
-                                    <ion-slide *ngFor="let currentBook of currentlyReading" padding>
-                                        <ion-img (click)="showBookDetails(currentBook.id)" [src]="currentBook.image"
-                                                 class="clickable"></ion-img>
+                                    <ion-slide (click)="showBookDetails(currentBook.id)" *ngFor="let currentBook of currentlyReading"
+                                               class="clickable slide" padding>
+                                        <ion-img [src]="currentBook.image"></ion-img>
+                                        <p *ngIf="currentBook.image == null || currentBook.image == ''"> {{currentBook.title}}</p>
                                     </ion-slide>
                                 </ion-slides>
                             </ion-col>
@@ -151,6 +152,8 @@
                                      size-sm="12" size-xl="4">
                                 <ion-card (click)="showBookDetails(book.id)" class="book-card clickable">
                                     <ion-img [src]="book.image"></ion-img>
+                                    <ion-img *ngIf="book.image == null || book.image == ''"
+                                             [src]="defaultCover"></ion-img>
                                     <ion-card-header>
                                         <ion-card-subtitle>{{book.authors}}</ion-card-subtitle>
                                         <ion-card-title>{{book.title}}</ion-card-title>

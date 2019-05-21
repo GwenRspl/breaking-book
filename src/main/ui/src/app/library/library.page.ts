@@ -46,6 +46,7 @@ export class LibraryPage implements OnInit {
   private _sortOptions: string[] = ['Author', 'Title', 'Rating'];
   private selectedOwnership;
   private selectedRatings;
+  private _defaultCover = '../../assets/default_cover.png';
 
   constructor(private booksService: BooksService,
               private tokenStorageService: TokenStorageService,
@@ -83,6 +84,11 @@ export class LibraryPage implements OnInit {
 
   get sortOptions(): string[] {
     return this._sortOptions;
+  }
+
+
+  get defaultCover() {
+    return this._defaultCover;
   }
 
   ngOnInit() {
