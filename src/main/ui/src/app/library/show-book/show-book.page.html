@@ -1,78 +1,204 @@
 <ion-content>
     <ion-grid>
         <ion-row>
-            <ion-col offset-lg="2" offset-xl="3" size-lg="4" size-xl="3">
+            <ion-col class="cover-col" offset-lg="2" offset-xl="3" size-lg="2" size-md="4" size-xl="2" size-xs="4">
                 <ion-img [src]="book.image"></ion-img>
                 <ion-img *ngIf="book.image == null || book.image == ''"
                          [src]="defaultCover"></ion-img>
             </ion-col>
-            <ion-col size-lg="4" size-xl="3">
-                <ion-toggle (click)="toggleEditMode()" color="primary"></ion-toggle>
-                Edit mode
-                <ion-button *ngIf="editMode === true">Save</ion-button>
-                <h1>{{book.title}}</h1>
-                <h2>by {{book.authors}}</h2>
-                <h3>Publisher</h3>
-                {{book.publisher}}
-                <h3>Release date</h3>
-                {{book.datePublished}}
-                <h3 *ngIf="book.language === 'FR'">Language: French</h3>
-                <h3 *ngIf="book.language === 'EN'">Language: English</h3>
-                <h3>ISBN</h3>
-                {{book.isbn}}
-                <ion-item *ngIf="book.pages != 0 || editMode === true" lines="none">
+            <ion-col size-lg="6" size-md="8" size-xl="5" size-xs="8">
+                <ion-grid>
+                    <ion-row>
+                        <ion-col size="8">
+                            <ion-item lines="none">
+                                <ion-toggle (click)="toggleEditMode()" color="primary">Toggle</ion-toggle>
+                                <ion-label *ngIf="this.editMode === false ">Open edit mode</ion-label>
+                                <ion-label *ngIf="this.editMode === true ">Close edit mode</ion-label>
+                            </ion-item>
+
+                            <ion-button *ngIf="editMode === true" color="success">Save changes</ion-button>
+                            <ion-button *ngIf="editMode === true" color="danger">Delete book</ion-button>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col>
+                            <h1 *ngIf="editMode === false">{{book.title}}</h1>
+                            <ion-item *ngIf="editMode === true">
+                                <ion-label position="stacked">Title</ion-label>
+                                <ion-input [value]="book.title"></ion-input>
+                            </ion-item>
+                            <h2 *ngIf="editMode === false">by {{book.authors}}</h2>
+                            <ion-item *ngIf="editMode === true">
+                                <ion-label position="stacked">Authors (Multiple authors should be comma separated.)
+                                </ion-label>
+                                <ion-input [value]="book.authors"></ion-input>
+                            </ion-item>
+                            <ion-item *ngIf="editMode === true">
+                                <ion-label position="stacked">Cover image</ion-label>
+                                <ion-input [value]="book.image"></ion-input>
+                            </ion-item>
+                            <div *ngIf="editMode === false">
+                                <ion-chip *ngIf="book.owned === true" color="success">
+                                    <ion-icon name="checkmark"></ion-icon>
+                                    <ion-label>Owned</ion-label>
+                                </ion-chip>
+                                <ion-chip *ngIf="book.owned === false" color="danger">
+                                    <ion-icon name="close"></ion-icon>
+                                    <ion-label>Not owned</ion-label>
+                                </ion-chip>
+                                <ion-chip *ngIf="book.status === 'READ'" color="success">
+                                    <ion-icon name="checkmark-circle-outline"></ion-icon>
+                                    <ion-label>Read</ion-label>
+                                </ion-chip>
+                                <ion-chip *ngIf="book.status === 'ONGOING'" color="warning">
+                                    <ion-icon name="book"></ion-icon>
+                                    <ion-label>Currently reading</ion-label>
+                                </ion-chip>
+                                <ion-chip *ngIf="book.status === 'UNREAD'" color="danger">
+                                    <ion-icon name="hourglass"></ion-icon>
+                                    <ion-label>Not read</ion-label>
+                                </ion-chip>
+                                <ion-chip *ngIf="book.friendId != null && this.book.friendId != 0" color="tertiary">
+                                    <ion-avatar>
+                                        <img [src]="friend.avatar" alt="avatar">
+                                    </ion-avatar>
+                                    <ion-label>Lent to {{friend.name}}</ion-label>
+                                </ion-chip>
+                            </div>
+
+                            <ion-item *ngIf="editMode === true">
+                                <ion-label position="stacked">
+                                    Do you own this book ?
+                                </ion-label>
+                                <ion-select [value]="book.owned.toString()" interface="popover">
+                                    <ion-select-option value="true">yes</ion-select-option>
+                                    <ion-select-option value="false">no</ion-select-option>
+                                </ion-select>
+                            </ion-item>
+                            <ion-item *ngIf="editMode === true">
+                                <ion-label position="stacked">
+                                    Did you read this book ?
+                                </ion-label>
+                                <ion-select [value]="book.status.toString()" interface="popover">
+                                    <ion-select-option value="READ">Yes</ion-select-option>
+                                    <ion-select-option value="ONGOING">I'm reading it right now</ion-select-option>
+                                    <ion-select-option value="UNREAD">No</ion-select-option>
+                                </ion-select>
+                            </ion-item>
+
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+
+
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col offset-lg="2" offset-xl="3" size-lg="8" size-xl="6">
+                <ion-item *ngIf="(book.publisher != null && book.publisher != '') || editMode === true"
+                          [lines]="!editMode ? 'none': 'full'">
+                    <ion-label position="stacked">Publisher</ion-label>
+                    <ion-input [readonly]="!editMode" [value]="book.publisher"></ion-input>
+                </ion-item>
+                <ion-item *ngIf="(book.datePublished != null) || editMode === true"
+                          [lines]="!editMode ? 'none': 'full'">
+                    <ion-label position="stacked">Publication date</ion-label>
+                    <ion-datetime [readonly]="!editMode" [value]="book.datePublished"></ion-datetime>
+                </ion-item>
+                <ion-item *ngIf="(book.language != null && book.language != '') || editMode === true"
+                          [lines]="!editMode ? 'none': 'full'">
+                    <ion-label position="stacked">Language</ion-label>
+                    <ion-input [readonly]="!editMode" [value]="book.language"></ion-input>
+                </ion-item>
+                <ion-item *ngIf="(book.isbn != null && book.isbn != '') || editMode === true"
+                          [lines]="!editMode ? 'none': 'full'">
+                    <ion-label position="stacked">ISBN number</ion-label>
+                    <ion-input [readonly]="!editMode" [value]="book.isbn"></ion-input>
+                </ion-item>
+                <ion-item *ngIf="(book.pages != null && book.pages != '') || editMode === true"
+                          [lines]="!editMode ? 'none': 'full'">
                     <ion-label position="stacked">Number of pages</ion-label>
-                    <ion-input [value]="book.pages" readonly></ion-input>
+                    <ion-input [readonly]="!editMode" [value]="book.pages"></ion-input>
+                </ion-item>
+
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col offset-lg="2" offset-xl="3" size-lg="8" size-xl="6">
+                <div *ngIf="editMode === false">
+                    <h2>Synopsis</h2>
+                    <p>{{book.synopsis}}</p>
+                </div>
+                <ion-item *ngIf="editMode === true">
+                    <ion-label position="stacked">Synopsis</ion-label>
+                    <ion-textarea [value]="book.synopsis" rows="5"></ion-textarea>
                 </ion-item>
             </ion-col>
         </ion-row>
         <ion-row>
             <ion-col offset-lg="2" offset-xl="3" size-lg="8" size-xl="6">
-                <h2>Synopsis</h2>
-                <p>{{book.synopsis}}</p>
-
+                <div *ngIf="editMode === false">
+                    <h2 class="rating">Rating</h2>
+                    <div *ngIf="book.rating === 5" class="rating">
+                        <ion-icon name="star"></ion-icon>
+                        <ion-icon name="star"></ion-icon>
+                        <ion-icon name="star"></ion-icon>
+                        <ion-icon name="star"></ion-icon>
+                        <ion-icon name="star"></ion-icon>
+                    </div>
+                    <div *ngIf="book.rating === 4" class="rating">
+                        <ion-icon name="star"></ion-icon>
+                        <ion-icon name="star"></ion-icon>
+                        <ion-icon name="star"></ion-icon>
+                        <ion-icon name="star"></ion-icon>
+                        <ion-icon name="star-outline"></ion-icon>
+                    </div>
+                    <div *ngIf="book.rating === 3" class="rating">
+                        <ion-icon name="star"></ion-icon>
+                        <ion-icon name="star"></ion-icon>
+                        <ion-icon name="star"></ion-icon>
+                        <ion-icon name="star-outline"></ion-icon>
+                        <ion-icon name="star-outline"></ion-icon>
+                    </div>
+                    <div *ngIf="book.rating === 2" class="rating">
+                        <ion-icon name="star"></ion-icon>
+                        <ion-icon name="star"></ion-icon>
+                        <ion-icon name="star-outline"></ion-icon>
+                        <ion-icon name="star-outline"></ion-icon>
+                        <ion-icon name="star-outline"></ion-icon>
+                    </div>
+                    <div *ngIf="book.rating === 1" class="rating">
+                        <ion-icon name="star"></ion-icon>
+                        <ion-icon name="star-outline"></ion-icon>
+                        <ion-icon name="star-outline"></ion-icon>
+                        <ion-icon name="star-outline"></ion-icon>
+                        <ion-icon name="star-outline"></ion-icon>
+                    </div>
+                </div>
+                <ion-item *ngIf="editMode === true">
+                    <ion-label position="stacked">
+                        Rating
+                    </ion-label>
+                    <ion-select [value]="book.rating.toString()" interface="popover">
+                        <ion-select-option value="1">1 star</ion-select-option>
+                        <ion-select-option value="2">2 stars</ion-select-option>
+                        <ion-select-option value="3">3 stars</ion-select-option>
+                        <ion-select-option value="4">4 stars</ion-select-option>
+                        <ion-select-option value="5">5 stars</ion-select-option>
+                    </ion-select>
+                </ion-item>
             </ion-col>
         </ion-row>
         <ion-row>
             <ion-col offset-lg="2" offset-xl="3" size-lg="8" size-xl="6">
-                <h2>Rating</h2>
-                <div *ngIf="book.rating === 5">
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star"></ion-icon>
+                <div *ngIf="editMode === false">
+                    <h2>Comment</h2>
+                    <p>{{book.comment}}</p>
                 </div>
-                <div *ngIf="book.rating === 4">
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star-outline"></ion-icon>
-                </div>
-                <div *ngIf="book.rating === 3">
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star-outline"></ion-icon>
-                    <ion-icon name="star-outline"></ion-icon>
-                </div>
-                <div *ngIf="book.rating === 2">
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star-outline"></ion-icon>
-                    <ion-icon name="star-outline"></ion-icon>
-                    <ion-icon name="star-outline"></ion-icon>
-                </div>
-                <div *ngIf="book.rating === 1">
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star-outline"></ion-icon>
-                    <ion-icon name="star-outline"></ion-icon>
-                    <ion-icon name="star-outline"></ion-icon>
-                    <ion-icon name="star-outline"></ion-icon>
-                </div>
-                <p>{{book.comment}}</p>
-
+                <ion-item *ngIf="editMode === true">
+                    <ion-label position="stacked">Comment</ion-label>
+                    <ion-textarea [value]="book.comment" rows="3"></ion-textarea>
+                </ion-item>
             </ion-col>
         </ion-row>
     </ion-grid>

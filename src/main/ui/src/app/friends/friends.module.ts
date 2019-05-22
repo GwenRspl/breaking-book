@@ -1,11 +1,12 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Routes, RouterModule } from '@angular/router';
+import {ModuleWithProviders, NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {RouterModule, Routes} from '@angular/router';
+import {IonicModule} from '@ionic/angular';
 
-import { IonicModule } from '@ionic/angular';
-
-import { FriendsPage } from './friends.page';
+import {FriendsPage} from './friends.page';
+import {FriendsService} from './services/friends.service';
+import {HttpClientModule} from '@angular/common/http';
 
 const routes: Routes = [
   {
@@ -19,8 +20,18 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    HttpClientModule
   ],
   declarations: [FriendsPage]
 })
-export class FriendsPageModule {}
+export class FriendsPageModule {
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: FriendsPageModule,
+      providers: [
+        FriendsService
+      ]
+    }
+  }
+}
