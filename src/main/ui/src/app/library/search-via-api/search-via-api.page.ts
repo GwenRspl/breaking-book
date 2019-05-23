@@ -78,10 +78,13 @@ export class SearchViaApiPage implements OnInit {
     if (googleBook.volumeInfo.industryIdentifiers != null) {
       isbn = googleBook.volumeInfo.industryIdentifiers[0].identifier;
     }
-
     let thumbnail = null;
     if (googleBook.volumeInfo.imageLinks != null) {
       thumbnail = googleBook.volumeInfo.imageLinks.thumbnail;
+    }
+    let date = null;
+    if (googleBook.volumeInfo.publishedDate != null) {
+      date = new Date(googleBook.volumeInfo.publishedDate);
     }
     const convertedBook = new Book(null,
       googleBook.volumeInfo.title,
@@ -90,7 +93,7 @@ export class SearchViaApiPage implements OnInit {
       thumbnail,
       googleBook.volumeInfo.language.toUpperCase(),
       googleBook.volumeInfo.publisher,
-      new Date(googleBook.volumeInfo.publishedDate),
+      date,
       googleBook.volumeInfo.pageCount,
       googleBook.volumeInfo.description,
       null, null, null, null, null, null);

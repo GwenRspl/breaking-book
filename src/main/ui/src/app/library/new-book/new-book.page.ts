@@ -65,7 +65,7 @@ export class NewBookPage implements OnInit {
         image: [this.book.image],
         language: [this.book.language, [Validators.required]],
         publisher: [this.book.publisher],
-        datePublished: [this.book.datePublished.toISOString()],
+        datePublished: [this.book.datePublished == null ? '' : this.book.datePublished.toISOString()],
         pages: [this.book.pages],
         synopsis: [this.book.synopsis],
         owned: ['', [Validators.required]],
