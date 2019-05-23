@@ -72,4 +72,12 @@ export class BooksService {
     const url = BASE_URL + '/' + bookId;
     return this.httpClient.delete<string>(url, HTTP_OPTIONS);
   }
+
+  updateBook(book: Book): Observable<string> {
+    console.log('service : ', book);
+    const url = BASE_URL + '/' + book.id;
+    return this.httpClient.put<string>(url, book, HTTP_OPTIONS);
+  }
+
+
 }

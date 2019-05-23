@@ -69,7 +69,7 @@ public class BookRepositoryImpl implements BookRepository {
             if (book.getFriend() != null) {
                 ps.setLong(11, book.getFriend().getId());
             } else {
-                ps.setNull(11, Types.INTEGER);
+                ps.setNull(11, Types.BIGINT);
             }
             ps.setBoolean(12, book.isOwned());
             ps.setInt(13, book.getRating());
@@ -111,7 +111,10 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public boolean updateBook(final Long id, final Book book) {
-        final int result = this.jdbcTemplate.update(this.UPDATE, book.getTitle(), this.convertListToSqlArray(book.getAuthors()), book.getIsbn(), book.getImage(), book.getLanguage(), book.getPublisher(), book.getDatePublished(), book.getPages(), book.getSynopsis(), book.getUser().getId(), book.getFriend().getId(), book.isOwned(), book.getRating(), book.getComment(), book.getStatus().getBookStatusString(), id);
+        final int result = this.jdbcTemplate.update(this.UPDATE, book.getTitle(), this.convertListToSqlArray(book.getAuthors()),
+                book.getIsbn(), book.getImage(), book.getLanguage(), book.getPublisher(), book.getDatePublished(),
+                book.getPages(), book.getSynopsis(), book.getUser().getId(), book.getFriend() != null ? book.getFriend().getId() : null, book.isOwned(),
+                book.getRating(), book.getComment(), book.getStatus() != null ? book.getStatus().getBookStatusString() : null, id);
         return result != 0;
     }
 

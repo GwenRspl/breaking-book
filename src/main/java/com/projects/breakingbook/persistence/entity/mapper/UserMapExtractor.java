@@ -53,7 +53,9 @@ public class UserMapExtractor implements ResultSetExtractor<Map<Long, List<Book>
                     .user(user)
                     .build();
             final String status = (resultSet.getString("book_status"));
-            book.setStatus(BookStatus.valueOf(status));
+            if (status != null) {
+                book.setStatus(BookStatus.valueOf(status));
+            }
 
             final List<Book> books = booksMap.get(userId);
             if (books == null) {

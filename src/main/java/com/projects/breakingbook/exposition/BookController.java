@@ -68,6 +68,7 @@ public class BookController {
 //        }
 
         final Long bookId;
+
         try {
             bookId = this.bookService.create(this.convertToEntity(bookDto));
             if (bookId != null) {
@@ -82,6 +83,7 @@ public class BookController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable final Long id, @RequestBody final BookDTO bookDTO) {
+
         boolean result = false;
         try {
             result = this.bookService.update(id, this.convertToEntity(bookDTO));
@@ -117,8 +119,12 @@ public class BookController {
 
     private BookDTO convertToDTO(final Book book) {
         final BookDTO bookDTO = this.modelMapper.map(book, BookDTO.class);
-        bookDTO.setFriendId(book.getFriend().getId());
         bookDTO.setUserId(book.getUser().getId());
+        if (book.getFriend().getId() == 0) {
+            bookDTO.setFriendId(null);
+            return bookDTO;
+        }
+        bookDTO.setFriendId(book.getFriend().getId());
         return bookDTO;
     }
 
