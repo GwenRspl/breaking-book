@@ -4,6 +4,8 @@ import {BooksService} from '../services/books.service';
 import {ActivatedRoute} from '@angular/router';
 import {Friend} from '../../friends/friend.model';
 import {FriendsService} from '../../friends/services/friends.service';
+import {ModalController} from '@ionic/angular';
+import {DeleteBookModalComponent} from './delete-book-modal/delete-book-modal.component';
 
 
 @Component({
@@ -19,7 +21,8 @@ export class ShowBookPage implements OnInit {
 
   constructor(private booksService: BooksService,
               private friendsService: FriendsService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private modalCtrl: ModalController) {
   }
 
 
@@ -75,7 +78,44 @@ export class ShowBookPage implements OnInit {
     console.log(this.editMode);
   }
 
-  onOwnershipChanged(event: any) {
+  saveChanges() {
+  }
 
+  deleteBook() {
+    this.modalCtrl
+      .create({
+        component: DeleteBookModalComponent,
+        componentProps: {step1: true},
+        cssClass: 'delete-book-modal'
+      })
+      .then(modal => {
+        modal.present();
+        return modal.onDidDismiss();
+      })
+      .then(modal => {
+        if (modal.role == 'delete') {
+          console.log('delete');
+          this.booksService.deleteBook(this.book.id).subscribe(
+            data => {
+              this.presentSuccessModal();
+            },
+            error => {
+              console.log(error);
+            }
+          );
+        }
+      })
+  }
+
+  private presentSuccessModal() {
+    this.modalCtrl
+      .create({
+        component: DeleteBookModalComponent,
+        componentProps: {step1: false},
+        cssClass: 'delete-book-modal'
+      })
+      .then(modal => {
+        modal.present();
+      })
   }
 }

@@ -16,8 +16,10 @@
                                 <ion-label *ngIf="this.editMode === true ">Close edit mode</ion-label>
                             </ion-item>
 
-                            <ion-button *ngIf="editMode === true" color="success">Save changes</ion-button>
-                            <ion-button *ngIf="editMode === true" color="danger">Delete book</ion-button>
+                            <ion-button (click)="saveChanges()" *ngIf="editMode === true" color="success">Save changes
+                            </ion-button>
+                            <ion-button (click)="deleteBook()" *ngIf="editMode === true" color="danger">Delete book
+                            </ion-button>
                         </ion-col>
                     </ion-row>
                     <ion-row>

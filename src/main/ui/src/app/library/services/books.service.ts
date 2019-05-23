@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Book} from '../book.model';
 import {GoogleApiQueryResult} from '../search-via-api/googleApiQueryResult.model';
 import {Collection} from '../../collections/collection.model';
@@ -12,6 +12,7 @@ const GOOGLE_API_KEY = '&key=AIzaSyDYsB7DhlSW_l-Mn9WjmdPYm4dafvL1ly0';
 const GOOGLE_API_FIELDS = '&fields=totalItems,items(selfLink,volumeInfo(title,subtitle,authors,publisher,publishedDate,description,industryIdentifiers,pageCount,imageLinks,language))';
 const GOOGLE_API_MAX_RESULTS = '&maxResults=40';
 const USER_ID_PARAM = '?userId=';
+const HTTP_OPTIONS = {headers: new HttpHeaders({'Content-Type': 'application/json',}), responseType: 'text' as 'json'};
 
 @Injectable({
   providedIn: 'root'
@@ -65,5 +66,10 @@ export class BooksService {
   getCollections(userId: number): Observable<Collection[]> {
     const url = COLLECTIONS_URL + USER_ID_PARAM + userId;
     return this.httpClient.get<Collection[]>(url);
+  }
+
+  deleteBook(bookId: number): Observable<string> {
+    const url = BASE_URL + '/' + bookId;
+    return this.httpClient.delete<string>(url, HTTP_OPTIONS);
   }
 }
