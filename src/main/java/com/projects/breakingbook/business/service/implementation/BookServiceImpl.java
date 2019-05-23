@@ -77,9 +77,12 @@ public class BookServiceImpl implements BookService {
                 book.setFriend(originalBook.getFriend());
             }
         }
-        book.setOwned(originalBook.isOwned());
-        book.setRating(originalBook.getRating());
-        book.setComment(originalBook.getComment());
+        if (book.getRating() == 0) {
+            book.setRating(originalBook.getRating());
+        }
+        if (book.getComment() == null) {
+            book.setComment(originalBook.getComment());
+        }
         return this.bookRepository.updateBook(id, book);
     }
 

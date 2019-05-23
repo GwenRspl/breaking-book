@@ -88,7 +88,6 @@ export class ShowBookPage implements OnInit {
 
   toggleEditMode() {
     this._editMode = !this._editMode;
-    console.log(this.editMode);
   }
 
   saveChanges() {
@@ -119,11 +118,10 @@ export class ShowBookPage implements OnInit {
       friendId,
       +this.tokenStorageService.getUserId()
     );
-    console.log('updated ', newBook);
-    console.log('old', this.book);
     this.booksService.updateBook(newBook).subscribe(
       data => {
-        console.log(data);
+        //this.toggleEditMode();
+        this._book = newBook;
       },
       error => {
         console.log(error);
