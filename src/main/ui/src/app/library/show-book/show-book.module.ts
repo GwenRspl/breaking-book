@@ -6,7 +6,6 @@ import {RouterModule, Routes} from '@angular/router';
 import {IonicModule} from '@ionic/angular';
 
 import {ShowBookPage} from './show-book.page';
-import {DeleteBookModalComponent} from './delete-book-modal/delete-book-modal.component';
 
 const routes: Routes = [
   {
@@ -24,10 +23,9 @@ const routes: Routes = [
     ReactiveFormsModule
   ],
   declarations: [
-    ShowBookPage,
-    DeleteBookModalComponent
+    ShowBookPage
   ],
-  entryComponents: [DeleteBookModalComponent]
+  entryComponents: []
 })
 export class ShowBookPageModule {
 }
