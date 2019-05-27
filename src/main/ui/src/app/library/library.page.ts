@@ -109,6 +109,8 @@ export class LibraryPage implements OnInit {
       data => {
         this._books = data;
         this._currentSelection = this.books;
+        this.sortByTitle();
+        this.sortByAuthor();
         this.retrieveCurrentlyReading();
 
       },
@@ -243,7 +245,6 @@ export class LibraryPage implements OnInit {
           }
         });
       });
-      console.log(temp2);
 
       tempBooks = tempBooks.filter(book => {
         return temp2.includes(book.id);
@@ -304,7 +305,6 @@ export class LibraryPage implements OnInit {
    */
 
   sortBooks(event: any) {
-    console.log(event);
     switch (event.detail.value) {
       case 'Title':
         this.sortByTitle();
@@ -320,9 +320,9 @@ export class LibraryPage implements OnInit {
 
   sortByTitle() {
     this.currentSelection.sort((a: Book, b: Book) => {
-      if (a.title < b.title) {
+      if (a.title.toUpperCase() < b.title.toUpperCase()) {
         return -1;
-      } else if (a.title > b.title) {
+      } else if (a.title.toUpperCase() > b.title.toUpperCase()) {
         return 1;
       } else {
         return 0;
@@ -332,9 +332,9 @@ export class LibraryPage implements OnInit {
 
   sortByAuthor() {
     this.currentSelection.sort((a: Book, b: Book) => {
-      if (a.authors < b.authors) {
+      if (a.authors[0].toUpperCase() < b.authors[0].toUpperCase()) {
         return -1;
-      } else if (a.authors > b.authors) {
+      } else if (a.authors[0].toUpperCase() > b.authors[0].toUpperCase()) {
         return 1;
       } else {
         return 0;

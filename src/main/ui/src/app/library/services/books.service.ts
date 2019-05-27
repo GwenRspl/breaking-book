@@ -59,7 +59,6 @@ export class BooksService {
 
   searchBookViaGoogleApi(mode: string, searchInput: string) {
     const url = GOOGLE_API_URL + mode + ':' + searchInput + GOOGLE_API_KEY + GOOGLE_API_FIELDS + GOOGLE_API_MAX_RESULTS;
-    console.log(url);
     return this.httpClient.get<GoogleApiQueryResult>(url);
   }
 
@@ -74,7 +73,6 @@ export class BooksService {
   }
 
   updateBook(book: Book): Observable<string> {
-    console.log('service : ', book);
     const url = BASE_URL + '/' + book.id;
     return this.httpClient.put<string>(url, book, HTTP_OPTIONS);
   }

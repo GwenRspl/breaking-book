@@ -80,7 +80,7 @@
                 <ion-item *ngIf="book.language != null && book.language != ''"
                           lines="none">
                     <ion-label position="stacked">Language</ion-label>
-                    <ion-input [value]="book.language" readonly></ion-input>
+                    <ion-input [value]="book.language === 'FR' ? 'French' : 'English'" readonly></ion-input>
                 </ion-item>
                 <ion-item *ngIf="book.isbn != null && book.isbn != ''"
                           lines="none">
@@ -171,11 +171,19 @@
                                     <ion-label position="stacked">Title</ion-label>
                                     <ion-input formControlName="title" type="text"></ion-input>
                                 </ion-item>
+                                <ion-text *ngIf="submitted && f.title.errors" color="danger">
+                                    <p *ngIf="f.title.errors.required" class="form-error-message">This field is
+                                        required.</p>
+                                </ion-text>
                                 <ion-item>
                                     <ion-label position="stacked">Authors (Multiple authors should be comma separated.)
                                     </ion-label>
                                     <ion-input formControlName="authors" type="text"></ion-input>
                                 </ion-item>
+                                <ion-text *ngIf="submitted && f.authors.errors" color="danger">
+                                    <p *ngIf="f.authors.errors.required" class="form-error-message">This field is
+                                        required.</p>
+                                </ion-text>
                                 <ion-item>
                                     <ion-label position="stacked">Cover image</ion-label>
                                     <ion-input formControlName="image" type="text"></ion-input>
@@ -218,12 +226,24 @@
                     </ion-item>
                     <ion-item>
                         <ion-label position="stacked">Language</ion-label>
-                        <ion-input formControlName="language" type="text"></ion-input>
+                        <ion-select formControlName="language" interface="popover">
+                            <ion-select-option value="FR">French</ion-select-option>
+                            <ion-select-option value="EN">English</ion-select-option>
+                        </ion-select>
                     </ion-item>
+                    <ion-text *ngIf="submitted && f.language.errors" color="danger">
+                        <p class="form-error-message">This field is required.</p>
+                    </ion-text>
                     <ion-item>
                         <ion-label position="stacked">ISBN number</ion-label>
                         <ion-input formControlName="isbn" type="text"></ion-input>
                     </ion-item>
+                    <ion-text *ngIf="submitted && f.isbn.errors" color="danger">
+                        <p *ngIf="f.isbn.errors.minlength" class="form-error-message">The ISBN should be at least 10
+                            characters long.</p>
+                        <p *ngIf="f.isbn.errors.maxlength" class="form-error-message">The ISBN should be at least 10
+                            or 13 characters long.</p>
+                    </ion-text>
                     <ion-item>
                         <ion-label position="stacked">Number of pages</ion-label>
                         <ion-input formControlName="pages" type="number"></ion-input>

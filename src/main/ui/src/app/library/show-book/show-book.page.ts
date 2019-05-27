@@ -52,6 +52,10 @@ export class ShowBookPage implements OnInit {
     return this._submitted;
   }
 
+  get f() {
+    return this.editForm.controls;
+  }
+
   ngOnInit() {
     this.retrieveBook();
   }
@@ -60,7 +64,6 @@ export class ShowBookPage implements OnInit {
     this.route.data.subscribe(
       data => {
         this._book = data['book'];
-        console.log(this.book);
         this.initEditForm();
         if (this.book.friendId != null && this.book.friendId != 0) {
           this.retrieveFriend(this.book.friendId);
@@ -75,13 +78,20 @@ export class ShowBookPage implements OnInit {
   retrieveFriend(friendId: number) {
     this.friendsService.getFriendById(friendId).subscribe(
       data => {
-        console.log(data);
         this._friend = data;
       },
       error => {
         console.log(error);
       }
     );
+  }
+
+  /**
+   * Edit book methods
+   */
+
+  toggleEditMode() {
+    this._editMode = !this._editMode;
   }
 
   initEditForm() {
@@ -100,44 +110,6 @@ export class ShowBookPage implements OnInit {
       rating: [this.book.rating.toString()],
       comment: [this.book.comment],
     });
-  }
-
-  toggleEditMode() {
-    this._editMode = !this._editMode;
-  }
-
-  presentDeleteBookAlert() {
-    this.alertCtrl.create({
-      message: 'Are you sure you want to delete this book ?',
-      buttons: [
-        {
-          text: 'Yes',
-          handler: () => {
-            this.deleteBook();
-          }
-        },
-        {
-          text: 'No',
-          handler: () => {
-            this.alertCtrl.dismiss()
-          }
-        }
-      ]
-    }).then(alert => {
-      alert.present();
-    });
-
-  }
-
-  deleteBook() {
-    this.booksService.deleteBook(this.book.id).subscribe(
-      data => {
-        this.presentSuccessAlert();
-      },
-      error => {
-        console.log(error);
-      }
-    );
   }
 
   saveChanges() {
@@ -179,6 +151,48 @@ export class ShowBookPage implements OnInit {
       }
     );
   }
+
+  /**
+   * Delete book methods
+   */
+
+  presentDeleteBookAlert() {
+    this.alertCtrl.create({
+      message: 'Are you sure you want to delete this book ?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: () => {
+            this.deleteBook();
+          }
+        },
+        {
+          text: 'No',
+          handler: () => {
+            this.alertCtrl.dismiss()
+          }
+        }
+      ]
+    }).then(alert => {
+      alert.present();
+    });
+
+  }
+
+  deleteBook() {
+    this.booksService.deleteBook(this.book.id).subscribe(
+      data => {
+        this.presentSuccessAlert();
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  }
+
+  /**
+   * Alerts & toasts
+   */
 
   presentSuccessAlert() {
     this.alertCtrl.create({
