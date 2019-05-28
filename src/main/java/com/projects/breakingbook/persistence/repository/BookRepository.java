@@ -9,7 +9,7 @@ public interface BookRepository {
 
     List<Book> findAllBooks(Long userId);
 
-    boolean createBook(Book book);
+    Long createBook(Book book);
 
     Optional<Book> findBookById(Long id);
 

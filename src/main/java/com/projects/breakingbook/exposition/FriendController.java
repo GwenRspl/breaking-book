@@ -94,9 +94,9 @@ public class FriendController {
         }
 
         if (result) {
-            return new ResponseEntity<>("friend deleted successfully", HttpStatus.OK);
+            return new ResponseEntity<>("friendId deleted successfully", HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("friend not deleted", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("friendId not deleted", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -116,7 +116,7 @@ public class FriendController {
                 result = this.friendService.delete(friend.getId());
             }
             if (!result) {
-                return new ResponseEntity<>("No friend deleted", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("No friendId deleted", HttpStatus.BAD_REQUEST);
             }
         }
         return new ResponseEntity<>("All friends deleted successfully", HttpStatus.OK);

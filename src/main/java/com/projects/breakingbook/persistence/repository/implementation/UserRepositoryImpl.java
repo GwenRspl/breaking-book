@@ -27,83 +27,86 @@ public class UserRepositoryImpl implements UserRepository {
     private final String DELETE_ALL = "DELETE FROM breaking_book_user";
     private final String UPDATE = "UPDATE breaking_book_user SET breaking_book_user_username = ?, breaking_book_user_avatar = ?, breaking_book_user_email = ?, breaking_book_user_password = ? WHERE breaking_book_user_id = ?";
 
-    private final String SELECT_JOIN  = "SELECT * FROM breaking_book_user " +
-            "INNER JOIN book ON book.book_breaking_book_user = breaking_book_user.breaking_book_user_id " +
-            "INNER JOIN friend ON book.book_friend = friend.friend_id;";
+    private final String SELECT_JOIN = "SELECT * FROM breaking_book_user " +
+            "LEFT JOIN book ON book.book_breaking_book_user = breaking_book_user.breaking_book_user_id " +
+            "LEFT JOIN friend ON book.book_friend = friend.friend_id;";
 
     private final String SELECT_JOIN_BY_ID = "SELECT * FROM breaking_book_user " +
-            "INNER JOIN book ON book.book_breaking_book_user = breaking_book_user.breaking_book_user_id " +
-            "INNER JOIN friend ON book.book_friend = friend.friend_id " +
+            "LEFT JOIN book ON book.book_breaking_book_user = breaking_book_user.breaking_book_user_id " +
+            "LEFT JOIN friend ON book.book_friend = friend.friend_id " +
             "WHERE breaking_book_user.breaking_book_user_id = ?;";
 
-    public UserRepositoryImpl(JdbcTemplate jdbcTemplate) {
+    public UserRepositoryImpl(final JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     public List<User> findAllUsers() {
-        List<User> users = this.jdbcTemplate.query(SELECT_ALL, new UserMapper());
-        Map<Long, List<Book>> booksMap = this.jdbcTemplate.query(SELECT_JOIN, new UserMapExtractor());
-        for (User user : users) {
-            user.setBooks(booksMap.get(user.getId()));
+        final List<User> users = this.jdbcTemplate.query(this.SELECT_ALL, new UserMapper());
+        final Map<Long, List<Book>> booksMap = this.jdbcTemplate.query(this.SELECT_JOIN, new UserMapExtractor());
+        if (booksMap != null) {
+            for (final User user : users) {
+                user.setBooks(booksMap.get(user.getId()));
+            }
         }
         return users;
     }
 
     @Override
-    public boolean createUser(User user) {
-        int result = this.jdbcTemplate.update(INSERT, user.getUsername(), user.getAvatar(), user.getEmail(), user.getPassword(), user.getRole().getRoleNameString());
+    public boolean createUser(final User user) {
+        final int result = this.jdbcTemplate.update(this.INSERT, user.getUsername(), user.getAvatar(), user.getEmail(), user.getPassword(), user.getRole().getRoleNameString());
         return result != 0;
     }
 
     @Override
-    public Optional<User> findUserByUsername(String username) {
-        return findAllUsers().stream()
+    public Optional<User> findUserByUsername(final String username) {
+        return this.findAllUsers().stream()
                 .filter(opt -> opt.getUsername().trim().toLowerCase().contains(username.trim().toLowerCase()))
                 .findFirst();
     }
 
     @Override
-    public Optional<User> findUserById(Long id) {
+    public Optional<User> findUserById(final Long id) {
         try {
-            User user = this.jdbcTemplate.queryForObject(SELECT_BY_ID, new Object[]{id}, new UserMapper());
-            Map<Long, List<Book>> booksMap = this.jdbcTemplate.query(SELECT_JOIN_BY_ID, new Object[]{id}, new UserMapExtractor());
+            final User user = this.jdbcTemplate.queryForObject(this.SELECT_BY_ID, new Object[]{id}, new UserMapper());
+            final Map<Long, List<Book>> booksMap = this.jdbcTemplate.query(this.SELECT_JOIN_BY_ID, new Object[]{id}, new UserMapExtractor());
+            System.out.println(booksMap);
             user.setBooks(booksMap.get(user.getId()));
             return Optional.of(user);
-        } catch (EmptyResultDataAccessException e) {
+        } catch (final EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
 
     @Override
-    public boolean deleteUserById(Long id) {
-        int result = this.jdbcTemplate.update(DELETE_BY_ID, id);
+    public boolean deleteUserById(final Long id) {
+        final int result = this.jdbcTemplate.update(this.DELETE_BY_ID, id);
         return result != 0;
     }
 
     @Override
     public boolean deleteAllUsers() {
-        int result = this.jdbcTemplate.update(DELETE_ALL);
+        final int result = this.jdbcTemplate.update(this.DELETE_ALL);
         return result != 0;
     }
 
     @Override
-    public boolean updateUser(Long id, User user) {
-        int result = this.jdbcTemplate.update(UPDATE, user.getUsername(), user.getAvatar(), user.getEmail(), user.getPassword(), id);
+    public boolean updateUser(final Long id, final User user) {
+        final int result = this.jdbcTemplate.update(this.UPDATE, user.getUsername(), user.getAvatar(), user.getEmail(), user.getPassword(), id);
         return result != 0;
     }
 
     @Override
-    public Boolean existsByUsername(String username) {
-        List<User> users = findAllUsers().stream()
+    public Boolean existsByUsername(final String username) {
+        final List<User> users = this.findAllUsers().stream()
                 .filter(user -> user.getUsername().trim().toLowerCase().contains(username.trim().toLowerCase()))
                 .collect(Collectors.toList());
         return users.size() != 0;
     }
 
     @Override
-    public Boolean existsByEmail(String email) {
-        List<User> users = findAllUsers().stream()
+    public Boolean existsByEmail(final String email) {
+        final List<User> users = this.findAllUsers().stream()
                 .filter(user -> user.getEmail().trim().toLowerCase().contains(email.trim().toLowerCase()))
                 .collect(Collectors.toList());
         return users.size() != 0;

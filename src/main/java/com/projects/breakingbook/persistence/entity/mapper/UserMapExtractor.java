@@ -10,32 +10,36 @@ import java.util.*;
 
 public class UserMapExtractor implements ResultSetExtractor<Map<Long, List<Book>>> {
     @Override
-    public Map<Long, List<Book>> extractData(ResultSet resultSet) throws SQLException, DataAccessException {
-        Map<Long, List<Book>> booksMap = new HashMap<>();
+    public Map<Long, List<Book>> extractData(final ResultSet resultSet) throws SQLException, DataAccessException {
+        final Map<Long, List<Book>> booksMap = new HashMap<>();
         while (resultSet.next()) {
-            Long userId = resultSet.getLong("breaking_book_user_id");
+            if (resultSet.getLong("book_id") == 0) {
+                return booksMap;
+            }
 
-            User user = User.builder()
+            final Long userId = resultSet.getLong("breaking_book_user_id");
+
+            final User user = User.builder()
                     .id(resultSet.getLong("breaking_book_user_id"))
                     .username(resultSet.getString("breaking_book_user_username"))
                     .avatar(resultSet.getString("breaking_book_user_avatar"))
                     .email(resultSet.getString("breaking_book_user_email"))
                     .password(resultSet.getString("breaking_book_user_password"))
                     .build();
-            String role = (resultSet.getString("breaking_book_user_role"));
+            final String role = (resultSet.getString("breaking_book_user_role"));
             user.setRole(RoleName.valueOf(role));
 
-            Friend friend = Friend.builder()
+            final Friend friend = Friend.builder()
                     .id(resultSet.getLong("book_friend"))
                     .name(resultSet.getString("friend_name"))
                     .avatar(resultSet.getString("friend_avatar"))
                     .user(user)
                     .build();
 
-            String[] authorsArray = (String[]) resultSet.getArray("book_authors").getArray();
-            ArrayList<String> authors = new ArrayList<>(Arrays.asList(authorsArray));
+            final String[] authorsArray = (String[]) resultSet.getArray("book_authors").getArray();
+            final ArrayList<String> authors = new ArrayList<>(Arrays.asList(authorsArray));
 
-            Book book =  Book.builder()
+            final Book book = Book.builder()
                     .id(resultSet.getLong("book_id"))
                     .title(resultSet.getString("book_title"))
                     .authors(authors)
@@ -52,12 +56,14 @@ public class UserMapExtractor implements ResultSetExtractor<Map<Long, List<Book>
                     .friend(friend)
                     .user(user)
                     .build();
-            String status = (resultSet.getString("book_status"));
-            book.setStatus(BookStatus.valueOf(status));
+            final String status = (resultSet.getString("book_status"));
+            if (status != null) {
+                book.setStatus(BookStatus.valueOf(status));
+            }
 
-            List<Book> books = booksMap.get(userId);
+            final List<Book> books = booksMap.get(userId);
             if (books == null) {
-                List<Book> newBooks = new ArrayList<>();
+                final List<Book> newBooks = new ArrayList<>();
 
                 newBooks.add(book);
                 booksMap.put(userId, newBooks);

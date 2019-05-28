@@ -1,0 +1,54 @@
+<ion-content>
+    <ion-grid>
+        <ion-row>
+            <ion-col offset-lg="2" offset-xl="3" size-lg="8" size-xl="6" text-center>
+                <h1>Search a book via Google Books</h1>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col offset-lg="2" offset-xl="3" size-lg="8" size-xl="6">
+                <ion-segment (ionChange)="segmentChanged($event)" [value]="TITLE">
+                    <ion-segment-button [value]="AUTHOR">
+                        <ion-label>Author</ion-label>
+                    </ion-segment-button>
+                    <ion-segment-button [value]="TITLE">
+                        <ion-label>Title</ion-label>
+                    </ion-segment-button>
+                    <ion-segment-button [value]="ISBN">
+                        <ion-label>ISBN</ion-label>
+                    </ion-segment-button>
+                </ion-segment>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col offset-lg="2" offset-xl="3" size-lg="8" size-xl="6">
+                <ion-searchbar (keyup.enter)="search()" [(ngModel)]="searchInput"></ion-searchbar>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col offset-lg="2" offset-xl="3" size-lg="8" size-xl="6">
+                <ion-list>
+                    <ion-list-header>
+                        <ion-label>Search result</ion-label>
+                    </ion-list-header>
+                    <ion-item *ngIf="searchResult.length < 1 && submitted === true; else result" lines="none">
+                        <ion-label>
+                            No books found
+                        </ion-label>
+                    </ion-item>
+                    <ng-template #result>
+                        <ion-item *ngFor="let book of searchResult">
+                            <ion-label (click)="selectBook(book)">
+                                <h2>{{book.volumeInfo.title}}</h2>
+                                <h3>{{book.volumeInfo.authors}}</h3>
+                                <h4>{{book.volumeInfo.publisher}}</h4>
+                            </ion-label>
+                        </ion-item>
+                    </ng-template>
+
+                </ion-list>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+</ion-content>

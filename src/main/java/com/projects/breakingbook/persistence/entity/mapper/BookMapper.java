@@ -10,29 +10,29 @@ import java.util.Arrays;
 
 public class BookMapper implements RowMapper<Book> {
     @Override
-    public Book mapRow(ResultSet resultSet, int i) throws SQLException {
+    public Book mapRow(final ResultSet resultSet, final int i) throws SQLException {
 
-        User user = User.builder()
+        final User user = User.builder()
                 .id(resultSet.getLong("breaking_book_user_id"))
                 .username(resultSet.getString("breaking_book_user_username"))
                 .avatar(resultSet.getString("breaking_book_user_avatar"))
                 .email(resultSet.getString("breaking_book_user_email"))
                 .password(resultSet.getString("breaking_book_user_password"))
                 .build();
-        String role = (resultSet.getString("breaking_book_user_role"));
+        final String role = (resultSet.getString("breaking_book_user_role"));
         user.setRole(RoleName.valueOf(role));
 
-        Friend friend = Friend.builder()
+        final Friend friend = Friend.builder()
                 .id(resultSet.getLong("book_friend"))
                 .name(resultSet.getString("friend_name"))
                 .avatar(resultSet.getString("friend_avatar"))
                 .user(user)
                 .build();
 
-        String[] authorsArray = (String[]) resultSet.getArray("book_authors").getArray();
-        ArrayList<String> authors = new ArrayList<>(Arrays.asList(authorsArray));
+        final String[] authorsArray = (String[]) resultSet.getArray("book_authors").getArray();
+        final ArrayList<String> authors = new ArrayList<>(Arrays.asList(authorsArray));
 
-        Book book = Book.builder()
+        final Book book = Book.builder()
                 .id(resultSet.getLong("book_id"))
                 .title(resultSet.getString("book_title"))
                 .authors(authors)
@@ -49,8 +49,10 @@ public class BookMapper implements RowMapper<Book> {
                 .friend(friend)
                 .user(user)
                 .build();
-        String status = (resultSet.getString("book_status"));
-        book.setStatus(BookStatus.valueOf(status));
+        final String status = (resultSet.getString("book_status"));
+        if (status != null) {
+            book.setStatus(BookStatus.valueOf(status));
+        }
 
         return book;
     }

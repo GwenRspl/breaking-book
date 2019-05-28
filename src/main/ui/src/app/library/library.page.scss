@@ -1,0 +1,81 @@
+.genre-div {
+  margin-right: 1em;
+}
+
+.book-card {
+  height: 100%;
+  cursor: pointer;
+
+  &:hover {
+    --background: lightcyan;
+  }
+}
+
+.book-row {
+  margin-bottom: 1em;
+}
+
+.select-sort {
+  min-width: 15em;
+  max-width: 20em;
+}
+
+.carousel-button {
+  height: 100%;
+  display: block;
+  vertical-align: middle;
+  background-color: #f5f6f9;
+}
+
+.modal {
+  top: 20% !important;
+  right: 20% !important;
+  bottom: 20% !important;
+  left: 20% !important;
+  overflow: visible !important;
+  min-height: 240px !important;
+  width: 60% !important;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.slide {
+  height: 10em;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: .5s ease;
+  background-color: var(--ion-color-primary, black);
+}
+
+.overlay-container:hover .overlay {
+  opacity: 0.9;
+}
+
+.overlay-text {
+  color: white;
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+}
+
+//.overlay-image {
+//  display: block !important;
+//  width: 100% !important;
+//  height: auto !important;
+//  object-fit: cover !important;
+//}
+

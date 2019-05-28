@@ -9,13 +9,18 @@ const TOKEN_HEADER_KEY = 'Authorization';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor(private tokenService: TokenStorageService){}
+  constructor(private tokenService: TokenStorageService) {
+  }
+
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let authRequest = req;
-    const token = this.tokenService.getToken();
-    if(token != null) {
-      authRequest = req.clone({headers: req.headers.set(TOKEN_HEADER_KEY, 'Bearer ' + token)});
+    if (!req.url.startsWith('https://www.googleapis.com')) {
+      const token = this.tokenService.getToken();
+      if (token != null) {
+        authRequest = req.clone({headers: req.headers.set(TOKEN_HEADER_KEY, 'Bearer ' + token)});
+      }
     }
+
     return next.handle(authRequest);
   }
 }

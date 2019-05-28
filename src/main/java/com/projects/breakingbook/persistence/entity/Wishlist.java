@@ -19,28 +19,32 @@ public class Wishlist {
     private List<Book> books;
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Wishlist wishlist = (Wishlist) o;
-        return Objects.equals(id, wishlist.id) &&
-                Objects.equals(name, wishlist.name) &&
-                Objects.equals(user, wishlist.user) &&
-                Objects.equals(books, wishlist.books);
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
+        final Wishlist wishlist = (Wishlist) o;
+        return Objects.equals(this.id, wishlist.id) &&
+                Objects.equals(this.name, wishlist.name) &&
+                Objects.equals(this.user, wishlist.user) &&
+                Objects.equals(this.books, wishlist.books);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, user, books);
+        return Objects.hash(this.id, this.name, this.user, this.books);
     }
 
     @Override
     public String toString() {
         return "Wishlist{" +
-                "id=" + id +
-                ", username='" + name + '\'' +
-                ", user=" + user +
-                ", books=" + books +
+                "id=" + this.id +
+                ", username='" + this.name + '\'' +
+                ", user=" + this.user +
+                ", books=" + this.books +
                 '}';
     }
 }
