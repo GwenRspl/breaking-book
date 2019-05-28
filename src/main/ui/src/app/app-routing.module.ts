@@ -9,20 +9,24 @@ const routes: Routes = [
   {path: 'collections', loadChildren: './collections/collections.module#CollectionsPageModule'},
   {path: 'wishlists', loadChildren: './wishlists/wishlists.module#WishlistsPageModule'},
   {path: 'friends', loadChildren: './friends/friends.module#FriendsPageModule'},
+  {path: 'friends/new', loadChildren: './friends/new-friend/new-friend.module#NewFriendPageModule'},
+  {path: 'friends/show/:friendId', loadChildren: './friends/show-friend/show-friend.module#ShowFriendPageModule'},
   {path: 'account', loadChildren: './account/account.module#AccountPageModule'},
   {path: 'contact', loadChildren: './contact/contact.module#ContactPageModule'},
   {path: 'sign-up', loadChildren: './authentication/sign-up/sign-up.module#SignUpPageModule'},
   {path: 'sign-in', loadChildren: './authentication/sign-in/sign-in.module#SignInPageModule'},
   {path: 'library/new', loadChildren: './library/new-book/new-book.module#NewBookPageModule'},
   {
+    path: 'library/search-via-api',
+    loadChildren: './library/search-via-api/search-via-api.module#SearchViaApiPageModule'
+  },
+  {
     path: 'library/show/:bookId',
     loadChildren: './library/show-book/show-book.module#ShowBookPageModule',
     resolve: {book: BookResolver}
-  },
-  {
-    path: 'library/search-via-api',
-    loadChildren: './library/search-via-api/search-via-api.module#SearchViaApiPageModule'
   }
+
+
 ];
 
 @NgModule({
