@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {AccountService} from "../services/account.service";
-import {EditUserInfo} from "../edit-user-info";
-import {TokenStorageService} from "../../authentication/services/token-storage.service";
-import {ModalController} from "@ionic/angular";
+import {Component, Input, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AccountService} from '../services/account.service';
+import {EditUserInfo} from '../edit-user-info';
+import {ModalController} from '@ionic/angular';
+import {User} from '../../authentication/user.model';
 
 @Component({
   selector: 'app-edit-account',
@@ -11,13 +11,13 @@ import {ModalController} from "@ionic/angular";
   styleUrls: ['./edit-account.component.scss'],
 })
 export class EditAccountComponent implements OnInit {
+  @Input() user: User;
   editForm: FormGroup;
   submitted: boolean = false;
   private _userId: number;
 
   constructor(private formBuilder: FormBuilder,
               private accountService: AccountService,
-              private tokenStorageService: TokenStorageService,
               private modalCtrl: ModalController) {
   }
 
@@ -37,13 +37,13 @@ export class EditAccountComponent implements OnInit {
 
 
   retrieveUserId() {
-    this._userId = +this.tokenStorageService.getUserId();
+    this._userId = this.user.id;
   }
 
   initEditForm() {
     this.editForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      avatar: ['', [Validators.required]]
+      email: [this.user.email, [Validators.required, Validators.email]],
+      avatar: [this.user.avatar]
     })
   }
 
@@ -65,6 +65,10 @@ export class EditAccountComponent implements OnInit {
         console.log(error);
       }
     )
+  }
+
+  cancel() {
+    this.modalCtrl.dismiss();
   }
 }
 
