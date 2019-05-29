@@ -2,8 +2,10 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Friend} from '../friend.model';
 import {Observable} from 'rxjs';
+import {Book} from '../../library/book.model';
 
 const BASE_URL: string = 'http://localhost:8080/api/friends';
+const LENT_BOOKS: string = 'http://localhost:8080/api/books/lent';
 const USER_ID: string = '?userId=';
 
 @Injectable({
@@ -23,4 +25,10 @@ export class FriendsService {
     const url = BASE_URL + '/' + friendId;
     return this.httpClient.get<Friend>(url);
   }
+
+  getAllLentBooks(userId: number): Observable<Book[]> {
+    const url = LENT_BOOKS + USER_ID + userId;
+    return this.httpClient.get<Book[]>(url);
+  }
+
 }

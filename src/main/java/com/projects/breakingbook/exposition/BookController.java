@@ -47,6 +47,14 @@ public class BookController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/lent")
+    public List<BookDTO> getAllLentBooks(@RequestParam final Long userId) {
+        final List<Book> books = this.bookService.getAllLentBooks(userId);
+        return books.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     @GetMapping("/{id}")
     public BookDTO getOne(@PathVariable final Long id) {
         final Optional<Book> optionalBook = this.bookService.getOne(id);
@@ -55,18 +63,6 @@ public class BookController {
 
     @PostMapping("")
     public ResponseEntity<?> create(@RequestBody final BookDTO bookDto) {
-//        boolean result = false;
-//        try {
-//            result = this.bookService.create(convertToEntity(bookDto));
-//            if(result) {
-//                return new ResponseEntity<>("Book successfully created", HttpStatus.OK);
-//            } else {
-//                throw new BookNotCreatedException("Book not created");
-//            }
-//        } catch (ParseException | BookNotCreatedException e) {
-//            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-//        }
-
         final Long bookId;
 
         try {
@@ -84,7 +80,7 @@ public class BookController {
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable final Long id, @RequestBody final BookDTO bookDTO) {
 
-        boolean result = false;
+        final boolean result;
         try {
             result = this.bookService.update(id, this.convertToEntity(bookDTO));
             if (result) {

@@ -9,6 +9,8 @@ public interface BookService {
 
     List<Book> getAll(final Long userId);
 
+    List<Book> getAllLentBooks(final Long userId);
+
     Optional<Book> getOne(final Long id);
 
     Long create(final Book book);

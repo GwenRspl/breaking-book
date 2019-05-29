@@ -18,6 +18,7 @@ export class FriendsPage implements OnInit {
     slidesPerView: 4,
     speed: 400
   };
+  private _userId: number;
   private _booksCurrentlyLent: Book[] = [];
   private _friends: Friend[] = [];
   private _defaultCover = '../../assets/default_cover.png';
@@ -51,22 +52,39 @@ export class FriendsPage implements OnInit {
     return this._defaultCover;
   }
 
+
+  get userId(): number {
+    return this._userId;
+  }
+
   ngOnInit() {
+    this.retrieveUserId();
+  }
+
+  ionViewWillEnter() {
     this.retrieveFriends();
     this.retrieveBooksCurrentlyLent();
   }
 
+  retrieveUserId() {
+    this._userId = +this.tokenStorageService.getUserId();
+  }
+
   retrieveFriends() {
-    this.friendsService.getAllFriends(+this.tokenStorageService.getUserId()).subscribe(
-      data => {
-        this._friends = data;
-        console.log(data);
-      },
+    this.friendsService.getAllFriends(this.userId).subscribe(
+      data => this._friends = data,
       error => console.log(error)
     );
   }
 
   retrieveBooksCurrentlyLent() {
+    this.friendsService.getAllLentBooks(this.userId).subscribe(
+      data => {
+        this._booksCurrentlyLent = data;
+        console.log(data);
+      },
+      error => console.log(error)
+    );
 
   }
 
