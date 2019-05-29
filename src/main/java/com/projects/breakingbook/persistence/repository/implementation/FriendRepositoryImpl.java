@@ -7,9 +7,13 @@ import com.projects.breakingbook.persistence.entity.mapper.FriendMapper;
 import com.projects.breakingbook.persistence.repository.FriendRepository;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -56,9 +60,25 @@ public class FriendRepositoryImpl implements FriendRepository {
     }
 
     @Override
-    public boolean createFriend(final Friend friend) {
-        final int result = this.jdbcTemplate.update(this.INSERT, friend.getName(), friend.getAvatar(), friend.getUser().getId());
-        return result != 0;
+    public Long createFriend(final Friend friend) {
+        final KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        this.jdbcTemplate.update(connection -> {
+            final PreparedStatement ps = connection
+                    .prepareStatement(this.INSERT, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, friend.getName());
+            ps.setString(2, friend.getAvatar());
+            ps.setLong(3, friend.getUser().getId());
+            return ps;
+        }, keyHolder);
+
+        final Long newId;
+        if (keyHolder.getKeys().size() > 1) {
+            newId = ((Integer) keyHolder.getKeys().get("friend_id")).longValue();
+        } else {
+            newId = keyHolder.getKey().longValue();
+        }
+        return newId;
     }
 
     @Override

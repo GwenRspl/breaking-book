@@ -33,7 +33,7 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public boolean create(final Friend friend) {
+    public Long create(final Friend friend) {
         return this.friendRepository.createFriend(friend);
     }
 

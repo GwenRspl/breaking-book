@@ -11,7 +11,7 @@ public interface FriendService {
 
     Optional<Friend> getOne(final Long id);
 
-    boolean create(final Friend friend);
+    Long create(final Friend friend);
 
     boolean update(final Long id, final Friend friend);
 

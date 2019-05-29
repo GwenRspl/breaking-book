@@ -70,7 +70,6 @@ public class UserRepositoryImpl implements UserRepository {
         try {
             final User user = this.jdbcTemplate.queryForObject(this.SELECT_BY_ID, new Object[]{id}, new UserMapper());
             final Map<Long, List<Book>> booksMap = this.jdbcTemplate.query(this.SELECT_JOIN_BY_ID, new Object[]{id}, new UserMapExtractor());
-            System.out.println(booksMap);
             user.setBooks(booksMap.get(user.getId()));
             return Optional.of(user);
         } catch (final EmptyResultDataAccessException e) {
