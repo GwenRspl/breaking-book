@@ -1,9 +1,32 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>show-friend</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-
+    <ion-grid>
+        <ion-row justify-content-center>
+            <ion-col class="cover-col" size-lg="3">
+                <ion-img *ngIf="friend.avatar != null && friend.avatar != ''" [src]="friend.avatar"></ion-img>
+                <ion-img *ngIf="friend.avatar == null || friend.avatar == ''"
+                         [src]="defaultAvatar"></ion-img>
+            </ion-col>
+            <ion-col align-self-center size-lg="3" text-center>
+                <h1>{{friend.name}}</h1>
+            </ion-col>
+        </ion-row>
+        <ion-row justify-content-center>
+            <ion-col size-lg="6">
+                <h2>Currently borrowed</h2>
+                <ion-card *ngFor="let borrowedBook of currentlyBorrowedBooks">
+                    <ion-card-title> {{borrowedBook.title}}</ion-card-title>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+        <ion-row justify-content-center>
+            <ion-col size-lg="6">
+                <h2>Books read</h2>
+                <ion-list>
+                    <ion-item *ngFor="let readBook of readBooks">
+                        <ion-label>{{readBook.title}}</ion-label>
+                    </ion-item>
+                </ion-list>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 </ion-content>

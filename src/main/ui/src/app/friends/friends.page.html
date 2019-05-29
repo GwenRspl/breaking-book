@@ -4,7 +4,8 @@
             <ion-col offset-xl="3" size-xl="6">
                 <div padding>
                     <h1>Books currently borrowed by friends</h1>
-                    <ion-grid>
+                    <p *ngIf="booksCurrentlyLent.length == 0">No friends borrowed any of your books.</p>
+                    <ion-grid *ngIf="booksCurrentlyLent.length > 0">
                         <ion-row>
                             <ion-col size="1">
                                 <ion-button (click)="previousSlide(slideWithButtons)"

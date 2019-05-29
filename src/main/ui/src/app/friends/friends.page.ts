@@ -4,7 +4,6 @@ import {Book} from '../library/book.model';
 import {Router} from '@angular/router';
 import {Friend} from './friend.model';
 import {FriendsService} from './services/friends.service';
-import {TokenStorageService} from '../authentication/services/token-storage.service';
 
 @Component({
   selector: 'app-friends',
@@ -18,7 +17,6 @@ export class FriendsPage implements OnInit {
     slidesPerView: 4,
     speed: 400
   };
-  private _userId: number;
   private _booksCurrentlyLent: Book[] = [];
   private _friends: Friend[] = [];
   private _defaultCover = '../../assets/default_cover.png';
@@ -26,8 +24,7 @@ export class FriendsPage implements OnInit {
   private _sortOptions: string[] = ['A to Z', 'Z to A'];
 
   constructor(private router: Router,
-              private friendsService: FriendsService,
-              private tokenStorageService: TokenStorageService) {
+              private friendsService: FriendsService) {
   }
 
 
@@ -51,12 +48,7 @@ export class FriendsPage implements OnInit {
     return this._defaultCover;
   }
 
-  get userId(): number {
-    return this._userId;
-  }
-
   ngOnInit() {
-    this.retrieveUserId();
   }
 
   ionViewWillEnter() {
@@ -64,19 +56,15 @@ export class FriendsPage implements OnInit {
     this.retrieveBooksCurrentlyLent();
   }
 
-  retrieveUserId() {
-    this._userId = +this.tokenStorageService.getUserId();
-  }
-
   retrieveFriends() {
-    this.friendsService.getAllFriends(this.userId).subscribe(
+    this.friendsService.getAllFriends().subscribe(
       data => this._friends = data,
       error => console.log(error)
     );
   }
 
   retrieveBooksCurrentlyLent() {
-    this.friendsService.getAllLentBooks(this.userId).subscribe(
+    this.friendsService.getAllLentBooks().subscribe(
       data => this._booksCurrentlyLent = data,
       error => console.log(error)
     );

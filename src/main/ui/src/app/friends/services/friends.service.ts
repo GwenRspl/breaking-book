@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Friend} from '../friend.model';
 import {Observable} from 'rxjs';
 import {Book} from '../../library/book.model';
+import {TokenStorageService} from '../../authentication/services/token-storage.service';
 
 const BASE_URL: string = 'http://localhost:8080/api/friends';
 const LENT_BOOKS: string = 'http://localhost:8080/api/books/lent';
@@ -12,12 +13,17 @@ const USER_ID: string = '?userId=';
   providedIn: 'root'
 })
 export class FriendsService {
+  private readonly userId: number;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient,
+              private tokenStorage: TokenStorageService) {
+    this.userId = +this.tokenStorage.getUserId()
+    ;
   }
 
-  getAllFriends(userId: number): Observable<Friend[]> {
-    const url = BASE_URL + USER_ID + userId;
+
+  getAllFriends(): Observable<Friend[]> {
+    const url = BASE_URL + USER_ID + this.userId;
     return this.httpClient.get<Friend[]>(url);
   }
 
@@ -26,8 +32,8 @@ export class FriendsService {
     return this.httpClient.get<Friend>(url);
   }
 
-  getAllLentBooks(userId: number): Observable<Book[]> {
-    const url = LENT_BOOKS + USER_ID + userId;
+  getAllLentBooks(): Observable<Book[]> {
+    const url = LENT_BOOKS + USER_ID + this.userId;
     return this.httpClient.get<Book[]>(url);
   }
 

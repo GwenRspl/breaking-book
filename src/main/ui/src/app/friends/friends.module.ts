@@ -7,6 +7,7 @@ import {IonicModule} from '@ionic/angular';
 import {FriendsPage} from './friends.page';
 import {FriendsService} from './services/friends.service';
 import {HttpClientModule} from '@angular/common/http';
+import {FriendResolver} from './services/friend-resolver.service';
 
 const routes: Routes = [
   {
@@ -30,7 +31,8 @@ export class FriendsPageModule {
     return {
       ngModule: FriendsPageModule,
       providers: [
-        FriendsService
+        FriendsService,
+        FriendResolver
       ]
     }
   }
