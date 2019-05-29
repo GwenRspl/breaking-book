@@ -39,7 +39,6 @@ export class FriendsPage implements OnInit {
     return this._booksCurrentlyLent;
   }
 
-
   get defaultAvatar(): string {
     return this._defaultAvatar;
   }
@@ -51,7 +50,6 @@ export class FriendsPage implements OnInit {
   get defaultCover(): string {
     return this._defaultCover;
   }
-
 
   get userId(): number {
     return this._userId;
@@ -79,26 +77,27 @@ export class FriendsPage implements OnInit {
 
   retrieveBooksCurrentlyLent() {
     this.friendsService.getAllLentBooks(this.userId).subscribe(
-      data => {
-        this._booksCurrentlyLent = data;
-        console.log(data);
-      },
+      data => this._booksCurrentlyLent = data,
       error => console.log(error)
     );
-
-  }
-
-  addNewFriend() {
-    this.router.navigate((['/', 'friends', 'new']));
   }
 
   showBookDetails(bookId: number) {
     this.router.navigate((['/', 'library', 'show', bookId]));
   }
 
+  showFriendDetails(friendId: number) {
+    this.router.navigate((['/', 'friends', 'show', friendId]));
+  }
+
+  addNewFriend() {
+    this.router.navigate((['/', 'friends', 'new']));
+  }
+
   /*
   Carousel methods
    */
+
   nextSlide(slideView) {
     slideView.slideNext(500);
   }
@@ -142,6 +141,5 @@ export class FriendsPage implements OnInit {
       }
     });
   }
-
 
 }
