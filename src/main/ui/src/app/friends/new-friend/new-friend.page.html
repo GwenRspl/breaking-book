@@ -1,9 +1,45 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>new-friend</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
+    <ion-grid>
+        <ion-row>
+            <ion-col offset-lg="2" offset-xl="3" size-lg="8" size-xl="6">
+                <ion-card padding>
+                    <ion-card-header text-center>
+                        <ion-card-title>Create a new friend</ion-card-title>
+                    </ion-card-header>
+                    <form [formGroup]="friendForm">
+                        <ion-item class="form-item">
+                            <ion-label position="floating">
+                                Name
+                            </ion-label>
+                            <ion-input (keyup.enter)="saveNewFriend()" formControlName="name" type="text">
+                            </ion-input>
+                        </ion-item>
+                        <ion-text *ngIf="submitted && f.name.errors" color="danger">
+                            <p *ngIf="f.name.errors.required" class="form-error-message">This field is required.</p>
+                        </ion-text>
 
+                        <ion-item class="form-item">
+                            <ion-label position="floating">
+                                Avatar
+                            </ion-label>
+                            <ion-input (keyup.enter)="saveNewFriend()" formControlName="avatar" type="url">
+                            </ion-input>
+                        </ion-item>
+                        <ion-text *ngIf="submitted && f.avatar.errors" color="danger">
+                            <p class="form-error-message">Should be a valid URL.</p>
+                        </ion-text>
+                        <ion-grid>
+                            <ion-row>
+                                <ion-col text-center>
+                                    <ion-button (click)="saveNewFriend()" color="success" padding>
+                                        Save friend
+                                    </ion-button>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </form>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 </ion-content>

@@ -31,4 +31,8 @@ export class FriendsService {
     return this.httpClient.get<Book[]>(url);
   }
 
+  saveFriend(friend: Friend) {
+    return this.httpClient.post<number>(BASE_URL, friend);
+  }
+
 }
