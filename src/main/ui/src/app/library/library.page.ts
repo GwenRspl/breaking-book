@@ -2,7 +2,6 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {Book} from './book.model';
 import {ActionSheetController, IonSlides} from '@ionic/angular';
 import {BooksService} from './services/books.service';
-import {TokenStorageService} from '../authentication/services/token-storage.service';
 import {Router} from '@angular/router';
 import {Collection} from '../collections/collection.model';
 
@@ -32,7 +31,6 @@ export class LibraryPage implements OnInit {
     speed: 400
   };
   public userInput: string = '';
-  private _userId: number;
   private _books: Book[] = [];
   private _collections: Collection[] = [];
   private _currentlyReading: Book[] = [];
@@ -49,14 +47,10 @@ export class LibraryPage implements OnInit {
   private _defaultCover = '../../assets/default_cover.png';
 
   constructor(private booksService: BooksService,
-              private tokenStorageService: TokenStorageService,
               private router: Router,
               private actionSheetCtrl: ActionSheetController) {
   }
 
-  get userId(): number {
-    return this._userId;
-  }
 
   get books(): Book[] {
     return this._books;
@@ -95,17 +89,13 @@ export class LibraryPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.retrieveUserId();
     this.retrieveBooks();
     this.retrieveCollections();
   }
 
-  retrieveUserId() {
-    this._userId = +this.tokenStorageService.getUserId();
-  }
 
   retrieveBooks() {
-    this.booksService.getBooks(this.userId).subscribe(
+    this.booksService.getBooks().subscribe(
       data => {
         this._books = data;
         this._currentSelection = this.books;
@@ -125,7 +115,7 @@ export class LibraryPage implements OnInit {
   }
 
   retrieveCollections() {
-    this.booksService.getCollections(this.userId).subscribe(
+    this.booksService.getCollections().subscribe(
       data => {
         this._collections = data;
         this._collectionsCheckbox = [];
@@ -237,11 +227,13 @@ export class LibraryPage implements OnInit {
       selected.forEach(collectionCheckbox => {
         this.collections.forEach(collection => {
           if (collection.name == collectionCheckbox.name) {
-            collection.booksIds.forEach(book => {
-              if (!temp2.includes(book)) {
-                temp2.push(book);
-              }
-            })
+            if (collection.booksIds != null) {
+              collection.booksIds.forEach(book => {
+                if (!temp2.includes(book)) {
+                  temp2.push(book);
+                }
+              })
+            }
           }
         });
       });
