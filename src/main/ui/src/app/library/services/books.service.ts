@@ -4,6 +4,7 @@ import {Book} from '../book.model';
 import {GoogleApiQueryResult} from '../search-via-api/googleApiQueryResult.model';
 import {Collection} from '../../collections/collection.model';
 import {Observable} from 'rxjs';
+import {TokenStorageService} from '../../authentication/services/token-storage.service';
 
 const BASE_URL: string = 'http://localhost:8080/api/books';
 const COLLECTIONS_URL: string = 'http://localhost:8080/api/collections';
@@ -18,11 +19,14 @@ const HTTP_OPTIONS = {headers: new HttpHeaders({'Content-Type': 'application/jso
   providedIn: 'root'
 })
 export class BooksService {
+  private readonly userId: number;
 
   private selectedBook: Book;
   private bookReadyToPopulate = false;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient,
+              private tokenStorage: TokenStorageService) {
+    this.userId = +this.tokenStorage.getUserId();
   }
 
   getSelectedBook() {
@@ -43,8 +47,8 @@ export class BooksService {
   }
 
 
-  getBooks(userId: number) {
-    const url = BASE_URL + USER_ID_PARAM + userId;
+  getBooks() {
+    const url = BASE_URL + USER_ID_PARAM + this.userId;
     return this.httpClient.get<Book[]>(url);
   }
 
@@ -62,8 +66,8 @@ export class BooksService {
     return this.httpClient.get<GoogleApiQueryResult>(url);
   }
 
-  getCollections(userId: number): Observable<Collection[]> {
-    const url = COLLECTIONS_URL + USER_ID_PARAM + userId;
+  getCollections(): Observable<Collection[]> {
+    const url = COLLECTIONS_URL + USER_ID_PARAM + this.userId;
     return this.httpClient.get<Collection[]>(url);
   }
 
