@@ -58,7 +58,10 @@ export class FriendsPage implements OnInit {
 
   retrieveFriends() {
     this.friendsService.getAllFriends().subscribe(
-      data => this._friends = data,
+      data => {
+        this._friends = data;
+        this.sortAlphabeticalOrder();
+      },
       error => console.log(error)
     );
   }

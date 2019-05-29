@@ -69,7 +69,7 @@ export class ShowFriendPage implements OnInit {
   }
 
   retrieveReadBooks(booksIds: number[]) {
-    this.booksService.getBooks(2).subscribe(
+    this.booksService.getBooks().subscribe(
       data => this._readBooks = data.filter(book => booksIds.includes(book.id)),
       error => console.log(error)
     );

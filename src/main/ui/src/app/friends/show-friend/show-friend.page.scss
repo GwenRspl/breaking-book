@@ -1,3 +1,11 @@
-ion-col {
-  border: 1px solid black;
+//ion-col {
+//  border: 1px solid black;
+//}
+
+.friend-avatar {
+  min-height: 10em;
+  min-width: 10em;
+  max-height: 25em;
+  max-width: 25em;
+  object-fit: cover;
 }
