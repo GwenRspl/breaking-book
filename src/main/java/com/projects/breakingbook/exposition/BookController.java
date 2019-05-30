@@ -55,12 +55,6 @@ public class BookController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/{id}")
-    public BookDTO getOne(@PathVariable final Long id) {
-        final Optional<Book> optionalBook = this.bookService.getOne(id);
-        return optionalBook.map(this::convertToDTO).orElse(null);
-    }
-
     @PostMapping("")
     public ResponseEntity<?> create(@RequestBody final BookDTO bookDto) {
         final Long bookId;
@@ -75,6 +69,47 @@ public class BookController {
         } catch (final ParseException | BookNotCreatedException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PutMapping("/lend/{bookId}")
+    public ResponseEntity<?> lendBookToFriend(@PathVariable final Long bookId, @RequestBody final Long friendId) {
+
+        boolean result;
+        try {
+            result = this.bookService.updateFriend(bookId, friendId);
+            if (!result) {
+                throw new BookNotUpdatedException("Book not updated");
+            }
+            result = this.friendService.addBookToHistory(friendId, bookId);
+            if (result) {
+                return new ResponseEntity<>("Book updated successfully", HttpStatus.OK);
+            } else {
+                throw new BookNotUpdatedException("Book not updated");
+            }
+        } catch (final BookNotUpdatedException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/get-back/{bookId}")
+    public ResponseEntity<?> getBackBookFromFriend(@PathVariable final Long bookId) {
+        final boolean result;
+        try {
+            result = this.bookService.updateFriend(bookId, null);
+            if (result) {
+                return new ResponseEntity<>("Book updated successfully", HttpStatus.OK);
+            } else {
+                throw new BookNotUpdatedException("Book not updated");
+            }
+        } catch (final BookNotUpdatedException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/{id}")
+    public BookDTO getOne(@PathVariable final Long id) {
+        final Optional<Book> optionalBook = this.bookService.getOne(id);
+        return optionalBook.map(this::convertToDTO).orElse(null);
     }
 
     @PutMapping("/{id}")

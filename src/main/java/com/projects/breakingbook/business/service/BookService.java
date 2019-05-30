@@ -24,4 +24,5 @@ public interface BookService {
     boolean toggleOwned(Long id);
 
     boolean updateFriend(Long bookId, Long friendId);
+
 }

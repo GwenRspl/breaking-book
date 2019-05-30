@@ -20,4 +20,6 @@ public interface FriendRepository {
     boolean updateFriend(Long id, Friend friend);
 
     Long getBorrowedBook(Long friendId);
+
+    boolean addBookToHistory(Long bookId, Long friendId);
 }

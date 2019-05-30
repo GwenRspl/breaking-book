@@ -97,4 +97,9 @@ public class FriendServiceImpl implements FriendService {
     public Long getBorrowedBook(final Long id) {
         return this.friendRepository.getBorrowedBook(id);
     }
+
+    @Override
+    public boolean addBookToHistory(final Long friendId, final Long bookId) {
+        return this.friendRepository.addBookToHistory(bookId, friendId);
+    }
 }

@@ -44,6 +44,7 @@ public class FriendRepositoryImpl implements FriendRepository {
             "WHERE friend.friend_id = ?;";
 
     private final String SELECT_BOOK_BY_FRIEND_ID = "SELECT book_id FROM book WHERE book_friend = ?";
+    private final String INSERT_BOOK_TO_HISTORY = "INSERT INTO book_friend(book_friend_book_id, book_friend_friend_id) VALUES (?, ?)";
 
     public FriendRepositoryImpl(final JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -119,5 +120,11 @@ public class FriendRepositoryImpl implements FriendRepository {
             System.out.println(e);
             return null;
         }
+    }
+
+    @Override
+    public boolean addBookToHistory(final Long bookId, final Long friendId) {
+        final int result = this.jdbcTemplate.update(this.INSERT_BOOK_TO_HISTORY, bookId, friendId);
+        return result != 0;
     }
 }

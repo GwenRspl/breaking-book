@@ -20,4 +20,6 @@ public interface FriendService {
     boolean deleteAll();
 
     Long getBorrowedBook(Long id);
+
+    boolean addBookToHistory(Long friendId, Long bookId);
 }
