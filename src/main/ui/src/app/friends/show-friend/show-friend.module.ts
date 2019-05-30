@@ -1,11 +1,12 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Routes, RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {RouterModule, Routes} from '@angular/router';
 
-import { IonicModule } from '@ionic/angular';
+import {IonicModule} from '@ionic/angular';
 
-import { ShowFriendPage } from './show-friend.page';
+import {ShowFriendPage} from './show-friend.page';
+import {LendBookModalComponent} from './lend-book-modal/lend-book-modal.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,11 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [ShowFriendPage]
+  declarations: [
+    ShowFriendPage,
+    LendBookModalComponent
+  ],
+  entryComponents: [LendBookModalComponent]
 })
-export class ShowFriendPageModule {}
+export class ShowFriendPageModule {
+}

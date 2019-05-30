@@ -41,4 +41,9 @@ export class FriendsService {
     return this.httpClient.post<number>(BASE_URL, friend);
   }
 
+  lendBookToFriend(friendId: number, bookId: number): Observable<boolean> {
+    console.log('lending book');
+    return new Observable<boolean>();
+  }
+
 }

@@ -4,6 +4,8 @@ import {Friend} from '../friend.model';
 import {Book} from '../../library/book.model';
 import {FriendsService} from '../services/friends.service';
 import {BooksService} from '../../library/services/books.service';
+import {ModalController, ToastController} from '@ionic/angular';
+import {LendBookModalComponent} from './lend-book-modal/lend-book-modal.component';
 
 @Component({
   selector: 'app-show-friend',
@@ -19,7 +21,9 @@ export class ShowFriendPage implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private friendsService: FriendsService,
-              private booksService: BooksService) {
+              private booksService: BooksService,
+              private modalCtrl: ModalController,
+              private toastCtrl: ToastController) {
   }
 
 
@@ -51,9 +55,9 @@ export class ShowFriendPage implements OnInit {
     this.route.data.subscribe(
       data => {
         this._friend = data['friend'];
-        this.retrieveCurrentlyBorrowedBooks(this.friend.id);
+        this.retrieveCurrentlyBorrowedBooks();
         if (this.friend.historyBookIds != null && this.friend.historyBookIds.length > 0) {
-          this.retrieveReadBooks(this.friend.historyBookIds);
+          this.retrieveReadBooks();
         }
         this._finishedLoading = true;
       },
@@ -61,18 +65,56 @@ export class ShowFriendPage implements OnInit {
     );
   }
 
-  retrieveCurrentlyBorrowedBooks(friendId: number) {
+  retrieveCurrentlyBorrowedBooks() {
     this.friendsService.getAllLentBooks().subscribe(
-      data => this._currentlyBorrowedBooks = data.filter(book => book.friendId == friendId),
+      data => this._currentlyBorrowedBooks = data.filter(book => book.friendId == this.friend.id),
       error => console.log(error)
     );
   }
 
-  retrieveReadBooks(booksIds: number[]) {
+  retrieveReadBooks() {
     this.booksService.getBooks().subscribe(
-      data => this._readBooks = data.filter(book => booksIds.includes(book.id)),
+      data => this._readBooks = data.filter(book => this.friend.historyBookIds.includes(book.id)),
       error => console.log(error)
     );
+  }
+
+  lendBook(bookId: number) {
+    this.friendsService.lendBookToFriend(this.friend.id, bookId).subscribe(
+      data => {
+        if (data == true) {
+          this.retrieveCurrentlyBorrowedBooks();
+        } else {
+          this.presentErrorToast('Error lending book to friend. Please try again later.');
+        }
+      },
+      error => console.log(error)
+    );
+  }
+
+  openLendBookModal() {
+    this.modalCtrl
+      .create({
+        component: LendBookModalComponent,
+      })
+      .then(modal => {
+          modal.present();
+          return modal.onDidDismiss();
+        }
+      )
+      .then(modal => {
+        if (modal.role == 'book') {
+          this.lendBook(modal.data);
+        }
+      })
+  }
+
+  presentErrorToast(message: string) {
+    this.toastCtrl.create({
+      message: message,
+      color: 'danger',
+      duration: 2000
+    }).then(toast => toast.present());
   }
 
 }

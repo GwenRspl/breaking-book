@@ -13,3 +13,31 @@
 .delete-book-modal .modal-wrapper {
   height: 7em;
 }
+
+$screen-breakpoints: (
+        xs: 0,
+        sm: 576px,
+        md: 768px,
+        lg: 992px,
+        xl: 1200px
+) !default;
+
+@each $keySize, $valueSize in $screen-breakpoints {
+  [hidden-from-#{$keySize}] {
+    @media (min-width: $valueSize) {
+      display: none;
+    }
+  }
+}
+
+@each $keySize, $valueSize in $screen-breakpoints {
+  [hidden-until-#{$keySize}] {
+    @media (max-width: $valueSize) {
+      display: none;
+    }
+  }
+}
+
+
+
+

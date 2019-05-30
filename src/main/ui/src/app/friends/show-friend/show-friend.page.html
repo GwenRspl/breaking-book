@@ -23,7 +23,7 @@
             </ion-col>
             <ion-col align-self-center size-lg="3" text-center>
                 <h1>{{friend.name}}</h1>
-                <ion-button>
+                <ion-button (click)="openLendBookModal()">
                     <ion-icon name="hand" slot="start"></ion-icon>
                     Lend a book
                 </ion-button>
