@@ -38,6 +38,17 @@ $screen-breakpoints: (
   }
 }
 
+.alert-btn {
+  button.alert-button.delete-btn {
+    color: red;
+    font-weight: bold;
+  }
+
+  button.alert-button.cancel-btn {
+    color: dimgrey;
+  }
+}
+
 
 
 

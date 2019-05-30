@@ -7,7 +7,7 @@
                         <ion-icon name="create" slot="start"></ion-icon>
                         Edit
                     </ion-button>
-                    <ion-button color="danger">
+                    <ion-button (click)="presentDeleteFriendAlert()" color="danger">
                         <ion-icon name="close-circle" slot="start"></ion-icon>
                         Delete
                     </ion-button>
@@ -43,7 +43,7 @@
                         <div class="overlay">
                             <div class="overlay-text">{{borrowedBook.title}}</div>
                         </div>
-                        <ion-fab-button (click)="getBack(borrowedBook.id)" class="fab-btn" color="secondary">
+                        <ion-fab-button (click)="getBackBook(borrowedBook.id)" class="fab-btn" color="secondary">
                             <ion-icon name="refresh"></ion-icon>
                         </ion-fab-button>
                     </ion-card>

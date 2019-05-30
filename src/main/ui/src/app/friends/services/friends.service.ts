@@ -22,13 +22,12 @@ export class FriendsService {
     ;
   }
 
-
   getAllFriends(): Observable<Friend[]> {
     const url = BASE_URL + USER_ID + this.userId;
     return this.httpClient.get<Friend[]>(url);
   }
 
-  getFriendById(friendId: number) {
+  getFriendById(friendId: number): Observable<Friend> {
     const url = BASE_URL + '/' + friendId;
     return this.httpClient.get<Friend>(url);
   }
@@ -38,7 +37,7 @@ export class FriendsService {
     return this.httpClient.get<Book[]>(url);
   }
 
-  saveFriend(friend: Friend) {
+  saveFriend(friend: Friend): Observable<number> {
     return this.httpClient.post<number>(BASE_URL, friend);
   }
 
@@ -47,9 +46,14 @@ export class FriendsService {
     return this.httpClient.put<string>(url, friendId, HTTP_OPTIONS);
   }
 
-  getBackBookFromFriend(bookId: number) {
+  getBackBookFromFriend(bookId: number): Observable<string> {
     const url = BOOKS_URL + '/get-back/' + bookId;
     return this.httpClient.get<string>(url, HTTP_OPTIONS);
+  }
+
+  deleteFriend(friendId: number): Observable<string> {
+    const url = BASE_URL + '/' + friendId;
+    return this.httpClient.delete<string>(url, HTTP_OPTIONS);
   }
 
 }

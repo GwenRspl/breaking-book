@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Friend} from '../friend.model';
 import {Book} from '../../library/book.model';
 import {FriendsService} from '../services/friends.service';
 import {BooksService} from '../../library/services/books.service';
-import {ModalController, ToastController} from '@ionic/angular';
+import {AlertController, ModalController, ToastController} from '@ionic/angular';
 import {LendBookModalComponent} from './lend-book-modal/lend-book-modal.component';
 
 @Component({
@@ -24,7 +24,9 @@ export class ShowFriendPage implements OnInit {
               private friendsService: FriendsService,
               private booksService: BooksService,
               private modalCtrl: ModalController,
-              private toastCtrl: ToastController) {
+              private toastCtrl: ToastController,
+              private router: Router,
+              private alertCtrl: AlertController) {
   }
 
 
@@ -119,10 +121,44 @@ export class ShowFriendPage implements OnInit {
     }).then(toast => toast.present());
   }
 
-  getBack(bookId: number) {
+  getBackBook(bookId: number) {
     this.friendsService.getBackBookFromFriend(bookId).subscribe(
       data => this.retrieveCurrentlyBorrowedBooks(),
       error => console.log(error)
     );
   }
+
+  deleteFriend() {
+    this.friendsService.deleteFriend(this.friend.id).subscribe(
+      data => this.router.navigateByUrl('/friends'),
+      error => console.log(error)
+    );
+  }
+
+  presentDeleteFriendAlert() {
+    this.alertCtrl.create({
+      message: 'Are you sure you want to delete this friend?',
+      cssClass: 'alert-btn',
+      buttons: [
+        {
+          text: 'Yes',
+          role: 'danger',
+          cssClass: 'delete-btn',
+          handler: () => {
+            this.deleteFriend();
+          }
+        },
+        {
+          text: 'No',
+          role: 'cancel',
+          cssClass: 'cancel-btn',
+          handler: () => {
+            this.alertCtrl.dismiss();
+          }
+        }
+      ]
+    }).then(alert => alert.present())
+
+  }
+
 }
