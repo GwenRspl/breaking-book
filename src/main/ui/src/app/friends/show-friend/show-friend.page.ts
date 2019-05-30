@@ -81,14 +81,11 @@ export class ShowFriendPage implements OnInit {
 
   lendBook(bookId: number) {
     this.friendsService.lendBookToFriend(this.friend.id, bookId).subscribe(
-      data => {
-        if (data == true) {
-          this.retrieveCurrentlyBorrowedBooks();
-        } else {
-          this.presentErrorToast('Error lending book to friend. Please try again later.');
-        }
-      },
-      error => console.log(error)
+      data => this.retrieveCurrentlyBorrowedBooks(),
+      error => {
+        console.log(error);
+        this.presentErrorToast('Error lending book to friend. Please try again later.');
+      }
     );
   }
 

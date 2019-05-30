@@ -1,13 +1,14 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Friend} from '../friend.model';
 import {Observable} from 'rxjs';
 import {Book} from '../../library/book.model';
 import {TokenStorageService} from '../../authentication/services/token-storage.service';
 
 const BASE_URL: string = 'http://localhost:8080/api/friends';
-const LENT_BOOKS: string = 'http://localhost:8080/api/books/lent';
+const BOOKS_URL: string = 'http://localhost:8080/api/books';
 const USER_ID: string = '?userId=';
+const HTTP_OPTIONS = {headers: new HttpHeaders({'Content-Type': 'application/json',}), responseType: 'text' as 'json'};
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +34,7 @@ export class FriendsService {
   }
 
   getAllLentBooks(): Observable<Book[]> {
-    const url = LENT_BOOKS + USER_ID + this.userId;
+    const url = BOOKS_URL + '/lent' + USER_ID + this.userId;
     return this.httpClient.get<Book[]>(url);
   }
 
@@ -41,9 +42,13 @@ export class FriendsService {
     return this.httpClient.post<number>(BASE_URL, friend);
   }
 
-  lendBookToFriend(friendId: number, bookId: number): Observable<boolean> {
-    console.log('lending book');
-    return new Observable<boolean>();
+  lendBookToFriend(friendId: number, bookId: number): Observable<string> {
+    const url = BOOKS_URL + '/lend/' + bookId;
+    return this.httpClient.put<string>(url, friendId, HTTP_OPTIONS);
+  }
+
+  getBackBookFromFriend(bookId: number) {
+
   }
 
 }
