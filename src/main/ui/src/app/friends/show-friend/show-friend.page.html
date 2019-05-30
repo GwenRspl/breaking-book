@@ -3,9 +3,17 @@
         <ion-row justify-content-center>
             <ion-col size-lg="6">
                 <div class="ion-float-right">
-                    <ion-button color="primary">
+                    <ion-button (click)="toggleEditMode()" *ngIf="!editMode" color="primary" fill="outline">
                         <ion-icon name="create" slot="start"></ion-icon>
                         Edit
+                    </ion-button>
+                    <ion-button (click)="saveChanges()" *ngIf="editMode" color="success" fill="outline">
+                        <ion-icon name="checkmark" slot="start"></ion-icon>
+                        Save changes
+                    </ion-button>
+                    <ion-button (click)="toggleEditMode()" *ngIf="editMode" color="dark" fill="outline">
+                        <ion-icon name="close" slot="start"></ion-icon>
+                        Cancel
                     </ion-button>
                     <ion-button (click)="presentDeleteFriendAlert()" color="danger">
                         <ion-icon name="close-circle" slot="start"></ion-icon>
@@ -22,7 +30,19 @@
                          class="friend-avatar"></ion-img>
             </ion-col>
             <ion-col align-self-center size-lg="3" text-center>
-                <h1>{{friend.name}}</h1>
+                <h1 *ngIf="!editMode">{{friend.name}}</h1>
+                <ion-list *ngIf="editMode" padding>
+                    <ion-item>
+                        <ion-label position="stacked">Name</ion-label>
+                        <ion-input [(ngModel)]="friendNameInput" required></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label position="stacked">Avatar</ion-label>
+                        <ion-input [(ngModel)]="friendAvatarInput"></ion-input>
+                    </ion-item>
+                </ion-list>
+
+
                 <ion-button (click)="openLendBookModal()">
                     <ion-icon name="hand" slot="start"></ion-icon>
                     Lend a book

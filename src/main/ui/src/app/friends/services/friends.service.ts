@@ -56,4 +56,9 @@ export class FriendsService {
     return this.httpClient.delete<string>(url, HTTP_OPTIONS);
   }
 
+  updateFriend(friend: Friend): Observable<string> {
+    const url = BASE_URL + '/' + friend.id;
+    return this.httpClient.put<string>(url, friend, HTTP_OPTIONS);
+  }
+
 }

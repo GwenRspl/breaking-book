@@ -13,12 +13,15 @@ import {LendBookModalComponent} from './lend-book-modal/lend-book-modal.componen
   styleUrls: ['./show-friend.page.scss'],
 })
 export class ShowFriendPage implements OnInit {
+  friendAvatarInput: string = '';
+  friendNameInput: string = '';
   private _friend: Friend;
   private _defaultAvatar = '../../../assets/default_avatar.png';
   private _defaultCover = '../../../assets/default_cover.png';
   private _currentlyBorrowedBooks: Book[] = [];
   private _readBooks: Book[] = [];
   private _finishedLoading: boolean = false;
+  private _editMode: boolean = false;
 
   constructor(private route: ActivatedRoute,
               private friendsService: FriendsService,
@@ -29,6 +32,10 @@ export class ShowFriendPage implements OnInit {
               private alertCtrl: AlertController) {
   }
 
+
+  get editMode(): boolean {
+    return this._editMode;
+  }
 
   get defaultCover(): string {
     return this._defaultCover;
@@ -62,6 +69,8 @@ export class ShowFriendPage implements OnInit {
     this.route.data.subscribe(
       data => {
         this._friend = data['friend'];
+        this.friendNameInput = this.friend.name;
+        this.friendAvatarInput = this.friend.avatar;
         this.retrieveCurrentlyBorrowedBooks();
         if (this.friend.historyBookIds != null && this.friend.historyBookIds.length > 0) {
           this.retrieveReadBooks();
@@ -161,4 +170,21 @@ export class ShowFriendPage implements OnInit {
 
   }
 
+  toggleEditMode() {
+    this._editMode = !this.editMode;
+  }
+
+  saveChanges() {
+    if (this.friendNameInput == '') {
+      this.presentErrorToast('The name of a friend cannot be empty.');
+      return;
+    }
+    this._friend.name = this.friendNameInput;
+    this._friend.avatar = this.friendAvatarInput;
+    this.friendsService.updateFriend(this.friend).subscribe(
+      data => this.toggleEditMode(),
+      error => console.log(error)
+    );
+
+  }
 }
