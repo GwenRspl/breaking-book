@@ -143,7 +143,9 @@ public class BookRepositoryImpl implements BookRepository {
         try {
             final DataSource dataSource = this.jdbcTemplate.getDataSource();
             if (dataSource != null) {
-                authors = dataSource.getConnection().createArrayOf("VARCHAR", listToConvert.toArray());
+                final Connection connection = dataSource.getConnection();
+                authors = connection.createArrayOf("VARCHAR", listToConvert.toArray());
+                connection.close();
             }
         } catch (final SQLException e) {
             e.printStackTrace();
