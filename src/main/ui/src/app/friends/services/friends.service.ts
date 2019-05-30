@@ -48,7 +48,8 @@ export class FriendsService {
   }
 
   getBackBookFromFriend(bookId: number) {
-
+    const url = BOOKS_URL + '/get-back/' + bookId;
+    return this.httpClient.get<string>(url, HTTP_OPTIONS);
   }
 
 }

@@ -33,9 +33,21 @@
             <ion-col size-lg="6">
                 <h2>Currently borrowed</h2>
                 <p *ngIf="currentlyBorrowedBooks.length == 0">No books borrowed</p>
-                <ion-card *ngFor="let borrowedBook of currentlyBorrowedBooks">
-                    <ion-card-title> {{borrowedBook.title}}</ion-card-title>
-                </ion-card>
+                <div *ngFor="let borrowedBook of currentlyBorrowedBooks" class="books-div">
+
+                    <ion-card class="overlay-container">
+                        <ion-img *ngIf="borrowedBook.image != null && borrowedBook.image != ''"
+                                 [src]="borrowedBook.image"></ion-img>
+                        <ion-img *ngIf="borrowedBook.image == null || borrowedBook.image == ''"
+                                 [src]="defaultCover"></ion-img>
+                        <div class="overlay">
+                            <div class="overlay-text">{{borrowedBook.title}}</div>
+                        </div>
+                        <ion-fab-button (click)="getBack(borrowedBook.id)" class="fab-btn" color="secondary">
+                            <ion-icon name="refresh"></ion-icon>
+                        </ion-fab-button>
+                    </ion-card>
+                </div>
             </ion-col>
         </ion-row>
         <ion-row justify-content-center>
@@ -43,8 +55,11 @@
                 <h2>Books read</h2>
                 <p *ngIf="readBooks.length == 0">No books read</p>
                 <ion-list>
-                    <ion-item *ngFor="let readBook of readBooks">
-                        <ion-label>{{readBook.title}}</ion-label>
+                    <ion-item *ngFor="let readBook of readBooks" lines="full">
+                        <ion-label>
+                            <h2>{{readBook.title}}</h2>
+                            <h3>{{readBook.authors}}</h3>
+                        </ion-label>
                     </ion-item>
                 </ion-list>
             </ion-col>

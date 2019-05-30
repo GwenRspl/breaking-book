@@ -15,6 +15,7 @@ import {LendBookModalComponent} from './lend-book-modal/lend-book-modal.componen
 export class ShowFriendPage implements OnInit {
   private _friend: Friend;
   private _defaultAvatar = '../../../assets/default_avatar.png';
+  private _defaultCover = '../../../assets/default_cover.png';
   private _currentlyBorrowedBooks: Book[] = [];
   private _readBooks: Book[] = [];
   private _finishedLoading: boolean = false;
@@ -26,6 +27,10 @@ export class ShowFriendPage implements OnInit {
               private toastCtrl: ToastController) {
   }
 
+
+  get defaultCover(): string {
+    return this._defaultCover;
+  }
 
   get finishedLoading(): boolean {
     return this._finishedLoading;
@@ -114,4 +119,10 @@ export class ShowFriendPage implements OnInit {
     }).then(toast => toast.present());
   }
 
+  getBack(bookId: number) {
+    this.friendsService.getBackBookFromFriend(bookId).subscribe(
+      data => this.retrieveCurrentlyBorrowedBooks(),
+      error => console.log(error)
+    );
+  }
 }
