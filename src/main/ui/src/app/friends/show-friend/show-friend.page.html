@@ -1,0 +1,88 @@
+<ion-content>
+    <ion-grid>
+        <ion-row justify-content-center>
+            <ion-col size-lg="6">
+                <div class="ion-float-right">
+                    <ion-button (click)="toggleEditMode()" *ngIf="!editMode" color="primary" fill="outline">
+                        <ion-icon name="create" slot="start"></ion-icon>
+                        Edit
+                    </ion-button>
+                    <ion-button (click)="saveChanges()" *ngIf="editMode" color="success" fill="outline">
+                        <ion-icon name="checkmark" slot="start"></ion-icon>
+                        Save changes
+                    </ion-button>
+                    <ion-button (click)="toggleEditMode()" *ngIf="editMode" color="dark" fill="outline">
+                        <ion-icon name="close" slot="start"></ion-icon>
+                        Cancel
+                    </ion-button>
+                    <ion-button (click)="presentDeleteFriendAlert()" color="danger">
+                        <ion-icon name="close-circle" slot="start"></ion-icon>
+                        Delete
+                    </ion-button>
+                </div>
+            </ion-col>
+        </ion-row>
+        <ion-row justify-content-center>
+            <ion-col class="cover-col" size-lg="3">
+                <ion-img *ngIf="friend.avatar != null && friend.avatar != ''" [src]="friend.avatar"
+                         class="friend-avatar"></ion-img>
+                <ion-img *ngIf="friend.avatar == null || friend.avatar == ''" [src]="defaultAvatar"
+                         class="friend-avatar"></ion-img>
+            </ion-col>
+            <ion-col align-self-center size-lg="3" text-center>
+                <h1 *ngIf="!editMode">{{friend.name}}</h1>
+                <ion-list *ngIf="editMode" padding>
+                    <ion-item>
+                        <ion-label position="stacked">Name</ion-label>
+                        <ion-input [(ngModel)]="friendNameInput" required></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label position="stacked">Avatar</ion-label>
+                        <ion-input [(ngModel)]="friendAvatarInput"></ion-input>
+                    </ion-item>
+                </ion-list>
+
+
+                <ion-button (click)="openLendBookModal()">
+                    <ion-icon name="hand" slot="start"></ion-icon>
+                    Lend a book
+                </ion-button>
+            </ion-col>
+        </ion-row>
+        <ion-row justify-content-center>
+            <ion-col size-lg="6">
+                <h2>Currently borrowed</h2>
+                <p *ngIf="currentlyBorrowedBooks.length == 0">No books borrowed</p>
+                <div *ngFor="let borrowedBook of currentlyBorrowedBooks" class="books-div">
+
+                    <ion-card class="overlay-container">
+                        <ion-img *ngIf="borrowedBook.image != null && borrowedBook.image != ''"
+                                 [src]="borrowedBook.image"></ion-img>
+                        <ion-img *ngIf="borrowedBook.image == null || borrowedBook.image == ''"
+                                 [src]="defaultCover"></ion-img>
+                        <div class="overlay">
+                            <div class="overlay-text">{{borrowedBook.title}}</div>
+                        </div>
+                        <ion-fab-button (click)="getBackBook(borrowedBook.id)" class="fab-btn" color="secondary">
+                            <ion-icon name="refresh"></ion-icon>
+                        </ion-fab-button>
+                    </ion-card>
+                </div>
+            </ion-col>
+        </ion-row>
+        <ion-row justify-content-center>
+            <ion-col size-lg="6">
+                <h2>Books read</h2>
+                <p *ngIf="readBooks.length == 0">No books read</p>
+                <ion-list>
+                    <ion-item *ngFor="let readBook of readBooks" lines="full">
+                        <ion-label>
+                            <h2>{{readBook.title}}</h2>
+                            <h3>{{readBook.authors}}</h3>
+                        </ion-label>
+                    </ion-item>
+                </ion-list>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

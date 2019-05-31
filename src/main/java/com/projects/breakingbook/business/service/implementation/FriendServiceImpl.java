@@ -33,7 +33,7 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public boolean create(final Friend friend) {
+    public Long create(final Friend friend) {
         return this.friendRepository.createFriend(friend);
     }
 
@@ -96,5 +96,10 @@ public class FriendServiceImpl implements FriendService {
     @Override
     public Long getBorrowedBook(final Long id) {
         return this.friendRepository.getBorrowedBook(id);
+    }
+
+    @Override
+    public boolean addBookToHistory(final Long friendId, final Long bookId) {
+        return this.friendRepository.addBookToHistory(bookId, friendId);
     }
 }

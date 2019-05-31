@@ -10,12 +10,28 @@
 @import '~@ionic/angular/css/text-transformation.css';
 @import '~@ionic/angular/css/flex-utils.css';
 
-.delete-book-modal .modal-wrapper {
-  height: 7em;
+$screen-breakpoints: (
+        xs: 0,
+        sm: 576px,
+        md: 768px,
+        lg: 992px,
+        xl: 1200px
+) !default;
+
+@each $keySize, $valueSize in $screen-breakpoints {
+  [hidden-from-#{$keySize}] {
+    @media (min-width: $valueSize) {
+      display: none;
+    }
+  }
 }
 
-.edit-account-modal .modal-wrapper {
-  height: 20em;
+@each $keySize, $valueSize in $screen-breakpoints {
+  [hidden-until-#{$keySize}] {
+    @media (max-width: $valueSize) {
+      display: none;
+    }
+  }
 }
 
 .center-content-vertically {
@@ -24,3 +40,26 @@
   align-items: center;
   justify-content: center;
 }
+
+.delete-book-modal .modal-wrapper {
+  height: 7em;
+}
+
+.edit-account-modal .modal-wrapper {
+  height: 20em;
+}
+
+.alert-btn {
+  button.alert-button.delete-btn {
+    color: red;
+    font-weight: bold;
+  }
+
+  button.alert-button.cancel-btn {
+    color: dimgrey;
+  }
+}
+
+
+
+

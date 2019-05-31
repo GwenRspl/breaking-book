@@ -9,6 +9,8 @@ public interface BookService {
 
     List<Book> getAll(final Long userId);
 
+    List<Book> getAllLentBooks(final Long userId);
+
     Optional<Book> getOne(final Long id);
 
     Long create(final Book book);
@@ -22,4 +24,5 @@ public interface BookService {
     boolean toggleOwned(Long id);
 
     boolean updateFriend(Long bookId, Long friendId);
+
 }

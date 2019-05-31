@@ -47,26 +47,16 @@ public class BookController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/{id}")
-    public BookDTO getOne(@PathVariable final Long id) {
-        final Optional<Book> optionalBook = this.bookService.getOne(id);
-        return optionalBook.map(this::convertToDTO).orElse(null);
+    @GetMapping("/lent")
+    public List<BookDTO> getAllLentBooks(@RequestParam final Long userId) {
+        final List<Book> books = this.bookService.getAllLentBooks(userId);
+        return books.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     @PostMapping("")
     public ResponseEntity<?> create(@RequestBody final BookDTO bookDto) {
-//        boolean result = false;
-//        try {
-//            result = this.bookService.create(convertToEntity(bookDto));
-//            if(result) {
-//                return new ResponseEntity<>("Book successfully created", HttpStatus.OK);
-//            } else {
-//                throw new BookNotCreatedException("Book not created");
-//            }
-//        } catch (ParseException | BookNotCreatedException e) {
-//            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-//        }
-
         final Long bookId;
 
         try {
@@ -81,10 +71,51 @@ public class BookController {
         }
     }
 
+    @PutMapping("/lend/{bookId}")
+    public ResponseEntity<?> lendBookToFriend(@PathVariable final Long bookId, @RequestBody final Long friendId) {
+
+        boolean result;
+        try {
+            result = this.bookService.updateFriend(bookId, friendId);
+            if (!result) {
+                throw new BookNotUpdatedException("Book not updated");
+            }
+            result = this.friendService.addBookToHistory(friendId, bookId);
+            if (result) {
+                return new ResponseEntity<>("Book updated successfully", HttpStatus.OK);
+            } else {
+                throw new BookNotUpdatedException("Book not updated");
+            }
+        } catch (final BookNotUpdatedException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/get-back/{bookId}")
+    public ResponseEntity<?> getBackBookFromFriend(@PathVariable final Long bookId) {
+        final boolean result;
+        try {
+            result = this.bookService.updateFriend(bookId, null);
+            if (result) {
+                return new ResponseEntity<>("Book updated successfully", HttpStatus.OK);
+            } else {
+                throw new BookNotUpdatedException("Book not updated");
+            }
+        } catch (final BookNotUpdatedException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/{id}")
+    public BookDTO getOne(@PathVariable final Long id) {
+        final Optional<Book> optionalBook = this.bookService.getOne(id);
+        return optionalBook.map(this::convertToDTO).orElse(null);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable final Long id, @RequestBody final BookDTO bookDTO) {
 
-        boolean result = false;
+        final boolean result;
         try {
             result = this.bookService.update(id, this.convertToEntity(bookDTO));
             if (result) {

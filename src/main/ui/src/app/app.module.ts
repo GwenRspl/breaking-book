@@ -1,19 +1,20 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { RouteReuseStrategy } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {RouteReuseStrategy} from '@angular/router';
 
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
+import {IonicModule, IonicRouteStrategy} from '@ionic/angular';
+import {SplashScreen} from '@ionic-native/splash-screen/ngx';
+import {StatusBar} from '@ionic-native/status-bar/ngx';
 
-import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
+import {AppComponent} from './app.component';
+import {AppRoutingModule} from './app-routing.module';
 import {HeaderComponent} from './header/header.component';
 import {FooterComponent} from './footer/footer.component';
 import {SettingsComponent} from './header/settings/settings.component';
 import {HeaderService} from './header/services/header.service';
 import {SignInPageModule} from './authentication/sign-in/sign-in.module';
 import {LibraryPageModule} from './library/library.module';
+import {FriendsPageModule} from './friends/friends.module';
 
 
 @NgModule({
@@ -27,14 +28,16 @@ import {LibraryPageModule} from './library/library.module';
     IonicModule.forRoot(),
     AppRoutingModule,
     SignInPageModule.forRoot(),
-    LibraryPageModule.forRoot()
+    LibraryPageModule.forRoot(),
+    FriendsPageModule.forRoot()
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
     HeaderService
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+}

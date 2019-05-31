@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -22,6 +23,15 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> getAll(final Long userId) {
         return this.bookRepository.findAllBooks(userId);
+    }
+
+    @Override
+    public List<Book> getAllLentBooks(final Long userId) {
+        return this.bookRepository
+                .findAllBooks(userId)
+                .stream()
+                .filter(book -> book.getFriend().getId() != null && book.getFriend().getId() != 0)
+                .collect(Collectors.toList());
     }
 
     @Override

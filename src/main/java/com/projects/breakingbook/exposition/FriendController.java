@@ -53,11 +53,11 @@ public class FriendController {
 
     @PostMapping("")
     public ResponseEntity<?> create(@Valid @RequestBody final FriendDTO friendDTO) {
-        boolean result = false;
+        final Long friendId;
         try {
-            result = this.friendService.create(this.convertToEntity(friendDTO));
-            if (result) {
-                return new ResponseEntity<>("Friend successfully created", HttpStatus.OK);
+            friendId = this.friendService.create(this.convertToEntity(friendDTO));
+            if (friendId != null) {
+                return new ResponseEntity<>(friendId, HttpStatus.OK);
             } else {
                 throw new FriendNotCreatedException("Friend not created");
             }

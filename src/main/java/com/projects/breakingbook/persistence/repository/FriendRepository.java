@@ -9,7 +9,7 @@ public interface FriendRepository {
 
     List<Friend> findAllFriends(Long userId);
 
-    boolean createFriend(Friend friend);
+    Long createFriend(Friend friend);
 
     Optional<Friend> findFriendById(Long id);
 
@@ -20,4 +20,6 @@ public interface FriendRepository {
     boolean updateFriend(Long id, Friend friend);
 
     Long getBorrowedBook(Long friendId);
+
+    boolean addBookToHistory(Long bookId, Long friendId);
 }

@@ -1,0 +1,7 @@
+.item-clickable {
+  cursor: pointer;
+
+  &:hover {
+    --background: aliceblue;
+  }
+}
