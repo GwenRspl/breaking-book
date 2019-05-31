@@ -1,9 +1,39 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>collections</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
+    <ion-grid>
+        <ion-row justify-content-center>
+            <ion-col size-lg="8">
+                <ion-item>
+                    <ion-input placeholder="Enter your new collection name"></ion-input>
+                    <ion-button size="medium" slot="end">Create new collection</ion-button>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-row justify-content-center>
+            <ion-col size-lg="10">
+                <ion-grid>
+                    <ion-row>
+                        <ion-col *ngFor="let collection of collections" size="6">
+                            <ion-card>
+                                <ion-card-header>
+                                    <ion-card-title>{{collection.name}}</ion-card-title>
+                                </ion-card-header>
+                                <div *ngFor="let book of booksCollectionsMap.get(collection.id)" class="books-div">
+                                    <ion-card class="overlay-container">
+                                        <ion-img *ngIf="book.image != null && book.image != ''"
+                                                 [src]="book.image"></ion-img>
+                                        <ion-img *ngIf="book.image == null || book.image == ''"
+                                                 [src]="defaultCover"></ion-img>
+                                        <div class="overlay">
+                                            <div class="overlay-text">{{book.title}}</div>
+                                        </div>
+                                    </ion-card>
+                                </div>
+                            </ion-card>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 
 </ion-content>
