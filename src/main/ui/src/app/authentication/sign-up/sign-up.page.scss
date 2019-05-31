@@ -1,7 +1,6 @@
-ion-card {
-  margin-top: 8em;
-  padding-left: 5em;
-  padding-right: 5em;
+ion-list {
+  padding-left: 3em;
+  padding-right: 3em;
 }
 
 ion-card-title {
@@ -17,7 +16,6 @@ ion-card-title {
 
 .signIn {
   cursor: pointer;
-  margin-right: -4em;
 }
 
 .signIn:hover {
