@@ -21,6 +21,7 @@ export class ShowBookPage implements OnInit {
   private _defaultCover = '../../../assets/default_cover.png';
   private _editMode: boolean = false;
   private _submitted = false;
+  private _finishedLoading: boolean = false;
 
   constructor(private booksService: BooksService,
               private friendsService: FriendsService,
@@ -30,6 +31,11 @@ export class ShowBookPage implements OnInit {
               private alertCtrl: AlertController,
               private toastCtrl: ToastController,
               private router: Router) {
+  }
+
+
+  get finishedLoading(): boolean {
+    return this._finishedLoading;
   }
 
   get book(): Book {
@@ -68,6 +74,7 @@ export class ShowBookPage implements OnInit {
         if (this.book.friendId != null && this.book.friendId != 0) {
           this.retrieveFriend(this.book.friendId);
         }
+        this._finishedLoading = true;
       },
       error => {
         console.log(error);
