@@ -16,9 +16,10 @@
 }
 
 .overlay-container {
-  height: 15em;
-  width: 10em;
-  object-fit: cover;
+  height: 100%;
+  min-height: 10em;
+  background-color: aliceblue;
+  cursor: pointer;
 }
 
 .overlay-text {
@@ -33,4 +34,47 @@
 
 .books-div {
   display: inline-block;
+}
+
+.cover-img {
+  height: 100%;
+  object-fit: cover;
+}
+
+.collection-div {
+  background-color: #d7d8da;
+  padding-top: 0.1em;
+  padding-bottom: 1.5em;
+  height: 100%;
+  min-height: 15em;
+  max-height: 40em;
+}
+
+.add-book-card:hover {
+  background-color: lightblue;
+}
+
+.action-buttons {
+  margin-top: -0.5em;
+  margin-bottom: -1.5em;
+}
+
+.fab-btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  opacity: 0;
+  transition: width 0.5s, height 0.5s;
+
+
+  &:hover {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+.overlay-container:hover .fab-btn {
+  opacity: 0.9;
 }

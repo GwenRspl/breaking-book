@@ -1,6 +1,12 @@
-export interface Collection {
+export class Collection {
   id: number;
   name: string;
   userId: number;
   booksIds: number[];
+
+
+  constructor(name: string, userId: number) {
+    this.name = name;
+    this.userId = userId;
+  }
 }

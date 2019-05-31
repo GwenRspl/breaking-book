@@ -24,4 +24,13 @@ export class CollectionsService {
     const url = BASE_URL + USER_ID_PARAM + this.userId;
     return this.httpClient.get<Collection[]>(url);
   }
+
+  saveCollection(collection: Collection): Observable<string> {
+    return this.httpClient.post<string>(BASE_URL, collection, HTTP_OPTIONS);
+  }
+
+  deleteCollection(collectionId: number): Observable<string> {
+    const url = BASE_URL + '/' + collectionId;
+    return this.httpClient.delete<string>(url, HTTP_OPTIONS);
+  }
 }
