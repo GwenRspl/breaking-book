@@ -64,6 +64,16 @@ public class CollectionController {
         }
     }
 
+    @PostMapping("/add/{id}")
+    public ResponseEntity<?> addBookToCollection(@PathVariable final Long id, @RequestBody final Long bookId) {
+        final boolean result = this.collectionService.addBookToCollection(id, bookId);
+        if (result) {
+            return new ResponseEntity<>("Book successfully added to collection.", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Book not added to collection", HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable final Long id, @RequestBody final CollectionDTO collectionDTO) {
         boolean result = false;
@@ -76,6 +86,16 @@ public class CollectionController {
             }
         } catch (final ParseException | CollectionNotUpdatedException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/remove/{id}")
+    public ResponseEntity<?> removeBookFromCollection(@PathVariable final Long id, @RequestParam final Long bookId) {
+        final boolean result = this.collectionService.removeBookFromCollection(id, bookId);
+        if (result) {
+            return new ResponseEntity<>("Collection deleted successfully", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Collection not deleted", HttpStatus.BAD_REQUEST);
         }
     }
 

@@ -18,4 +18,8 @@ public interface CollectionRepository {
     boolean deleteAllCollections();
 
     boolean updateCollection(Long id, Collection collection);
+
+    boolean addBookToCollection(final Long id, final Long bookId);
+
+    boolean removeBookFromCollection(final Long id, final Long bookId);
 }

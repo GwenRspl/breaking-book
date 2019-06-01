@@ -42,6 +42,9 @@ public class CollectionRepositoryImpl implements CollectionRepository {
             "FULL OUTER JOIN friend f ON book.book_friend = f.friend_id " +
             "WHERE collection_id = ?;";
 
+    private final String INSERT_BOOK_IN_COLLECTION = "INSERT INTO book_collection(book_collection_book_id, book_collection_collection_id) VALUES (?, ?);";
+    private final String REMOVE_BOOK_FROM_COLLECTION = "DELETE FROM public.book_collection WHERE book_collection_book_id = ? AND book_collection_collection_id = ?;";
+
     public CollectionRepositoryImpl(final JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -94,6 +97,18 @@ public class CollectionRepositoryImpl implements CollectionRepository {
     @Override
     public boolean updateCollection(final Long id, final Collection collection) {
         final int result = this.jdbcTemplate.update(this.UPDATE, collection.getName(), id);
+        return result != 0;
+    }
+
+    @Override
+    public boolean addBookToCollection(final Long id, final Long bookId) {
+        final int result = this.jdbcTemplate.update(this.INSERT_BOOK_IN_COLLECTION, bookId, id);
+        return result != 0;
+    }
+
+    @Override
+    public boolean removeBookFromCollection(final Long id, final Long bookId) {
+        final int result = this.jdbcTemplate.update(this.REMOVE_BOOK_FROM_COLLECTION, bookId, id);
         return result != 0;
     }
 }
