@@ -1,12 +1,10 @@
 import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 import {Collection} from './collection.model';
 import {Book} from '../library/book.model';
 import {CollectionsService} from './services/collections.service';
 import {BooksService} from '../library/services/books.service';
-import {Router} from '@angular/router';
 import {TokenStorageService} from '../authentication/services/token-storage.service';
-import {ChooseBookModalComponent} from '../shared/modals/choose-book-modal/choose-book-modal.component';
-import {ModalController} from '@ionic/angular';
 
 @Component({
   selector: 'app-collections',
@@ -17,13 +15,11 @@ export class CollectionsPage implements OnInit {
   userInput: string = '';
   private _collections: Collection[] = [];
   private _booksCollectionsMap: Map<number, Book[]> = new Map<number, Book[]>();
-  private _defaultCover = '../../../assets/default_cover.png';
 
   constructor(private collectionsService: CollectionsService,
               private booksService: BooksService,
               private router: Router,
-              private tokenStorage: TokenStorageService,
-              private modalCtrl: ModalController) {
+              private tokenStorage: TokenStorageService) {
   }
 
 
@@ -33,10 +29,6 @@ export class CollectionsPage implements OnInit {
 
   get booksCollectionsMap(): Map<number, Book[]> {
     return this._booksCollectionsMap;
-  }
-
-  get defaultCover(): string {
-    return this._defaultCover;
   }
 
   ngOnInit() {
@@ -72,36 +64,6 @@ export class CollectionsPage implements OnInit {
     });
   }
 
-  goToBookDetails(bookId: number) {
-    this.router.navigate(['library', 'show', bookId])
-  }
-
-  openBookToCollectionModal(collection: Collection) {
-    this.modalCtrl
-      .create({
-        component: ChooseBookModalComponent,
-        componentProps: {modalMode: 'collection', collection: collection}
-      })
-      .then(modal => {
-          modal.present();
-          return modal.onDidDismiss();
-        }
-      )
-      .then(modal => {
-        if (modal.role == 'book') {
-          this.addBookToCollection(modal.data, collection.id);
-        }
-      })
-  }
-
-  addBookToCollection(bookId: number, collectionId: number) {
-    this.collectionsService.addBookToCollection(collectionId, bookId).subscribe(
-      () => this.retrieveCollections(),
-      error => console.log(error)
-    )
-
-  }
-
   createNewCollection() {
     if (this.userInput == '') {
       return;
@@ -113,14 +75,4 @@ export class CollectionsPage implements OnInit {
     );
   }
 
-  deleteBookFromLibrary(bookId: number) {
-    console.log(bookId)
-  }
-
-  deleteCollection(collectionId: number) {
-    this.collectionsService.deleteCollection(collectionId).subscribe(
-      () => this.retrieveCollections(),
-      error => console.log(error)
-    );
-  }
 }

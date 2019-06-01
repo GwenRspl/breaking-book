@@ -42,6 +42,7 @@ import {ChooseBookModalComponent} from './shared/modals/choose-book-modal/choose
     {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
     HeaderService
   ],
+  exports: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {

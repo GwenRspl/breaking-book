@@ -7,6 +7,7 @@ import {IonicModule} from '@ionic/angular';
 
 import {CollectionsPage} from './collections.page';
 import {CollectionsService} from './services/collections.service';
+import {SharedModule} from '../shared/shared.module';
 
 const routes: Routes = [
   {
@@ -20,7 +21,8 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    SharedModule
   ],
   declarations: [
     CollectionsPage
