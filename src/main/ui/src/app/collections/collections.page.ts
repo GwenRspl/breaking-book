@@ -38,6 +38,7 @@ export class CollectionsPage implements OnInit {
   retrieveCollections() {
     this.collectionsService.getCollections().subscribe(
       data => {
+        console.log(data);
         this._collections = data;
         this.booksService.getBooks().subscribe(
           data => {
@@ -51,6 +52,7 @@ export class CollectionsPage implements OnInit {
   }
 
   initMap(books: Book[]) {
+    this._booksCollectionsMap = new Map<number, Book[]>();
     this.collections.forEach(collection => {
       if (collection.booksIds != null) {
         let bookList: Book[] = [];

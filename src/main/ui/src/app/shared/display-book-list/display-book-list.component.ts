@@ -5,7 +5,7 @@ import {Book} from '../../library/book.model';
 import {Wishlist} from '../../wishlists/wishlist.model';
 import {CollectionsService} from '../../collections/services/collections.service';
 import {ChooseBookModalComponent} from '../modals/choose-book-modal/choose-book-modal.component';
-import {ModalController} from '@ionic/angular';
+import {AlertController, ModalController} from '@ionic/angular';
 
 
 @Component({
@@ -19,7 +19,6 @@ export class DisplayBookListComponent implements OnInit {
   @Input() collection: Collection;
   @Input() wishlist: Wishlist;
   @Input() itemMode: string;
-  userInput: string = '';
   private _defaultCover = '../../../assets/default_cover.png';
   private _item: any;
   private _finishedLoading: boolean = false;
@@ -27,7 +26,8 @@ export class DisplayBookListComponent implements OnInit {
 
   constructor(private router: Router,
               private collectionsService: CollectionsService,
-              private modalCtrl: ModalController) {
+              private modalCtrl: ModalController,
+              private alertCtrl: AlertController) {
   }
 
 
@@ -111,11 +111,48 @@ export class DisplayBookListComponent implements OnInit {
     }
   }
 
-  renameItem(itemId: number) {
+  renameItemModal() {
+    console.log('yo');
     if (this.itemMode == 'collection') {
+      this.alertCtrl.create({
+        message: 'RENAME',
+        inputs: [
+          {
+            name: 'name',
+            type: 'text',
+            value: this.collection.name
+          }
+        ],
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            handler: () => {
+              this.alertCtrl.dismiss();
+            }
+          }, {
+            text: 'Rename',
+            handler: (data) => {
+              if (data.name == '') {
+                this.renameItemModal();
+              } else {
+                this.collection.name = data.name;
+                this.renameCollection();
+              }
+            }
+          }
+        ]
+      }).then(alert => alert.present())
 
     } else {
 
     }
+  }
+
+  renameCollection() {
+    this.collectionsService.renameCollection(this.collection).subscribe(
+      () => console.log(),
+      error => console.log(error)
+    );
   }
 }

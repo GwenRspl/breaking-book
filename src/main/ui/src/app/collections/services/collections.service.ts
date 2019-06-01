@@ -6,6 +6,7 @@ import {TokenStorageService} from '../../authentication/services/token-storage.s
 
 const BASE_URL: string = 'http://localhost:8080/api/collections';
 const USER_ID_PARAM = '?userId=';
+const BOOK_ID_PARAM = '?bookId=';
 const HTTP_OPTIONS = {headers: new HttpHeaders({'Content-Type': 'application/json',}), responseType: 'text' as 'json'};
 
 
@@ -35,17 +36,17 @@ export class CollectionsService {
   }
 
   addBookToCollection(collectionId: number, bookId: number): Observable<string> {
-    console.log('adding book to collection');
-    return new Observable<string>();
+    const url = BASE_URL + /add/ + collectionId;
+    return this.httpClient.post<string>(url, bookId, HTTP_OPTIONS);
   }
 
   deleteBookFromCollection(collectionId: number, bookId: number): Observable<string> {
-    console.log('deleting book from collection');
-    return new Observable<string>();
+    const url = BASE_URL + '/remove/' + collectionId + BOOK_ID_PARAM + bookId;
+    return this.httpClient.delete<string>(url, HTTP_OPTIONS);
   }
 
   renameCollection(collection: Collection): Observable<string> {
-    console.log('renaming collection');
-    return new Observable<string>();
+    const url = BASE_URL + '/' + collection.id;
+    return this.httpClient.put<string>(url, collection, HTTP_OPTIONS);
   }
 }
