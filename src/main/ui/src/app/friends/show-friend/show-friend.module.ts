@@ -6,7 +6,6 @@ import {RouterModule, Routes} from '@angular/router';
 import {IonicModule} from '@ionic/angular';
 
 import {ShowFriendPage} from './show-friend.page';
-import {LendBookModalComponent} from './lend-book-modal/lend-book-modal.component';
 
 const routes: Routes = [
   {
@@ -23,10 +22,8 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   declarations: [
-    ShowFriendPage,
-    LendBookModalComponent
-  ],
-  entryComponents: [LendBookModalComponent]
+    ShowFriendPage
+  ]
 })
 export class ShowFriendPageModule {
 }

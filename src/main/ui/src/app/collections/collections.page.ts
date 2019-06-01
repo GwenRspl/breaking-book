@@ -5,6 +5,8 @@ import {CollectionsService} from './services/collections.service';
 import {BooksService} from '../library/services/books.service';
 import {Router} from '@angular/router';
 import {TokenStorageService} from '../authentication/services/token-storage.service';
+import {ChooseBookModalComponent} from '../shared/modals/choose-book-modal/choose-book-modal.component';
+import {ModalController} from '@ionic/angular';
 
 @Component({
   selector: 'app-collections',
@@ -20,7 +22,8 @@ export class CollectionsPage implements OnInit {
   constructor(private collectionsService: CollectionsService,
               private booksService: BooksService,
               private router: Router,
-              private tokenStorage: TokenStorageService) {
+              private tokenStorage: TokenStorageService,
+              private modalCtrl: ModalController) {
   }
 
 
@@ -73,7 +76,29 @@ export class CollectionsPage implements OnInit {
     this.router.navigate(['library', 'show', bookId])
   }
 
-  addBookToCollection(collectionId: number) {
+  openBookToCollectionModal(collection: Collection) {
+    this.modalCtrl
+      .create({
+        component: ChooseBookModalComponent,
+        componentProps: {modalMode: 'collection', collection: collection}
+      })
+      .then(modal => {
+          modal.present();
+          return modal.onDidDismiss();
+        }
+      )
+      .then(modal => {
+        if (modal.role == 'book') {
+          this.addBookToCollection(modal.data, collection.id);
+        }
+      })
+  }
+
+  addBookToCollection(bookId: number, collectionId: number) {
+    this.collectionsService.addBookToCollection(collectionId, bookId).subscribe(
+      () => this.retrieveCollections(),
+      error => console.log(error)
+    )
 
   }
 

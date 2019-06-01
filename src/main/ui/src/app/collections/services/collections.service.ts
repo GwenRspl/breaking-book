@@ -33,4 +33,19 @@ export class CollectionsService {
     const url = BASE_URL + '/' + collectionId;
     return this.httpClient.delete<string>(url, HTTP_OPTIONS);
   }
+
+  addBookToCollection(collectionId: number, bookId: number): Observable<string> {
+    console.log('adding book to collection');
+    return new Observable<string>();
+  }
+
+  deleteBookFromCollection(collectionId: number, bookId: number): Observable<string> {
+    console.log('deleting book from collection');
+    return new Observable<string>();
+  }
+
+  renameCollection(collection: Collection): Observable<string> {
+    console.log('renaming collection');
+    return new Observable<string>();
+  }
 }

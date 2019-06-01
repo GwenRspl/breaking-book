@@ -22,7 +22,9 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [CollectionsPage]
+  declarations: [
+    CollectionsPage
+  ]
 })
 export class CollectionsPageModule {
   static forRoot(): ModuleWithProviders {
