@@ -45,7 +45,6 @@ export class NewFriendPage implements OnInit {
     let newFriend: Friend = new Friend(this.friendForm.value.name, this.friendForm.value.avatar, +this.tokenStorageService.getUserId());
     this.friendsService.saveFriend(newFriend).subscribe(
       data => {
-        console.log(data);
         this.router.navigate((['/', 'friends', 'show', data]));
       },
       error => console.log(error)

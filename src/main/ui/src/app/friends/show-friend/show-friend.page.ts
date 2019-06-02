@@ -5,7 +5,7 @@ import {Book} from '../../library/book.model';
 import {FriendsService} from '../services/friends.service';
 import {BooksService} from '../../library/services/books.service';
 import {AlertController, ModalController, ToastController} from '@ionic/angular';
-import {LendBookModalComponent} from './lend-book-modal/lend-book-modal.component';
+import {ChooseBookModalComponent} from '../../shared/modals/choose-book-modal/choose-book-modal.component';
 
 @Component({
   selector: 'app-show-friend',
@@ -108,7 +108,8 @@ export class ShowFriendPage implements OnInit {
   openLendBookModal() {
     this.modalCtrl
       .create({
-        component: LendBookModalComponent,
+        component: ChooseBookModalComponent,
+        componentProps: {modalMode: 'lendBook'}
       })
       .then(modal => {
           modal.present();

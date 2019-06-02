@@ -1,4 +1,4 @@
-export class Collection {
+export class Wishlist {
   id: number;
   name: string;
   userId: number;

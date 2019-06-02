@@ -15,15 +15,20 @@ import {HeaderService} from './header/services/header.service';
 import {SignInPageModule} from './authentication/sign-in/sign-in.module';
 import {LibraryPageModule} from './library/library.module';
 import {FriendsPageModule} from './friends/friends.module';
+import {ChooseBookModalComponent} from './shared/modals/choose-book-modal/choose-book-modal.component';
 
 
 @NgModule({
   declarations: [AppComponent,
     HeaderComponent,
     FooterComponent,
-    SettingsComponent
+    SettingsComponent,
+    ChooseBookModalComponent
   ],
-  entryComponents: [SettingsComponent],
+  entryComponents: [
+    SettingsComponent,
+    ChooseBookModalComponent
+  ],
   imports: [BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
@@ -37,6 +42,7 @@ import {FriendsPageModule} from './friends/friends.module';
     {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
     HeaderService
   ],
+  exports: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {

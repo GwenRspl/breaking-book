@@ -45,6 +45,16 @@ public class CollectionServiceImpl implements CollectionService {
     }
 
     @Override
+    public boolean addBookToCollection(final Long id, final Long bookId) {
+        return this.collectionRepository.addBookToCollection(id, bookId);
+    }
+
+    @Override
+    public boolean removeBookFromCollection(final Long id, final Long bookId) {
+        return this.collectionRepository.removeBookFromCollection(id, bookId);
+    }
+
+    @Override
     public boolean update(final Long id, final Collection collection) {
         return this.collectionRepository.updateCollection(id, collection);
     }
