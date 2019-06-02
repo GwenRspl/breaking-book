@@ -44,9 +44,11 @@ export class DisplayBookListComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('init');
     if (this.itemMode == 'collection') {
       this._item = this.collection;
     } else {
+      console.log('wish');
       this._item = this.wishlist;
     }
     this._finishedLoading = true;
