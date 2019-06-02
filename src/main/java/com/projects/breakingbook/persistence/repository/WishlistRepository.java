@@ -18,4 +18,8 @@ public interface WishlistRepository {
     boolean deleteAllWishlists();
 
     boolean updateWishlist(Long id, Wishlist wishlist);
+
+    boolean addBookToWishlist(Long id, Long bookId);
+
+    boolean removeBookFromWishlist(Long id, Long bookId);
 }

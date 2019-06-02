@@ -65,6 +65,16 @@ public class WishlistController {
         }
     }
 
+    @PostMapping("/add/{id}")
+    public ResponseEntity<?> addBookToWishlist(@PathVariable final Long id, @RequestBody final Long bookId) {
+        final boolean result = this.wishlistService.addBookToWishlist(id, bookId);
+        if (result) {
+            return new ResponseEntity<>("Book successfully added to wishlist.", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Book not added to wishlist", HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable final Long id, @RequestBody final WishlistDTO wishlistDTO) {
         boolean result = false;
@@ -77,6 +87,16 @@ public class WishlistController {
             }
         } catch (final ParseException | WishlistNotUpdatedException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/remove/{id}")
+    public ResponseEntity<?> removeBookFromWishlist(@PathVariable final Long id, @RequestParam final Long bookId) {
+        final boolean result = this.wishlistService.removeBookFromWishlist(id, bookId);
+        if (result) {
+            return new ResponseEntity<>("Book successfully removed from wishlist", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Book not removed", HttpStatus.BAD_REQUEST);
         }
     }
 
