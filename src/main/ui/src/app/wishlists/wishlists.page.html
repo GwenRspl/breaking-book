@@ -14,7 +14,7 @@
                 <ion-grid>
                     <ion-row>
                         <ion-col *ngFor="let wishlist of wishlists" size-md="6" size-xs="12">
-                            <app-display-book-list (refreshParent)="retrieveWislists()"
+                            <app-display-book-list (refreshParent)="retrieveWishlists()"
                                                    [books]="booksWishlistsMap.get(wishlist.id)"
                                                    [wishlist]="wishlist"
                                                    itemMode="wishlist"></app-display-book-list>
