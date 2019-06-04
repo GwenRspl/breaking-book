@@ -18,4 +18,8 @@ public interface WishlistService {
     boolean delete(final Long id);
 
     boolean deleteAll();
+
+    boolean addBookToWishlist(Long id, Long bookId);
+
+    boolean removeBookFromWishlist(Long id, Long bookId);
 }

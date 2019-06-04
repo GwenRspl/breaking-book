@@ -6,6 +6,7 @@ import {Wishlist} from '../../wishlists/wishlist.model';
 import {CollectionsService} from '../../collections/services/collections.service';
 import {ChooseBookModalComponent} from '../modals/choose-book-modal/choose-book-modal.component';
 import {AlertController, ModalController} from '@ionic/angular';
+import {WishlistsService} from '../../wishlists/services/wishlists.service';
 
 
 @Component({
@@ -26,6 +27,7 @@ export class DisplayBookListComponent implements OnInit {
 
   constructor(private router: Router,
               private collectionsService: CollectionsService,
+              private wishlistsService: WishlistsService,
               private modalCtrl: ModalController,
               private alertCtrl: AlertController) {
   }
@@ -44,17 +46,92 @@ export class DisplayBookListComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('init');
     if (this.itemMode == 'collection') {
       this._item = this.collection;
     } else {
+      console.log('wish');
       this._item = this.wishlist;
     }
     this._finishedLoading = true;
   }
 
-
   goToBookDetails(bookId: number) {
     this.router.navigate(['library', 'show', bookId])
+  }
+
+  renameItemModal() {
+    this.alertCtrl.create({
+      message: 'RENAME',
+      inputs: [
+        {
+          name: 'name',
+          type: 'text',
+          value: this.itemMode == 'collection' ? this.collection.name : this.wishlist.name
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            this.alertCtrl.dismiss();
+          }
+        }, {
+          text: 'Rename',
+          handler: (data) => {
+            if (data.name == '') {
+              this.renameItemModal();
+            } else {
+              if (this.itemMode == 'collection') {
+                this.collection.name = data.name;
+                this.renameCollection();
+              } else {
+                this.wishlist.name = data.name;
+                this.renameWishlist();
+              }
+            }
+          }
+        }
+      ]
+    }).then(alert => alert.present())
+  }
+
+  deleteItem(itemId: number) {
+    if (this.itemMode == 'collection') {
+      this.collectionsService.deleteCollection(itemId).subscribe(
+        () => this.refreshParent.next(),
+        error => console.log(error)
+      );
+    } else {
+      this.wishlistsService.deleteWishlist(itemId).subscribe(
+        () => this.refreshParent.next(),
+        error => console.log(error)
+      );
+    }
+  }
+
+  openChooseBookModal() {
+    this.modalCtrl
+      .create({
+        component: ChooseBookModalComponent,
+        componentProps: this.itemMode == 'collection' ?
+          {modalMode: 'collection', collection: this.collection} : {modalMode: 'wishlist', wishlist: this.wishlist}
+      })
+      .then(modal => {
+          modal.present();
+          return modal.onDidDismiss();
+        }
+      )
+      .then(modal => {
+        if (modal.role == 'book') {
+          if (this.itemMode == 'collection') {
+            this.addBookToCollection(modal.data, this.collection.id);
+          } else {
+            this.addBookToWishlist(modal.data, this.wishlist.id);
+          }
+        }
+      })
   }
 
   deleteBookFromItem(bookId: number) {
@@ -63,32 +140,11 @@ export class DisplayBookListComponent implements OnInit {
         () => this.refreshParent.next(),
         error => console.log(error)
       );
-
     } else {
-
-    }
-  }
-
-  openChooseBookModal() {
-    if (this.itemMode == 'collection') {
-      this.modalCtrl
-        .create({
-          component: ChooseBookModalComponent,
-          componentProps: {modalMode: 'collection', collection: this.collection}
-        })
-        .then(modal => {
-            modal.present();
-            return modal.onDidDismiss();
-          }
-        )
-        .then(modal => {
-          if (modal.role == 'book') {
-            this.addBookToCollection(modal.data, this.collection.id);
-          }
-        })
-
-    } else {
-
+      this.wishlistsService.deleteBookFromWishlist(this.wishlist.id, bookId).subscribe(
+        () => this.refreshParent.next(),
+        error => console.log(error)
+      );
     }
   }
 
@@ -99,58 +155,22 @@ export class DisplayBookListComponent implements OnInit {
     )
   }
 
-  deleteItem(itemId: number) {
-    if (this.itemMode == 'collection') {
-      this.collectionsService.deleteCollection(itemId).subscribe(
-        () => this.refreshParent.next(),
-        error => console.log(error)
-      );
-
-    } else {
-
-    }
-  }
-
-  renameItemModal() {
-    console.log('yo');
-    if (this.itemMode == 'collection') {
-      this.alertCtrl.create({
-        message: 'RENAME',
-        inputs: [
-          {
-            name: 'name',
-            type: 'text',
-            value: this.collection.name
-          }
-        ],
-        buttons: [
-          {
-            text: 'Cancel',
-            role: 'cancel',
-            handler: () => {
-              this.alertCtrl.dismiss();
-            }
-          }, {
-            text: 'Rename',
-            handler: (data) => {
-              if (data.name == '') {
-                this.renameItemModal();
-              } else {
-                this.collection.name = data.name;
-                this.renameCollection();
-              }
-            }
-          }
-        ]
-      }).then(alert => alert.present())
-
-    } else {
-
-    }
-  }
-
   renameCollection() {
     this.collectionsService.renameCollection(this.collection).subscribe(
+      () => console.log(),
+      error => console.log(error)
+    );
+  }
+
+  addBookToWishlist(bookId: number, wishlistId: number) {
+    this.wishlistsService.addBookToWishlist(wishlistId, bookId).subscribe(
+      () => this.refreshParent.next(),
+      error => console.log(error)
+    )
+  }
+
+  renameWishlist() {
+    this.wishlistsService.renameWishlist(this.wishlist).subscribe(
       () => console.log(),
       error => console.log(error)
     );

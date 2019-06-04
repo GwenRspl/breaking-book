@@ -43,7 +43,7 @@ public class CollectionRepositoryImpl implements CollectionRepository {
             "WHERE collection_id = ?;";
 
     private final String INSERT_BOOK_IN_COLLECTION = "INSERT INTO book_collection(book_collection_book_id, book_collection_collection_id) VALUES (?, ?);";
-    private final String REMOVE_BOOK_FROM_COLLECTION = "DELETE FROM public.book_collection WHERE book_collection_book_id = ? AND book_collection_collection_id = ?;";
+    private final String REMOVE_BOOK_FROM_COLLECTION = "DELETE FROM book_collection WHERE book_collection_book_id = ? AND book_collection_collection_id = ?;";
 
     public CollectionRepositoryImpl(final JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

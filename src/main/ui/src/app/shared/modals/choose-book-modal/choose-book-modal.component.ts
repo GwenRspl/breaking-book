@@ -1,8 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {ModalController} from '@ionic/angular';
 import {Book} from '../../../library/book.model';
 import {BooksService} from '../../../library/services/books.service';
-import {ModalController} from '@ionic/angular';
 import {Collection} from '../../../collections/collection.model';
+import {Wishlist} from '../../../wishlists/wishlist.model';
 
 @Component({
   selector: 'app-lend-book-modal',
@@ -12,7 +13,7 @@ import {Collection} from '../../../collections/collection.model';
 export class ChooseBookModalComponent implements OnInit {
   @Input() modalMode: string;
   @Input() collection: Collection;
-  @Input() wishlist: number;
+  @Input() wishlist: Wishlist;
   private _books: Book[] = [];
 
   constructor(private booksService: BooksService,
@@ -31,16 +32,24 @@ export class ChooseBookModalComponent implements OnInit {
   retrieveBooks() {
     this.booksService.getBooks().subscribe(
       data => {
-        if (this.modalMode == 'lendBook') {
-          this._books = data.filter(book => book.owned == true && book.friendId == null);
-        } else if (this.modalMode == 'collection') {
-          if (this.collection.booksIds != null) {
-            this._books = data.filter(book => !this.collection.booksIds.includes(book.id));
-          } else {
-            this._books = data;
-          }
-        } else {
-          this._books = data.filter(book => book.owned == true && book.friendId == null);
+        switch (this.modalMode) {
+          case 'lendBook':
+            this._books = data.filter(book => book.owned == true && book.friendId == null);
+            break;
+          case 'collection':
+            if (this.collection.booksIds != null) {
+              this._books = data.filter(book => !this.collection.booksIds.includes(book.id));
+            } else {
+              this._books = data;
+            }
+            break;
+          case 'wishlist':
+            if (this.wishlist.booksIds != null) {
+              this._books = data.filter(book => book.owned == false && !this.wishlist.booksIds.includes(book.id));
+            } else {
+              this._books = data.filter(book => book.owned == false);
+            }
+            break;
         }
       },
       error => console.log(error)

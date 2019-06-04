@@ -41,6 +41,9 @@ public class WishlistRepositoryImpl implements WishlistRepository {
             "FULL OUTER JOIN friend f ON book.book_friend = f.friend_id " +
             "WHERE wishlist_id = ?;";
 
+    private final String INSERT_BOOK_IN_WISHLIST = "INSERT INTO book_wishlist(book_wishlist_book_id, book_wishlist_wishlist_id) VALUES (?, ?);";
+    private final String REMOVE_BOOK_FROM_WISHLIST = "DELETE FROM book_wishlist WHERE book_wishlist_book_id = ? AND book_wishlist_wishlist_id = ?;";
+
 
     public WishlistRepositoryImpl(final JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -94,6 +97,18 @@ public class WishlistRepositoryImpl implements WishlistRepository {
     @Override
     public boolean updateWishlist(final Long id, final Wishlist wishlist) {
         final int result = this.jdbcTemplate.update(this.UPDATE, wishlist.getName(), id);
+        return result != 0;
+    }
+
+    @Override
+    public boolean addBookToWishlist(final Long id, final Long bookId) {
+        final int result = this.jdbcTemplate.update(this.INSERT_BOOK_IN_WISHLIST, bookId, id);
+        return result != 0;
+    }
+
+    @Override
+    public boolean removeBookFromWishlist(final Long id, final Long bookId) {
+        final int result = this.jdbcTemplate.update(this.REMOVE_BOOK_FROM_WISHLIST, bookId, id);
         return result != 0;
     }
 }

@@ -93,9 +93,9 @@ public class CollectionController {
     public ResponseEntity<?> removeBookFromCollection(@PathVariable final Long id, @RequestParam final Long bookId) {
         final boolean result = this.collectionService.removeBookFromCollection(id, bookId);
         if (result) {
-            return new ResponseEntity<>("Collection deleted successfully", HttpStatus.OK);
+            return new ResponseEntity<>("Book successfully removed from collection", HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Collection not deleted", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Book not removed", HttpStatus.BAD_REQUEST);
         }
     }
 
