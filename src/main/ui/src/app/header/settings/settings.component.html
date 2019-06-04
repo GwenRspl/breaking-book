@@ -1,24 +1,13 @@
-<!--<ion-list lines="full">-->
-<!--    <ion-item (click)="closePopover()" [routerLink]="['/', 'account']">-->
-<!--        <ion-icon slot="start" name="person"></ion-icon>-->
-<!--        <ion-label>Account</ion-label>-->
-<!--    </ion-item>-->
-<!--    <ion-item (click)="closePopover()" [routerLink]="['/', 'home']">-->
-<!--        <ion-icon slot="start" name="log-out"></ion-icon>-->
-<!--        <ion-label>Sign Out</ion-label>-->
-<!--    </ion-item>-->
-<!--</ion-list>-->
-
 <ion-list lines="full">
     <ion-item (click)="closePopover()" [routerLink]="['/', 'account']">
-        <ion-button fill="clear" size="default" color="dark">
-            <ion-icon slot="start" name="person"></ion-icon>
+        <ion-button color="dark" fill="clear" size="default">
+            <ion-icon name="person" slot="start"></ion-icon>
             Account
         </ion-button>
     </ion-item>
     <ion-item (click)="signOut()">
-        <ion-button fill="clear" size="default" color="dark">
-            <ion-icon slot="start" name="log-out"></ion-icon>
+        <ion-button color="dark" fill="clear" size="default">
+            <ion-icon name="log-out" slot="start"></ion-icon>
             Sign Out
         </ion-button>
     </ion-item>

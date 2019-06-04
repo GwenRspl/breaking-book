@@ -1,9 +1,46 @@
 <ion-app>
+    <ion-menu contentId="content1" menuId="m1" side="start">
+        <ion-header>
+            <ion-toolbar>
+                <ion-title>Breaking-Book</ion-title>
+            </ion-toolbar>
+        </ion-header>
+
+        <ion-content>
+            <ion-list>
+                <ion-menu-toggle>
+                    <ion-item lines="none" routerLink="/library" routerLinkActive="active-router-item">
+                        <ion-icon name="book" slot="start"></ion-icon>
+                        <ion-label>Library</ion-label>
+                    </ion-item>
+                </ion-menu-toggle>
+                <ion-menu-toggle>
+                    <ion-item lines="none" routerLink="/collections" routerLinkActive="active-router-item">
+                        <ion-icon name="filing" slot="start"></ion-icon>
+                        <ion-label>Collections</ion-label>
+                    </ion-item>
+                </ion-menu-toggle>
+                <ion-menu-toggle>
+                    <ion-item lines="none" routerLink="/wishlists" routerLinkActive="active-router-item">
+                        <ion-icon name="basket" slot="start"></ion-icon>
+                        <ion-label>Wishlists</ion-label>
+                    </ion-item>
+                </ion-menu-toggle>
+                <ion-menu-toggle>
+                    <ion-item lines="none" routerLink="/friends" routerLinkActive="active-router-item">
+                        <ion-icon name="people" slot="start"></ion-icon>
+                        <ion-label>Friends</ion-label>
+                    </ion-item>
+                </ion-menu-toggle>
+            </ion-list>
+        </ion-content>
+    </ion-menu>
+
     <ion-header>
         <app-header></app-header>
     </ion-header>
     <ion-content>
-        <ion-router-outlet></ion-router-outlet>
+        <ion-router-outlet id="content1"></ion-router-outlet>
     </ion-content>
     <ion-footer>
         <app-footer></app-footer>
