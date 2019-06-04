@@ -1,0 +1,17 @@
+ion-avatar {
+  height: 10em;
+  width: 10em;
+  margin: auto;
+  display: block;
+}
+
+ion-row {
+  padding-bottom: 4em;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.email {
+  color: var(--ion-color-primary);
+  text-decoration: underline;
+}
