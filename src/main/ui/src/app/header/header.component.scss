@@ -1,13 +1,36 @@
 .header-toolbar-cog {
   padding-left: 2em;
 }
+
 ion-title {
   cursor: pointer;
+  font-family: RockSalt, Arial, sans-serif;
+  font-weight: bold;
+  font-size: x-large;
 }
+
 .active-link {
-  background-color: aliceblue;
+  border-bottom: 2px solid var(--ion-color-text-dark);
 }
 
 .bb-username {
-  font-size: small;
+  font-family: RockSalt, Arial, sans-serif;
 }
+
+ion-toolbar {
+  --background: var(--ion-color-tertiary);
+  color: var(--ion-color-text-dark);
+}
+
+ion-button {
+  --border-radius: 50;
+
+  &:hover {
+    color: var(--ion-color-text-light);
+
+    & > ion-icon {
+      color: var(--ion-color-text-light);
+    }
+  }
+}
+
