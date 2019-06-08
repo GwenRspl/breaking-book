@@ -103,8 +103,13 @@ html {
   color: var(--ion-color-text-dark)
 }
 
-ion-content {
+body, ion-menu {
   --ion-background-color: var(--ion-color-background);
+}
+
+ion-card, ion-footer, .card {
+  --ion-background-color: white;
+  --background: white;
 }
 
 .menu-toolbar {
@@ -129,9 +134,8 @@ ion-menu-toggle {
   color: var(--ion-color-text-dark);
 }
 
-ion-menu {
-  --ion-background-color: var(--ion-color-background);
+
+ion-button:hover {
+  --background: var(--ion-color-primary-tint);
 }
-
-
 

@@ -22,7 +22,7 @@
 
             <ion-col *ngFor="let book of books"
                      class="books-div" size-lg="3" size-sm="4" size-xs="6">
-                <ion-card class="overlay-container">
+                <ion-card class="overlay-container card">
                     <ion-img *ngIf="book.image != null && book.image != ''"
                              [src]="book.image"
                              class="cover-img"></ion-img>
@@ -41,7 +41,7 @@
             </ion-col>
             <ion-col class="books-div" size-lg="3" size-sm="4" size-xs="6">
                 <ion-card (click)="openChooseBookModal()"
-                          class="overlay-container center-content-vertically add-book-card"
+                          class="overlay-container center-content-vertically add-book-card card"
                           text-center>
                     <ion-icon color="primary" name="add-circle" size="large"></ion-icon>
                 </ion-card>

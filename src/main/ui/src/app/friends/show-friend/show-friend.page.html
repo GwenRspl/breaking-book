@@ -55,7 +55,7 @@
                 <p *ngIf="currentlyBorrowedBooks.length == 0">No books borrowed</p>
                 <div *ngFor="let borrowedBook of currentlyBorrowedBooks" class="books-div">
 
-                    <ion-card class="overlay-container">
+                    <ion-card class="overlay-container card">
                         <ion-img *ngIf="borrowedBook.image != null && borrowedBook.image != ''"
                                  [src]="borrowedBook.image"></ion-img>
                         <ion-img *ngIf="borrowedBook.image == null || borrowedBook.image == ''"

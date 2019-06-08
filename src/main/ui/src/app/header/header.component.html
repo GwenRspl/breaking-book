@@ -3,7 +3,11 @@
         <ion-menu-button menu="m1"></ion-menu-button>
     </ion-buttons>
 
-    <ion-title (click)="goToHome()" slot="start">
+    <ion-title (click)="goToHome()" hidden-until-sm slot="start">
+        Breaking Book
+    </ion-title>
+
+    <ion-title (click)="goToHome()" class="mobile-title" hidden-from-sm slot="start">
         Breaking Book
     </ion-title>
 
@@ -27,7 +31,7 @@
     </ion-buttons>
 
     <ion-buttons *ngIf="username" class="header-toolbar-cog" slot="end">
-        <ion-text class="bb-username">Welcome {{username}} !</ion-text>
+        <ion-text class="bb-username" hidden-until-sm>Welcome {{username}} !</ion-text>
         <ion-button (click)="onCogClick($event)">
             <ion-icon name="cog" slot="end"></ion-icon>
         </ion-button>
