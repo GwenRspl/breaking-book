@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-contact',
@@ -6,8 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./contact.page.scss'],
 })
 export class ContactPage implements OnInit {
+  avatarAgathe: string = '../../assets/avatar_a.jpeg';
+  avatarGwen: string = '../../assets/avatar_g.jpeg';
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }
