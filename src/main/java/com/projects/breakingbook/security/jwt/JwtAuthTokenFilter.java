@@ -18,7 +18,8 @@ import java.io.IOException;
 
 public class JwtAuthTokenFilter extends OncePerRequestFilter {
 
-    private static final Logger logger = LoggerFactory.getLogger(JwtAuthTokenFilter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JwtAuthTokenFilter.class);
+
     @Autowired
     private JwtProvider tokenProvider;
     @Autowired
@@ -51,7 +52,7 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (final Exception e) {
-            logger.error("Can NOT set user authentication -> Message: {}", e);
+            LOGGER.error("Can NOT set user authentication -> Message: {}", e);
         }
 
         filterChain.doFilter(request, response);
