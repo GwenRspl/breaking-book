@@ -18,16 +18,13 @@ import java.util.Optional;
 @Transactional
 public class WishlistRepositoryImpl implements WishlistRepository {
 
-    private final JdbcTemplate jdbcTemplate;
-
-    private final String INSERT = new StringBuilder()
+    private static final String INSERT = new StringBuilder()
             .append("INSERT INTO wishlist")
             .append("(wishlist_name, wishlist_breaking_book_user)")
             .append(" VALUES ")
             .append("(?, ?)")
             .toString();
-
-    private final String SELECT_ALL = new StringBuilder()
+    private static final String SELECT_ALL = new StringBuilder()
             .append("SELECT ")
             .append("wishlist_id, wishlist_name, wishlist_breaking_book_user, ")
             .append("breaking_book_user_id, breaking_book_user_username, breaking_book_user_avatar, ")
@@ -36,8 +33,7 @@ public class WishlistRepositoryImpl implements WishlistRepository {
             .append("wishlist.wishlist_breaking_book_user = r.breaking_book_user_id ")
             .append("WHERE wishlist_breaking_book_user = ?")
             .toString();
-
-    private final String SELECT_BY_ID = new StringBuilder()
+    private static final String SELECT_BY_ID = new StringBuilder()
             .append("SELECT ")
             .append("wishlist_id, wishlist_name, wishlist_breaking_book_user, ")
             .append("breaking_book_user_id, breaking_book_user_username, breaking_book_user_avatar, ")
@@ -46,14 +42,10 @@ public class WishlistRepositoryImpl implements WishlistRepository {
             .append("wishlist.wishlist_breaking_book_user = r.breaking_book_user_id ")
             .append("WHERE wishlist_id = ?")
             .toString();
-
-    private final String DELETE_BY_ID = "DELETE FROM wishlist WHERE wishlist_id = ?";
-
-    private final String DELETE_ALL = "DELETE FROM wishlist";
-
-    private final String UPDATE = "UPDATE wishlist SET wishlist_name = ? WHERE wishlist_id = ?";
-
-    private final String SELECT_JOIN = new StringBuilder()
+    private static final String DELETE_BY_ID = "DELETE FROM wishlist WHERE wishlist_id = ?";
+    private static final String DELETE_ALL = "DELETE FROM wishlist";
+    private static final String UPDATE = "UPDATE wishlist SET wishlist_name = ? WHERE wishlist_id = ?";
+    private static final String SELECT_JOIN = new StringBuilder()
             .append("SELECT ")
             .append("wishlist_id, wishlist_name, wishlist_breaking_book_user, ")
             .append("breaking_book_user_id, breaking_book_user_username, breaking_book_user_avatar, ")
@@ -69,8 +61,7 @@ public class WishlistRepositoryImpl implements WishlistRepository {
             .append("LEFT JOIN book ON book.book_id = book_wishlist.book_wishlist_book_id ")
             .append("FULL OUTER JOIN friend f ON book.book_friend = f.friend_id;")
             .toString();
-
-    private final String SELECT_JOIN_BY_ID = new StringBuilder()
+    private static final String SELECT_JOIN_BY_ID = new StringBuilder()
             .append("SELECT ")
             .append("wishlist_id, wishlist_name, wishlist_breaking_book_user, ")
             .append("book_id, book_title, book_authors, book_isbn, book_image, book_language, ")
@@ -87,19 +78,17 @@ public class WishlistRepositoryImpl implements WishlistRepository {
             .append("FULL OUTER JOIN friend f ON book.book_friend = f.friend_id ")
             .append("WHERE wishlist_id = ?;")
             .toString();
-
-    private final String INSERT_BOOK_IN_WISHLIST = new StringBuilder()
+    private static final String INSERT_BOOK_IN_WISHLIST = new StringBuilder()
             .append("INSERT INTO book_wishlist")
             .append("(book_wishlist_book_id, book_wishlist_wishlist_id) ")
             .append("VALUES ")
             .append("(?, ?);")
             .toString();
-
-    private final String REMOVE_BOOK_FROM_WISHLIST = new StringBuilder()
+    private static final String REMOVE_BOOK_FROM_WISHLIST = new StringBuilder()
             .append("DELETE FROM book_wishlist ")
             .append("WHERE book_wishlist_book_id = ? AND book_wishlist_wishlist_id = ?;")
             .toString();
-
+    private final JdbcTemplate jdbcTemplate;
 
     public WishlistRepositoryImpl(final JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -107,11 +96,11 @@ public class WishlistRepositoryImpl implements WishlistRepository {
 
     @Override
     public List<Wishlist> findAllWishlists(final Long userId) {
-        final List<Wishlist> wishlists = this.jdbcTemplate.query(this.SELECT_ALL, new Object[]{userId}, new WishlistMapper());
+        final List<Wishlist> wishlists = this.jdbcTemplate.query(SELECT_ALL, new Object[]{userId}, new WishlistMapper());
         if (wishlists.isEmpty()) {
             return wishlists;
         }
-        final Map<Long, List<Book>> booksMap = this.jdbcTemplate.query(this.SELECT_JOIN, new WishlistMapExtractor());
+        final Map<Long, List<Book>> booksMap = this.jdbcTemplate.query(SELECT_JOIN, new WishlistMapExtractor());
         if (!booksMap.isEmpty()) {
             for (final Wishlist wishlist : wishlists) {
                 wishlist.setBooks(booksMap.get(wishlist.getId()));
@@ -122,15 +111,15 @@ public class WishlistRepositoryImpl implements WishlistRepository {
 
     @Override
     public boolean createWishlist(final Wishlist wishlist) {
-        final int result = this.jdbcTemplate.update(this.INSERT, wishlist.getName(), wishlist.getUser().getId());
+        final int result = this.jdbcTemplate.update(INSERT, wishlist.getName(), wishlist.getUser().getId());
         return result != 0;
     }
 
     @Override
     public Optional<Wishlist> findWishlistById(final Long id) {
         try {
-            final Wishlist wishlist = this.jdbcTemplate.queryForObject(this.SELECT_BY_ID, new Object[]{id}, new WishlistMapper());
-            final Map<Long, List<Book>> booksMap = this.jdbcTemplate.query(this.SELECT_JOIN_BY_ID, new Object[]{id}, new WishlistMapExtractor());
+            final Wishlist wishlist = this.jdbcTemplate.queryForObject(SELECT_BY_ID, new Object[]{id}, new WishlistMapper());
+            final Map<Long, List<Book>> booksMap = this.jdbcTemplate.query(SELECT_JOIN_BY_ID, new Object[]{id}, new WishlistMapExtractor());
             wishlist.setBooks(booksMap.get(wishlist.getId()));
             return Optional.of(wishlist);
         } catch (final EmptyResultDataAccessException e) {
@@ -140,31 +129,31 @@ public class WishlistRepositoryImpl implements WishlistRepository {
 
     @Override
     public boolean deleteWishlistById(final Long id) {
-        final int result = this.jdbcTemplate.update(this.DELETE_BY_ID, id);
+        final int result = this.jdbcTemplate.update(DELETE_BY_ID, id);
         return result != 0;
     }
 
     @Override
     public boolean deleteAllWishlists() {
-        final int result = this.jdbcTemplate.update(this.DELETE_ALL);
+        final int result = this.jdbcTemplate.update(DELETE_ALL);
         return result != 0;
     }
 
     @Override
     public boolean updateWishlist(final Long id, final Wishlist wishlist) {
-        final int result = this.jdbcTemplate.update(this.UPDATE, wishlist.getName(), id);
+        final int result = this.jdbcTemplate.update(UPDATE, wishlist.getName(), id);
         return result != 0;
     }
 
     @Override
     public boolean addBookToWishlist(final Long id, final Long bookId) {
-        final int result = this.jdbcTemplate.update(this.INSERT_BOOK_IN_WISHLIST, bookId, id);
+        final int result = this.jdbcTemplate.update(INSERT_BOOK_IN_WISHLIST, bookId, id);
         return result != 0;
     }
 
     @Override
     public boolean removeBookFromWishlist(final Long id, final Long bookId) {
-        final int result = this.jdbcTemplate.update(this.REMOVE_BOOK_FROM_WISHLIST, bookId, id);
+        final int result = this.jdbcTemplate.update(REMOVE_BOOK_FROM_WISHLIST, bookId, id);
         return result != 0;
     }
 }
