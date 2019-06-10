@@ -32,7 +32,8 @@
                             <ion-grid>
                                 <ion-row>
                                     <ion-col text-center>
-                                        <ion-button (click)="saveNewFriend()" color="success" padding>
+                                        <ion-button (click)="saveNewFriend()" [disabled]="friendForm.invalid" color="success"
+                                                    padding>
                                             Save friend
                                         </ion-button>
                                     </ion-col>

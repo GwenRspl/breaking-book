@@ -1,3 +1,7 @@
+ion-grid, ion-col {
+  padding: 0;
+}
+
 h2, p {
   padding-left: 1em;
   padding-right: 1em;
@@ -18,4 +22,8 @@ ion-row:nth-child(odd) {
 
 ion-row:nth-child(even) {
   margin-bottom: 5em;
+}
+
+h2 {
+  font-family: RockSalt, RockSalt, Arial, sans-serif;
 }

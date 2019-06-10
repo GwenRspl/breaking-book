@@ -3,15 +3,15 @@
         <ion-row justify-content-center>
             <ion-col size-lg="6">
                 <div class="ion-float-right">
-                    <ion-button (click)="toggleEditMode()" *ngIf="!editMode" color="primary" fill="outline">
+                    <ion-button (click)="toggleEditMode()" *ngIf="!editMode" color="primary" fill="solid">
                         <ion-icon name="create" slot="start"></ion-icon>
                         Edit
                     </ion-button>
-                    <ion-button (click)="saveChanges()" *ngIf="editMode" color="success" fill="outline">
+                    <ion-button (click)="saveChanges()" *ngIf="editMode" color="success" fill="solid">
                         <ion-icon name="checkmark" slot="start"></ion-icon>
                         Save changes
                     </ion-button>
-                    <ion-button (click)="toggleEditMode()" *ngIf="editMode" color="dark" fill="outline">
+                    <ion-button (click)="toggleEditMode()" *ngIf="editMode" color="dark" fill="solid">
                         <ion-icon name="close" slot="start"></ion-icon>
                         Cancel
                     </ion-button>
@@ -63,7 +63,7 @@
                         <div class="overlay">
                             <div class="overlay-text">{{borrowedBook.title}}</div>
                         </div>
-                        <ion-fab-button (click)="getBackBook(borrowedBook.id)" class="fab-btn" color="secondary">
+                        <ion-fab-button (click)="getBackBook(borrowedBook.id)" class="fab-btn" color="primary">
                             <ion-icon name="refresh"></ion-icon>
                         </ion-fab-button>
                     </ion-card>

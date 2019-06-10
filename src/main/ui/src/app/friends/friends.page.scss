@@ -6,8 +6,10 @@
 }
 
 .select-sort {
+  --background: white;
   min-width: 15em;
   max-width: 20em;
+  color: var(--ion-color-text-dark);
 }
 
 .friend-card {
@@ -16,7 +18,7 @@
   margin-bottom: -0.5em;
 
   &:hover {
-    --background: lightcyan;
+    --background: var(--ion-color-background-element-hover);
   }
 }
 
@@ -42,7 +44,7 @@
   width: 100%;
   opacity: 0;
   transition: .5s ease;
-  background-color: var(--ion-color-primary, black);
+  background-color: var(--ion-color-background-element-hover);
 }
 
 .overlay-container:hover .overlay {
@@ -50,7 +52,7 @@
 }
 
 .overlay-text {
-  color: white;
+  color: var(--ion-color-text-dark);
   font-size: 1em;
   position: absolute;
   top: 50%;
@@ -62,4 +64,12 @@
 .friend-avatar {
   height: 15em;
   object-fit: cover;
+}
+
+ion-card-title {
+  color: var(--ion-color-text-dark);
+}
+
+h1 {
+  font-family: RockSalt, RockSalt, Arial, sans-serif;
 }

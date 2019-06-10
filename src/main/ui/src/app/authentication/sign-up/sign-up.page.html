@@ -80,7 +80,7 @@
                             <ion-grid>
                                 <ion-row>
                                     <ion-col text-center>
-                                        <ion-button (click)="registerUser()" padding>
+                                        <ion-button (click)="registerUser()" [disabled]="registerForm.invalid" padding>
                                             Sign up
                                         </ion-button>
                                     </ion-col>
