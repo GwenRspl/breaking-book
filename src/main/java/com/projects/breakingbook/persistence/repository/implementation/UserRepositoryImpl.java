@@ -20,21 +20,67 @@ import java.util.stream.Collectors;
 public class UserRepositoryImpl implements UserRepository {
 
     private final JdbcTemplate jdbcTemplate;
-    private final String INSERT = "INSERT INTO breaking_book_user(breaking_book_user_username, breaking_book_user_avatar, breaking_book_user_email, breaking_book_user_password, breaking_book_user_role) VALUES (?, ?, ?, ?, ?)";
-    private final String SELECT_ALL = "SELECT * FROM breaking_book_user";
-    private final String SELECT_BY_ID = "SELECT * FROM breaking_book_user WHERE breaking_book_user_id = ?";
+
+    private final String INSERT = new StringBuilder()
+            .append("INSERT INTO breaking_book_user")
+            .append("(breaking_book_user_username, breaking_book_user_avatar, breaking_book_user_email, ")
+            .append("breaking_book_user_password, breaking_book_user_role)")
+            .append(" VALUES ")
+            .append("(?, ?, ?, ?, ?)")
+            .toString();
+
+    private final String SELECT_ALL = new StringBuilder()
+            .append("SELECT ")
+            .append("breaking_book_user_id, breaking_book_user_username, breaking_book_user_avatar, ")
+            .append("breaking_book_user_email, breaking_book_user_password, breaking_book_user_role ")
+            .append("FROM breaking_book_user")
+            .toString();
+
+    private final String SELECT_BY_ID = new StringBuilder()
+            .append("SELECT ")
+            .append("breaking_book_user_id, breaking_book_user_username, breaking_book_user_avatar,")
+            .append(" breaking_book_user_email, breaking_book_user_password, breaking_book_user_role ")
+            .append("FROM breaking_book_user ")
+            .append("WHERE breaking_book_user_id = ?")
+            .toString();
+
     private final String DELETE_BY_ID = "DELETE FROM breaking_book_user WHERE breaking_book_user_id = ?";
+
     private final String DELETE_ALL = "DELETE FROM breaking_book_user";
-    private final String UPDATE = "UPDATE breaking_book_user SET breaking_book_user_username = ?, breaking_book_user_avatar = ?, breaking_book_user_email = ?, breaking_book_user_password = ? WHERE breaking_book_user_id = ?";
 
-    private final String SELECT_JOIN = "SELECT * FROM breaking_book_user " +
-            "LEFT JOIN book ON book.book_breaking_book_user = breaking_book_user.breaking_book_user_id " +
-            "LEFT JOIN friend ON book.book_friend = friend.friend_id;";
+    private final String UPDATE = new StringBuilder()
+            .append("UPDATE breaking_book_user ")
+            .append("SET breaking_book_user_username = ?, breaking_book_user_avatar = ?, ")
+            .append("breaking_book_user_email = ?, breaking_book_user_password = ? ")
+            .append("WHERE breaking_book_user_id = ?")
+            .toString();
 
-    private final String SELECT_JOIN_BY_ID = "SELECT * FROM breaking_book_user " +
-            "LEFT JOIN book ON book.book_breaking_book_user = breaking_book_user.breaking_book_user_id " +
-            "LEFT JOIN friend ON book.book_friend = friend.friend_id " +
-            "WHERE breaking_book_user.breaking_book_user_id = ?;";
+    private final String SELECT_JOIN = new StringBuilder()
+            .append("SELECT ")
+            .append("breaking_book_user_id, breaking_book_user_username, breaking_book_user_avatar, ")
+            .append("breaking_book_user_email, breaking_book_user_password, breaking_book_user_role, ")
+            .append("book_id, book_title, book_authors, book_isbn, book_image, book_language, ")
+            .append("book_publisher, book_date_published, book_pages, book_synopsis, ")
+            .append("book_breaking_book_user, book_friend, book_owned, book_rating, book_comment, book_status, ")
+            .append("friend_id, friend_name, friend_avatar, friend_breaking_book_user ")
+            .append("FROM breaking_book_user ")
+            .append("LEFT JOIN book ON book.book_breaking_book_user = breaking_book_user.breaking_book_user_id ")
+            .append("LEFT JOIN friend ON book.book_friend = friend.friend_id;")
+            .toString();
+
+    private final String SELECT_JOIN_BY_ID = new StringBuilder()
+            .append("SELECT ")
+            .append("breaking_book_user_id, breaking_book_user_username, breaking_book_user_avatar, ")
+            .append("breaking_book_user_email, breaking_book_user_password, breaking_book_user_role, ")
+            .append("book_id, book_title, book_authors, book_isbn, book_image, book_language, ")
+            .append("book_publisher, book_date_published, book_pages, book_synopsis, ")
+            .append("book_breaking_book_user, book_friend, book_owned, book_rating, book_comment, book_status, ")
+            .append("friend_id, friend_name, friend_avatar, friend_breaking_book_user ")
+            .append("FROM breaking_book_user ")
+            .append("LEFT JOIN book ON book.book_breaking_book_user = breaking_book_user.breaking_book_user_id ")
+            .append("LEFT JOIN friend ON book.book_friend = friend.friend_id ")
+            .append("WHERE breaking_book_user.breaking_book_user_id = ?;")
+            .toString();
 
     public UserRepositoryImpl(final JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

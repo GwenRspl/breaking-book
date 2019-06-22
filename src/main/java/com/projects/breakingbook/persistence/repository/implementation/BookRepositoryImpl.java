@@ -20,20 +20,57 @@ import java.util.Optional;
 public class BookRepositoryImpl implements BookRepository {
 
     private final JdbcTemplate jdbcTemplate;
-    private final String INSERT = "INSERT INTO book(book_title, book_authors, book_isbn, book_image, book_language, " +
-            "book_publisher, book_date_published, book_pages, book_synopsis, book_breaking_book_user, book_friend, book_owned, book_rating, book_comment, book_status) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private final String SELECT_ALL = "SELECT * FROM book INNER JOIN breaking_book_user r ON book.book_breaking_book_user = r.breaking_book_user_id FULL OUTER JOIN " +
-            "friend f on book.book_friend = f.friend_id WHERE book.book_breaking_book_user = ?";
-    private final String SELECT_BY_ID = "SELECT * FROM book INNER JOIN breaking_book_user r ON book.book_breaking_book_user = r.breaking_book_user_id FULL OUTER JOIN " +
-            "friend f on book.book_friend = f.friend_id WHERE book_id = ?";
+
+    private final String INSERT = new StringBuilder()
+            .append("INSERT INTO book")
+            .append("(book_title, book_authors, book_isbn, book_image, book_language, ")
+            .append("book_publisher, book_date_published, book_pages, book_synopsis, ")
+            .append("book_breaking_book_user, book_friend, book_owned, book_rating, ")
+            .append("book_comment, book_status) ")
+            .append("VALUES ")
+            .append("(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+            .toString();
+
+    private final String SELECT_ALL = new StringBuilder()
+            .append("SELECT ")
+            .append("book_id, book_title, book_authors, book_isbn, book_image, book_language, ")
+            .append("book_publisher, book_date_published, book_pages, book_synopsis, ")
+            .append("book_breaking_book_user, book_friend, book_owned, book_rating, book_comment, book_status, ")
+            .append("breaking_book_user_id, breaking_book_user_username, breaking_book_user_avatar, ")
+            .append("breaking_book_user_email, breaking_book_user_password, breaking_book_user_role, ")
+            .append("friend_id, friend_name, friend_avatar, friend_breaking_book_user ")
+            .append("FROM book ")
+            .append("INNER JOIN breaking_book_user r ON book.book_breaking_book_user = r.breaking_book_user_id ")
+            .append("FULL OUTER JOIN friend f on book.book_friend = f.friend_id WHERE book.book_breaking_book_user = ?")
+            .toString();
+
+    private final String SELECT_BY_ID = new StringBuilder()
+            .append("SELECT ")
+            .append("book_id, book_title, book_authors, book_isbn, book_image, book_language, ")
+            .append("book_publisher, book_date_published, book_pages, book_synopsis, book_breaking_book_user, book_friend, ")
+            .append("book_owned, book_rating, book_comment, book_status, ")
+            .append("breaking_book_user_id, breaking_book_user_username, breaking_book_user_avatar, ")
+            .append("breaking_book_user_email, breaking_book_user_password, breaking_book_user_role, ")
+            .append("friend_id, friend_name, friend_avatar, friend_breaking_book_user ")
+            .append("FROM book INNER JOIN breaking_book_user r ON book.book_breaking_book_user = r.breaking_book_user_id ")
+            .append("FULL OUTER JOIN friend f on book.book_friend = f.friend_id WHERE book_id = ?")
+            .toString();
+
     private final String DELETE_BY_ID = "DELETE FROM book WHERE book_id = ?";
+
     private final String DELETE_ALL = "DELETE FROM book";
-    private final String UPDATE = "UPDATE book SET book_title = ?, book_authors = ?, book_isbn = ?, book_image = ?, " +
-            "book_language = ?, book_publisher = ?, book_date_published = ?, book_pages = ?, book_synopsis = ?, " +
-            "book_breaking_book_user = ?, book_friend = ?, book_owned = ?, book_rating = ?, book_comment = ?, book_status = ? WHERE book_id = ?";
+
+    private final String UPDATE = new StringBuilder()
+            .append("UPDATE book ")
+            .append("SET book_title = ?, book_authors = ?, book_isbn = ?, book_image = ?, book_language = ?, ")
+            .append("book_publisher = ?, book_date_published = ?, book_pages = ?, book_synopsis = ?, ")
+            .append("book_breaking_book_user = ?, book_friend = ?, book_owned = ?, ")
+            .append("book_rating = ?, book_comment = ?, book_status = ? ")
+            .append("WHERE book_id = ?")
+            .toString();
 
     private final String UPDATE_OWNED = "UPDATE book SET book_owned = ? WHERE book_id = ?";
+
     private final String UPDATE_FRIEND = "UPDATE book SET book_friend = ? WHERE book_id = ?";
 
     public BookRepositoryImpl(final JdbcTemplate jdbcTemplate) {

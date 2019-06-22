@@ -12,6 +12,7 @@ public class UserMapExtractor implements ResultSetExtractor<Map<Long, List<Book>
     @Override
     public Map<Long, List<Book>> extractData(final ResultSet resultSet) throws SQLException, DataAccessException {
         final Map<Long, List<Book>> booksMap = new HashMap<>();
+
         while (resultSet.next()) {
             if (resultSet.getLong("book_id") == 0) {
                 return booksMap;

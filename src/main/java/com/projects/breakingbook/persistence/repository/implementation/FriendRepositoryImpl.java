@@ -23,28 +23,81 @@ import java.util.Optional;
 public class FriendRepositoryImpl implements FriendRepository {
 
     private final JdbcTemplate jdbcTemplate;
-    private final String INSERT = "INSERT INTO friend(friend_name, friend_avatar, friend_breaking_book_user) VALUES (?, ?, ?)";
-    private final String SELECT_ALL = "SELECT * FROM friend INNER JOIN breaking_book_user r ON friend.friend_breaking_book_user = r.breaking_book_user_id WHERE friend.friend_breaking_book_user = ?;";
-    private final String SELECT_BY_ID = "SELECT * FROM friend INNER JOIN breaking_book_user r ON friend.friend_breaking_book_user = r.breaking_book_user_id " +
-            "WHERE friend_id = ?";
-    private final String DELETE_BY_ID = "DELETE FROM friend WHERE friend_id = ?";
+
+    private final String INSERT = new StringBuilder().append("INSERT INTO friend")
+            .append("(friend_name, friend_avatar, friend_breaking_book_user)")
+            .append(" VALUES ")
+            .append("(?, ?, ?)")
+            .toString();
+
+    private final String SELECT_ALL = new StringBuilder()
+            .append("SELECT friend_id, friend_name, friend_avatar, friend_breaking_book_user, ")
+            .append("breaking_book_user_id, breaking_book_user_username, breaking_book_user_avatar, ")
+            .append("breaking_book_user_email, breaking_book_user_password, breaking_book_user_role ")
+            .append("FROM friend ")
+            .append("INNER JOIN breaking_book_user r ")
+            .append("ON friend.friend_breaking_book_user = r.breaking_book_user_id ")
+            .append("WHERE friend.friend_breaking_book_user = ?;")
+            .toString();
+
+    private final String SELECT_BY_ID = new StringBuilder()
+            .append("SELECT friend_id, friend_name, friend_avatar, friend_breaking_book_user, ")
+            .append("breaking_book_user_id, breaking_book_user_username, breaking_book_user_avatar, ")
+            .append("breaking_book_user_email, breaking_book_user_password, breaking_book_user_role ")
+            .append("FROM friend ")
+            .append("INNER JOIN breaking_book_user r ON friend.friend_breaking_book_user = r.breaking_book_user_id ")
+            .append("WHERE friend_id = ?")
+            .toString();
+
+    private final String DELETE_BY_ID = new StringBuilder()
+            .append("DELETE FROM friend ")
+            .append("WHERE friend_id = ?")
+            .toString();
+
     private final String DELETE_ALL = "DELETE FROM friend";
-    private final String UPDATE = "UPDATE friend SET friend_name = ?, friend_avatar = ?, friend_breaking_book_user = ? WHERE " +
-            "friend_id = ?";
 
-    private final String SELECT_JOIN = "SELECT * FROM friend " +
-            "INNER JOIN book_friend ON friend.friend_id = book_friend.book_friend_friend_id " +
-            "INNER JOIN book ON book.book_id = book_friend.book_friend_book_id " +
-            "INNER JOIN breaking_book_user r ON book.book_breaking_book_user = r.breaking_book_user_id ";
+    private final String UPDATE = new StringBuilder()
+            .append("UPDATE friend ")
+            .append("SET friend_name = ?, friend_avatar = ?, friend_breaking_book_user = ? ")
+            .append("WHERE friend_id = ?")
+            .toString();
 
-    private final String SELECT_JOIN_BY_ID = "SELECT * FROM friend " +
-            "INNER JOIN book_friend ON friend.friend_id = book_friend.book_friend_friend_id " +
-            "INNER JOIN book ON book.book_id = book_friend.book_friend_book_id " +
-            "INNER JOIN breaking_book_user r ON book.book_breaking_book_user = r.breaking_book_user_id " +
-            "WHERE friend.friend_id = ?;";
+    private final String SELECT_JOIN = new StringBuilder()
+            .append("SELECT friend_id, friend_name, friend_avatar, friend_breaking_book_user, ")
+            .append("book_id, book_title, book_authors, book_isbn, book_image, book_language, ")
+            .append("book_publisher, book_date_published, book_pages, book_synopsis, ")
+            .append("book_breaking_book_user, book_friend, book_owned, book_rating, book_comment, book_status, ")
+            .append("breaking_book_user_id, breaking_book_user_username, breaking_book_user_avatar, ")
+            .append("breaking_book_user_email, breaking_book_user_password, breaking_book_user_role, ")
+            .append("book_friend_friend_id, book_friend_book_id ")
+            .append("FROM friend ")
+            .append("INNER JOIN book_friend ON friend.friend_id = book_friend.book_friend_friend_id ")
+            .append("INNER JOIN book ON book.book_id = book_friend.book_friend_book_id ")
+            .append("INNER JOIN breaking_book_user r ON book.book_breaking_book_user = r.breaking_book_user_id ")
+            .toString();
+
+    private final String SELECT_JOIN_BY_ID = new StringBuilder()
+            .append("SELECT friend_id, friend_name, friend_avatar, friend_breaking_book_user, ")
+            .append("book_id, book_title, book_authors, book_isbn, book_image, book_language, ")
+            .append("book_publisher, book_date_published, book_pages, book_synopsis, ")
+            .append("book_breaking_book_user, book_friend, book_owned, book_rating, book_comment, book_status, ")
+            .append("breaking_book_user_id, breaking_book_user_username, breaking_book_user_avatar, ")
+            .append("breaking_book_user_email, breaking_book_user_password, breaking_book_user_role, ")
+            .append("book_friend_friend_id, book_friend_book_id ")
+            .append("FROM friend ")
+            .append("INNER JOIN book_friend ON friend.friend_id = book_friend.book_friend_friend_id ")
+            .append("INNER JOIN book ON book.book_id = book_friend.book_friend_book_id ")
+            .append("INNER JOIN breaking_book_user r ON book.book_breaking_book_user = r.breaking_book_user_id ")
+            .append("WHERE friend.friend_id = ?;")
+            .toString();
 
     private final String SELECT_BOOK_BY_FRIEND_ID = "SELECT book_id FROM book WHERE book_friend = ?";
-    private final String INSERT_BOOK_TO_HISTORY = "INSERT INTO book_friend(book_friend_book_id, book_friend_friend_id) VALUES (?, ?)";
+
+    private final String INSERT_BOOK_TO_HISTORY = new StringBuilder()
+            .append("INSERT INTO book_friend")
+            .append("(book_friend_book_id, book_friend_friend_id) ")
+            .append("VALUES (?, ?)")
+            .toString();
 
     public FriendRepositoryImpl(final JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -93,6 +146,21 @@ public class FriendRepositoryImpl implements FriendRepository {
             return Optional.empty();
         }
     }
+
+//    @Override
+//    public Optional<Friend> findFriendById(final Long id) {
+//
+//        MapSqlParameterSource params = new MapSqlParameterSource();
+//        params.addValue("friendId",id);
+//        try {
+//            final Friend friend = this.jdbcTemplate.queryForObject(this.SELECT_BY_ID, params, new FriendMapper());
+//            final Map<Long, List<Book>> booksMap = this.jdbcTemplate.query(this.SELECT_JOIN_BY_ID, new Object[]{id}, new FriendMapExtractor());
+//            friend.setHistory(booksMap.get(friend.getId()));
+//            return Optional.of(friend);
+//        } catch (final EmptyResultDataAccessException e) {
+//            return Optional.empty();
+//        }
+//    }
 
     @Override
     public boolean deleteFriendById(final Long id) {

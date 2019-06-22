@@ -58,7 +58,9 @@ public class WishlistMapExtractor implements ResultSetExtractor<Map<Long, List<B
                     .user(user)
                     .build();
             final String status = (resultSet.getString("book_status"));
-            book.setStatus(BookStatus.valueOf(status));
+            if (status != null) {
+                book.setStatus(BookStatus.valueOf(status));
+            }
 
             final List<Book> books = booksMap.get(wishlistId);
             if (books == null) {
