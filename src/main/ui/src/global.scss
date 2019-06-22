@@ -34,12 +34,38 @@ $screen-breakpoints: (
   }
 }
 
+@font-face {
+  font-family: "RockSalt";
+  src: url('./assets/fonts/RockSalt.ttf');
+}
+
+@font-face {
+  font-family: "LucioleBold";
+  src: url('./assets/fonts/Luciole-Bold.ttf');
+}
+
+@font-face {
+  font-family: "LucioleBoldItalic";
+  src: url('./assets/fonts/Luciole-Bold-Italic.ttf');
+}
+
+@font-face {
+  font-family: "LucioleRegular";
+  src: url('./assets/fonts/Luciole-Regular.ttf');
+}
+
+@font-face {
+  font-family: "LucioleRegularItalic";
+  src: url('./assets/fonts/Luciole-Regular-Italic.ttf');
+}
+
 .center-content-vertically {
   height: calc(100vh - 9em);
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 
 .delete-book-modal .modal-wrapper {
   height: 7em;
@@ -52,7 +78,7 @@ $screen-breakpoints: (
 .alert-btn {
   button.alert-button.delete-btn {
     color: red;
-    font-weight: bold;
+    font-weight: 900;
   }
 
   button.alert-button.cancel-btn {
@@ -61,8 +87,55 @@ $screen-breakpoints: (
 }
 
 .active-router-item {
-  --background: aliceblue;
+  color: var(--ion-color-tertiary);
+
+  & > ion-icon {
+    color: var(--ion-color-tertiary);
+  }
+}
+
+body {
+  --ion-font-family: LucioleRegular, Arial, sans-serif;
+
+}
+
+* {
+  color: var(--ion-color-text-dark);
+}
+
+body, ion-menu {
+  --ion-background-color: var(--ion-color-background);
+}
+
+ion-card, ion-footer, .card {
+  --ion-background-color: white;
+  --background: white;
+}
+
+.menu-toolbar {
+  --background: var(--ion-color-tertiary);
+  color: var(--ion-color-text-dark);
+
+  ion-title {
+    cursor: pointer;
+    font-family: RockSalt, Arial, sans-serif;
+    font-weight: bold;
+    font-size: x-large;
+  }
+
+}
+
+ion-menu-toggle {
+  margin-right: 2em;
+  margin-left: 2em;
+}
+
+.burger-icon {
+  color: var(--ion-color-text-dark);
 }
 
 
+ion-button:hover {
+  --background: var(--ion-color-primary-tint);
+}
 

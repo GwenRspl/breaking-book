@@ -1,7 +1,7 @@
 <ion-app>
     <ion-menu contentId="content1" menuId="m1" side="start">
         <ion-header>
-            <ion-toolbar>
+            <ion-toolbar class="menu-toolbar">
                 <ion-title>Breaking-Book</ion-title>
             </ion-toolbar>
         </ion-header>
@@ -15,9 +15,10 @@
                     </ion-item>
                 </ion-menu-toggle>
                 <ion-menu-toggle>
-                    <ion-item lines="none" routerLink="/collections" routerLinkActive="active-router-item">
-                        <ion-icon name="filing" slot="start"></ion-icon>
-                        <ion-label>Collections</ion-label>
+                    <ion-item lines="none" routerLink="/collections"
+                              routerLinkActive="active-router-item">
+                        <ion-icon class="burger-icon" name="filing" slot="start"></ion-icon>
+                        <ion-label class="burger-icon">Collections</ion-label>
                     </ion-item>
                 </ion-menu-toggle>
                 <ion-menu-toggle>
@@ -32,6 +33,12 @@
                         <ion-label>Friends</ion-label>
                     </ion-item>
                 </ion-menu-toggle>
+                <ion-menu-toggle>
+                    <ion-item lines="none" routerLink="/contact" routerLinkActive="active-router-item">
+                        <ion-icon name="mail" slot="start"></ion-icon>
+                        <ion-label>Contact us</ion-label>
+                    </ion-item>
+                </ion-menu-toggle>
             </ion-list>
         </ion-content>
     </ion-menu>
@@ -42,7 +49,7 @@
     <ion-content>
         <ion-router-outlet id="content1"></ion-router-outlet>
     </ion-content>
-    <ion-footer>
+    <ion-footer hidden-until-lg>
         <app-footer></app-footer>
     </ion-footer>
 </ion-app>

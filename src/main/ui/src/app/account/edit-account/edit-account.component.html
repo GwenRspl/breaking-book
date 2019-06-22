@@ -33,7 +33,10 @@
                     <ion-button (click)="cancel()" class="ion-float-right" color="medium">
                         Cancel
                     </ion-button>
-                    <ion-button (click)="editAccount()" class="ion-float-right" color="success">
+                    <ion-button (click)="editAccount()"
+                                [disabled]="editForm.invalid"
+                                class="ion-float-right"
+                                color="success">
                         Save changes
                     </ion-button>
                 </ion-col>
