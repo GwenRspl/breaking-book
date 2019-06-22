@@ -1,8 +1,8 @@
 package com.projects.breakingbook.business.service.implementation;
 
+import com.projects.breakingbook.business.entity.Friend;
 import com.projects.breakingbook.business.service.BookService;
 import com.projects.breakingbook.business.service.FriendService;
-import com.projects.breakingbook.persistence.entity.Friend;
 import com.projects.breakingbook.persistence.repository.FriendRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,6 +1,6 @@
 package com.projects.breakingbook.exposition.DTO;
 
-import com.projects.breakingbook.persistence.entity.RoleName;
+import com.projects.breakingbook.business.entity.RoleName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

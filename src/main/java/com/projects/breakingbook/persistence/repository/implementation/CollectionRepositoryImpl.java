@@ -1,9 +1,9 @@
 package com.projects.breakingbook.persistence.repository.implementation;
 
-import com.projects.breakingbook.persistence.entity.Book;
-import com.projects.breakingbook.persistence.entity.Collection;
-import com.projects.breakingbook.persistence.entity.mapper.CollectionMapExtractor;
-import com.projects.breakingbook.persistence.entity.mapper.CollectionMapper;
+import com.projects.breakingbook.business.entity.Book;
+import com.projects.breakingbook.business.entity.Collection;
+import com.projects.breakingbook.persistence.mapper.CollectionMapExtractor;
+import com.projects.breakingbook.persistence.mapper.CollectionMapper;
 import com.projects.breakingbook.persistence.repository.CollectionRepository;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;

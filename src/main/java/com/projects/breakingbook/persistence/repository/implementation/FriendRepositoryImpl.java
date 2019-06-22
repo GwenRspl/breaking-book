@@ -1,9 +1,9 @@
 package com.projects.breakingbook.persistence.repository.implementation;
 
-import com.projects.breakingbook.persistence.entity.Book;
-import com.projects.breakingbook.persistence.entity.Friend;
-import com.projects.breakingbook.persistence.entity.mapper.FriendMapExtractor;
-import com.projects.breakingbook.persistence.entity.mapper.FriendMapper;
+import com.projects.breakingbook.business.entity.Book;
+import com.projects.breakingbook.business.entity.Friend;
+import com.projects.breakingbook.persistence.mapper.FriendMapExtractor;
+import com.projects.breakingbook.persistence.mapper.FriendMapper;
 import com.projects.breakingbook.persistence.repository.FriendRepository;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;

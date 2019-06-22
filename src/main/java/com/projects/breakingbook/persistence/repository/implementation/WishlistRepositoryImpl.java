@@ -1,9 +1,9 @@
 package com.projects.breakingbook.persistence.repository.implementation;
 
-import com.projects.breakingbook.persistence.entity.Book;
-import com.projects.breakingbook.persistence.entity.Wishlist;
-import com.projects.breakingbook.persistence.entity.mapper.WishlistMapExtractor;
-import com.projects.breakingbook.persistence.entity.mapper.WishlistMapper;
+import com.projects.breakingbook.business.entity.Book;
+import com.projects.breakingbook.business.entity.Wishlist;
+import com.projects.breakingbook.persistence.mapper.WishlistMapExtractor;
+import com.projects.breakingbook.persistence.mapper.WishlistMapper;
 import com.projects.breakingbook.persistence.repository.WishlistRepository;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;

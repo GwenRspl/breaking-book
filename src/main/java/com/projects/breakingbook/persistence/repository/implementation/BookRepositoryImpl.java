@@ -1,7 +1,7 @@
 package com.projects.breakingbook.persistence.repository.implementation;
 
-import com.projects.breakingbook.persistence.entity.Book;
-import com.projects.breakingbook.persistence.entity.mapper.BookMapper;
+import com.projects.breakingbook.business.entity.Book;
+import com.projects.breakingbook.persistence.mapper.BookMapper;
 import com.projects.breakingbook.persistence.repository.BookRepository;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;

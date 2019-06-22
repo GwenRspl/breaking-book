@@ -1,7 +1,7 @@
 package com.projects.breakingbook.security.services;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.projects.breakingbook.persistence.entity.User;
+import com.projects.breakingbook.business.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
