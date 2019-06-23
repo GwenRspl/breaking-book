@@ -1,6 +1,6 @@
 package com.projects.breakingbook.persistence.repository;
 
-import com.projects.breakingbook.persistence.entity.Book;
+import com.projects.breakingbook.business.entity.Book;
 
 import java.util.List;
 import java.util.Optional;

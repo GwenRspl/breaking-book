@@ -1,6 +1,6 @@
 package com.projects.breakingbook.business.service;
 
-import com.projects.breakingbook.persistence.entity.Friend;
+import com.projects.breakingbook.business.entity.Friend;
 
 import java.util.List;
 import java.util.Optional;

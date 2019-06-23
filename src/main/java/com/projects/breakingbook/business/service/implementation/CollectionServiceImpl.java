@@ -1,7 +1,7 @@
 package com.projects.breakingbook.business.service.implementation;
 
+import com.projects.breakingbook.business.entity.Collection;
 import com.projects.breakingbook.business.service.CollectionService;
-import com.projects.breakingbook.persistence.entity.Collection;
 import com.projects.breakingbook.persistence.repository.CollectionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -5,15 +5,15 @@ import {GoogleApiQueryResult} from '../search-via-api/googleApiQueryResult.model
 import {Collection} from '../../collections/collection.model';
 import {Observable} from 'rxjs';
 import {TokenStorageService} from '../../authentication/services/token-storage.service';
+import {GOOGLE_API_KEY} from '../../../environments/environment';
 
-const BASE_URL: string = 'http://localhost:8080/api/books';
-const COLLECTIONS_URL: string = 'http://localhost:8080/api/collections';
-const GOOGLE_API_URL: string = 'https://www.googleapis.com/books/v1/volumes?q=';
-const GOOGLE_API_KEY = '&key=AIzaSyDYsB7DhlSW_l-Mn9WjmdPYm4dafvL1ly0';
+const BASE_URL = 'http://localhost:8080/api/books';
+const COLLECTIONS_URL = 'http://localhost:8080/api/collections';
+const GOOGLE_API_URL = 'https://www.googleapis.com/books/v1/volumes?q=';
 const GOOGLE_API_FIELDS = '&fields=totalItems,items(selfLink,volumeInfo(title,subtitle,authors,publisher,publishedDate,description,industryIdentifiers,pageCount,imageLinks,language))';
 const GOOGLE_API_MAX_RESULTS = '&maxResults=40';
 const USER_ID_PARAM = '?userId=';
-const HTTP_OPTIONS = {headers: new HttpHeaders({'Content-Type': 'application/json',}), responseType: 'text' as 'json'};
+const HTTP_OPTIONS = {headers: new HttpHeaders({'Content-Type': 'application/json', }), responseType: 'text' as 'json'};
 
 @Injectable({
   providedIn: 'root'

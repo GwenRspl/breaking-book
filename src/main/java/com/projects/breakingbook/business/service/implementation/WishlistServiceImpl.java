@@ -1,7 +1,7 @@
 package com.projects.breakingbook.business.service.implementation;
 
+import com.projects.breakingbook.business.entity.Wishlist;
 import com.projects.breakingbook.business.service.WishlistService;
-import com.projects.breakingbook.persistence.entity.Wishlist;
 import com.projects.breakingbook.persistence.repository.WishlistRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
