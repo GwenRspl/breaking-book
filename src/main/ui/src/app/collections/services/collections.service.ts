@@ -3,8 +3,9 @@ import {Observable} from 'rxjs';
 import {Collection} from '../collection.model';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {TokenStorageService} from '../../authentication/services/token-storage.service';
+import {BASE_URL_API} from '../../../environments/environment';
 
-const BASE_URL: string = 'http://localhost:8080/api/collections';
+const BASE_URL = BASE_URL_API + '/collections';
 const USER_ID_PARAM = '?userId=';
 const BOOK_ID_PARAM = '?bookId=';
 const HTTP_OPTIONS = {headers: new HttpHeaders({'Content-Type': 'application/json',}), responseType: 'text' as 'json'};
