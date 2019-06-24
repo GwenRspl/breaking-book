@@ -30,7 +30,15 @@ public class BookServiceImpl implements BookService {
         return this.bookRepository
                 .findAllBooks(userId)
                 .stream()
-                .filter(book -> book.getFriend().getId() != null && book.getFriend().getId() != 0)
+                .filter(book -> {
+                    if (book.getFriend() == null) {
+                        return false;
+                    }
+                    if (book.getFriend().getId() == null || book.getFriend().getId() == 0) {
+                        return true;
+                    }
+                    return true;
+                })
                 .collect(Collectors.toList());
     }
 

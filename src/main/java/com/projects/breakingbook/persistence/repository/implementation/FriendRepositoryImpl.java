@@ -147,21 +147,6 @@ public class FriendRepositoryImpl implements FriendRepository {
         }
     }
 
-//    @Override
-//    public Optional<Friend> findFriendById(final Long id) {
-//
-//        MapSqlParameterSource params = new MapSqlParameterSource();
-//        params.addValue("friendId",id);
-//        try {
-//            final Friend friend = this.jdbcTemplate.queryForObject(this.SELECT_BY_ID, params, new FriendMapper());
-//            final Map<Long, List<Book>> booksMap = this.jdbcTemplate.query(this.SELECT_JOIN_BY_ID, new Object[]{id}, new FriendMapExtractor());
-//            friend.setHistory(booksMap.get(friend.getId()));
-//            return Optional.of(friend);
-//        } catch (final EmptyResultDataAccessException e) {
-//            return Optional.empty();
-//        }
-//    }
-
     @Override
     public boolean deleteFriendById(final Long id) {
         final int result = this.jdbcTemplate.update(this.DELETE_BY_ID, id);

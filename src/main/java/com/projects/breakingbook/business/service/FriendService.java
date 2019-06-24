@@ -1,10 +1,12 @@
 package com.projects.breakingbook.business.service;
 
 import com.projects.breakingbook.business.entity.Friend;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public interface FriendService {
 
     List<Friend> getAll(Long userId);
