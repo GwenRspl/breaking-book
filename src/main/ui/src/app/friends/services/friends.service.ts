@@ -4,10 +4,11 @@ import {Friend} from '../friend.model';
 import {Observable} from 'rxjs';
 import {Book} from '../../library/book.model';
 import {TokenStorageService} from '../../authentication/services/token-storage.service';
+import {BASE_URL_API} from '../../../environments/environment';
 
-const BASE_URL: string = 'http://localhost:8080/api/friends';
-const BOOKS_URL: string = 'http://localhost:8080/api/books';
-const USER_ID: string = '?userId=';
+const BASE_URL = BASE_URL_API + '/friends';
+const BOOKS_URL = BASE_URL_API + '/books';
+const USER_ID = '?userId=';
 const HTTP_OPTIONS = {headers: new HttpHeaders({'Content-Type': 'application/json',}), responseType: 'text' as 'json'};
 
 @Injectable({
