@@ -15,12 +15,15 @@ const HTTP_OPTIONS = {headers: new HttpHeaders({'Content-Type': 'application/jso
   providedIn: 'root'
 })
 export class FriendsService {
-  private readonly userId: number;
+  private userId: number;
 
   constructor(private httpClient: HttpClient,
               private tokenStorage: TokenStorageService) {
-    this.userId = +this.tokenStorage.getUserId()
-    ;
+    this.setUserId();
+  }
+
+  setUserId() {
+    this.userId = +this.tokenStorage.getUserId();
   }
 
   getAllFriends(): Observable<Friend[]> {

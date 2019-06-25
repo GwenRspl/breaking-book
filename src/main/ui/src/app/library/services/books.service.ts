@@ -13,19 +13,23 @@ const GOOGLE_API_URL = 'https://www.googleapis.com/books/v1/volumes?q=';
 const GOOGLE_API_FIELDS = '&fields=totalItems,items(selfLink,volumeInfo(title,subtitle,authors,publisher,publishedDate,description,industryIdentifiers,pageCount,imageLinks,language))';
 const GOOGLE_API_MAX_RESULTS = '&maxResults=40';
 const USER_ID_PARAM = '?userId=';
-const HTTP_OPTIONS = {headers: new HttpHeaders({'Content-Type': 'application/json',}), responseType: 'text' as 'json'};
+const HTTP_OPTIONS = {headers: new HttpHeaders({'Content-Type': 'application/json'}), responseType: 'text' as 'json'};
 
 @Injectable({
   providedIn: 'root'
 })
 export class BooksService {
-  private readonly userId: number;
+  private userId: number;
 
   private selectedBook: Book;
   private bookReadyToPopulate = false;
 
   constructor(private httpClient: HttpClient,
               private tokenStorage: TokenStorageService) {
+    this.setUserId();
+  }
+
+  setUserId() {
     this.userId = +this.tokenStorage.getUserId();
   }
 
