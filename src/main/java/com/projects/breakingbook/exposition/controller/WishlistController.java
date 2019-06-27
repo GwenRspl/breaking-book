@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/wishlists")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "${breaking-book.app.client}")
 public class WishlistController {
 
     private final WishlistService wishlistService;

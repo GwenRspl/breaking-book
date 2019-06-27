@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "${breaking-book.app.client}")
 public class UserController {
 
     private final AuthenticationManager authenticationManager;

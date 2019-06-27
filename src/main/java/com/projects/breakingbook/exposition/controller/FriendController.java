@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/friends")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "${breaking-book.app.client}")
 public class FriendController {
 
     private final FriendService friendService;

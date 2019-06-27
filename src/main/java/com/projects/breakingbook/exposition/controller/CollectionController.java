@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/collections")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "${breaking-book.app.client}")
 public class CollectionController {
     private final CollectionService collectionService;
     private final ModelMapper modelMapper;

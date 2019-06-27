@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/books")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "${breaking-book.app.client}")
 public class BookController {
 
     private final BookService bookService;
