@@ -3,6 +3,8 @@ package com.projects.breakingbook.persistence.repository.implementation;
 import com.projects.breakingbook.business.entity.Book;
 import com.projects.breakingbook.persistence.mapper.BookMapper;
 import com.projects.breakingbook.persistence.repository.BookRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -19,9 +21,8 @@ import java.util.Optional;
 @Transactional
 public class BookRepositoryImpl implements BookRepository {
 
-    private final JdbcTemplate jdbcTemplate;
-
-    private final String INSERT = new StringBuilder()
+    private static final Logger LOGGER = LoggerFactory.getLogger(BookRepository.class);
+    private static final String INSERT = new StringBuilder()
             .append("INSERT INTO book")
             .append("(book_title, book_authors, book_isbn, book_image, book_language, ")
             .append("book_publisher, book_date_published, book_pages, book_synopsis, ")
@@ -30,8 +31,7 @@ public class BookRepositoryImpl implements BookRepository {
             .append("VALUES ")
             .append("(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
             .toString();
-
-    private final String SELECT_ALL = new StringBuilder()
+    private static final String SELECT_ALL = new StringBuilder()
             .append("SELECT ")
             .append("book_id, book_title, book_authors, book_isbn, book_image, book_language, ")
             .append("book_publisher, book_date_published, book_pages, book_synopsis, ")
@@ -43,8 +43,7 @@ public class BookRepositoryImpl implements BookRepository {
             .append("INNER JOIN breaking_book_user r ON book.book_breaking_book_user = r.breaking_book_user_id ")
             .append("FULL OUTER JOIN friend f on book.book_friend = f.friend_id WHERE book.book_breaking_book_user = ?")
             .toString();
-
-    private final String SELECT_BY_ID = new StringBuilder()
+    private static final String SELECT_BY_ID = new StringBuilder()
             .append("SELECT ")
             .append("book_id, book_title, book_authors, book_isbn, book_image, book_language, ")
             .append("book_publisher, book_date_published, book_pages, book_synopsis, book_breaking_book_user, book_friend, ")
@@ -55,12 +54,9 @@ public class BookRepositoryImpl implements BookRepository {
             .append("FROM book INNER JOIN breaking_book_user r ON book.book_breaking_book_user = r.breaking_book_user_id ")
             .append("FULL OUTER JOIN friend f on book.book_friend = f.friend_id WHERE book_id = ?")
             .toString();
-
-    private final String DELETE_BY_ID = "DELETE FROM book WHERE book_id = ?";
-
-    private final String DELETE_ALL = "DELETE FROM book";
-
-    private final String UPDATE = new StringBuilder()
+    private static final String DELETE_BY_ID = "DELETE FROM book WHERE book_id = ?";
+    private static final String DELETE_ALL = "DELETE FROM book";
+    private static final String UPDATE = new StringBuilder()
             .append("UPDATE book ")
             .append("SET book_title = ?, book_authors = ?, book_isbn = ?, book_image = ?, book_language = ?, ")
             .append("book_publisher = ?, book_date_published = ?, book_pages = ?, book_synopsis = ?, ")
@@ -68,10 +64,9 @@ public class BookRepositoryImpl implements BookRepository {
             .append("book_rating = ?, book_comment = ?, book_status = ? ")
             .append("WHERE book_id = ?")
             .toString();
-
-    private final String UPDATE_OWNED = "UPDATE book SET book_owned = ? WHERE book_id = ?";
-
-    private final String UPDATE_FRIEND = "UPDATE book SET book_friend = ? WHERE book_id = ?";
+    private static final String UPDATE_OWNED = "UPDATE book SET book_owned = ? WHERE book_id = ?";
+    private static final String UPDATE_FRIEND = "UPDATE book SET book_friend = ? WHERE book_id = ?";
+    private final JdbcTemplate jdbcTemplate;
 
     public BookRepositoryImpl(final JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -79,7 +74,7 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public List<Book> findAllBooks(final Long userId) {
-        return this.jdbcTemplate.query(this.SELECT_ALL, new Object[]{userId}, new BookMapper());
+        return this.jdbcTemplate.query(SELECT_ALL, new Object[]{userId}, new BookMapper());
     }
 
     @Override
@@ -88,7 +83,7 @@ public class BookRepositoryImpl implements BookRepository {
 
         this.jdbcTemplate.update(connection -> {
             final PreparedStatement ps = connection
-                    .prepareStatement(this.INSERT, Statement.RETURN_GENERATED_KEYS);
+                    .prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, book.getTitle());
             ps.setArray(2, this.convertListToSqlArray(book.getAuthors()));
             ps.setString(3, book.getIsbn());
@@ -128,7 +123,7 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public Optional<Book> findBookById(final Long id) {
         try {
-            return Optional.of(this.jdbcTemplate.queryForObject(this.SELECT_BY_ID, new Object[]{id}, new BookMapper()));
+            return Optional.of(this.jdbcTemplate.queryForObject(SELECT_BY_ID, new Object[]{id}, new BookMapper()));
         } catch (final EmptyResultDataAccessException e) {
             return Optional.empty();
         }
@@ -136,19 +131,19 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public boolean deleteBookById(final Long id) {
-        final int result = this.jdbcTemplate.update(this.DELETE_BY_ID, id);
+        final int result = this.jdbcTemplate.update(DELETE_BY_ID, id);
         return result != 0;
     }
 
     @Override
     public boolean deleteAllBooks() {
-        final int result = this.jdbcTemplate.update(this.DELETE_ALL);
+        final int result = this.jdbcTemplate.update(DELETE_ALL);
         return result != 0;
     }
 
     @Override
     public boolean updateBook(final Long id, final Book book) {
-        final int result = this.jdbcTemplate.update(this.UPDATE, book.getTitle(), this.convertListToSqlArray(book.getAuthors()),
+        final int result = this.jdbcTemplate.update(UPDATE, book.getTitle(), this.convertListToSqlArray(book.getAuthors()),
                 book.getIsbn(), book.getImage(), book.getLanguage(), book.getPublisher(), book.getDatePublished(),
                 book.getPages(), book.getSynopsis(), book.getUser().getId(), book.getFriend() != null ? book.getFriend().getId() : null, book.isOwned(),
                 book.getRating(), book.getComment(), book.getStatus() != null ? book.getStatus().getBookStatusString() : null, id);
@@ -161,7 +156,7 @@ public class BookRepositoryImpl implements BookRepository {
         Book book = null;
         if (optionalBook.isPresent()) {
             book = optionalBook.get();
-            final int result = this.jdbcTemplate.update(this.UPDATE_OWNED, !book.isOwned(), id);
+            final int result = this.jdbcTemplate.update(UPDATE_OWNED, !book.isOwned(), id);
             return result != 0;
         } else {
             return false;
@@ -171,7 +166,7 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public boolean updateFriend(final Long bookId, final Long friendId) {
-        final int result = this.jdbcTemplate.update(this.UPDATE_FRIEND, friendId, bookId);
+        final int result = this.jdbcTemplate.update(UPDATE_FRIEND, friendId, bookId);
         return result != 0;
     }
 
@@ -180,12 +175,12 @@ public class BookRepositoryImpl implements BookRepository {
         try {
             final DataSource dataSource = this.jdbcTemplate.getDataSource();
             if (dataSource != null) {
-                final Connection connection = dataSource.getConnection();
-                authors = connection.createArrayOf("VARCHAR", listToConvert.toArray());
-                connection.close();
+                try (final Connection connection = dataSource.getConnection()) {
+                    authors = connection.createArrayOf("VARCHAR", listToConvert.toArray());
+                }
             }
         } catch (final SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Cannot convert list to SQL array", e);
         }
         return authors;
     }

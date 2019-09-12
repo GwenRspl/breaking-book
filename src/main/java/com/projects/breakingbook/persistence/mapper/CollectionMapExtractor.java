@@ -1,7 +1,6 @@
 package com.projects.breakingbook.persistence.mapper;
 
 import com.projects.breakingbook.business.entity.*;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
 import java.sql.ResultSet;
@@ -10,7 +9,7 @@ import java.util.*;
 
 public class CollectionMapExtractor implements ResultSetExtractor<Map<Long, List<Book>>> {
     @Override
-    public Map<Long, List<Book>> extractData(final ResultSet resultSet) throws SQLException, DataAccessException {
+    public Map<Long, List<Book>> extractData(final ResultSet resultSet) throws SQLException {
         final Map<Long, List<Book>> booksMap = new HashMap<>();
 
         while (resultSet.next()) {
