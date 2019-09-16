@@ -20,6 +20,10 @@ public class BookServiceImpl implements BookService {
         this.bookRepository = bookRepository;
     }
 
+    public static <T> T getValueOrDefault(final T value, final T defaultValue) {
+        return value == null ? defaultValue : value;
+    }
+
     @Override
     public List<Book> getAll(final Long userId) {
         return this.bookRepository.findAllBooks(userId);
@@ -60,47 +64,60 @@ public class BookServiceImpl implements BookService {
             originalBook = optionalBook.get();
         }
         book.setId(id);
-        if (book.getTitle() == null) {
-            book.setTitle(originalBook.getTitle());
-        }
-        if (book.getAuthors() == null) {
-            book.setAuthors(originalBook.getAuthors());
-        }
-        if (book.getIsbn() == null) {
-            book.setIsbn(originalBook.getIsbn());
-        }
-        if (book.getImage() == null) {
-            book.setImage(originalBook.getImage());
-        }
-        if (book.getLanguage() == null) {
-            book.setLanguage(originalBook.getLanguage());
-        }
-        if (book.getPublisher() == null) {
-            book.setPublisher(originalBook.getPublisher());
-        }
-        if (book.getDatePublished() == null) {
-            book.setDatePublished(originalBook.getDatePublished());
-        }
-        if (book.getPages() == 0) {
-            book.setPages(originalBook.getPages());
-        }
-        if (book.getSynopsis() == null) {
-            book.setSynopsis(originalBook.getSynopsis());
-        }
-        if (book.getUser() == null) {
-            book.setUser(originalBook.getUser());
-        }
+        book.setTitle(BookServiceImpl.getValueOrDefault(book.getTitle(), originalBook.getTitle()));
+        book.setAuthors(BookServiceImpl.getValueOrDefault(book.getAuthors(), originalBook.getAuthors()));
+        book.setIsbn(BookServiceImpl.getValueOrDefault(book.getIsbn(), originalBook.getIsbn()));
+        book.setImage(BookServiceImpl.getValueOrDefault(book.getImage(), originalBook.getImage()));
+        book.setLanguage(BookServiceImpl.getValueOrDefault(book.getLanguage(), originalBook.getLanguage()));
+        book.setPublisher(BookServiceImpl.getValueOrDefault(book.getPublisher(), originalBook.getPublisher()));
+        book.setDatePublished(BookServiceImpl.getValueOrDefault(book.getDatePublished(), originalBook.getDatePublished()));
+        book.setPages(BookServiceImpl.getValueOrDefault(book.getPages(), originalBook.getPages()));
+        book.setSynopsis(BookServiceImpl.getValueOrDefault(book.getSynopsis(), originalBook.getSynopsis()));
+        book.setUser(BookServiceImpl.getValueOrDefault(book.getUser(), originalBook.getUser()));
+        book.setRating(BookServiceImpl.getValueOrDefault(book.getRating(), originalBook.getRating()));
+        book.setComment(BookServiceImpl.getValueOrDefault(book.getComment(), originalBook.getComment()));
+
+//        if (book.getTitle() == null) {
+//            book.setTitle(originalBook.getTitle());
+//        }
+//        if (book.getAuthors() == null) {
+//            book.setAuthors(originalBook.getAuthors());
+//        }
+//        if (book.getIsbn() == null) {
+//            book.setIsbn(originalBook.getIsbn());
+//        }
+//        if (book.getImage() == null) {
+//            book.setImage(originalBook.getImage());
+//        }
+//        if (book.getLanguage() == null) {
+//            book.setLanguage(originalBook.getLanguage());
+//        }
+//        if (book.getPublisher() == null) {
+//            book.setPublisher(originalBook.getPublisher());
+//        }
+//        if (book.getDatePublished() == null) {
+//            book.setDatePublished(originalBook.getDatePublished());
+//        }
+//        if (book.getPages() == 0) {
+//            book.setPages(originalBook.getPages());
+//        }
+//        if (book.getSynopsis() == null) {
+//            book.setSynopsis(originalBook.getSynopsis());
+//        }
+//        if (book.getUser() == null) {
+//            book.setUser(originalBook.getUser());
+//        }
         if (book.getFriend() == null) {
-            if (originalBook.getFriend().getId() != 0) {
+            if (originalBook.getFriend() != null && originalBook.getFriend().getId() != 0) {
                 book.setFriend(originalBook.getFriend());
             }
         }
-        if (book.getRating() == 0) {
-            book.setRating(originalBook.getRating());
-        }
-        if (book.getComment() == null) {
-            book.setComment(originalBook.getComment());
-        }
+//        if (book.getRating() == 0) {
+//            book.setRating(originalBook.getRating());
+//        }
+//        if (book.getComment() == null) {
+//            book.setComment(originalBook.getComment());
+//        }
         return this.bookRepository.updateBook(id, book);
     }
 

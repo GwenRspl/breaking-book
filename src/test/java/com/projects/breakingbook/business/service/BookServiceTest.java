@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
@@ -58,6 +59,7 @@ public class BookServiceTest {
         this.book2 = Book.builder()
                 .id(2L)
                 .title("Maleficent")
+                .comment("Fancy comment")
                 .user(this.user2)
                 .friend(null)
                 .build();
@@ -95,4 +97,23 @@ public class BookServiceTest {
         assertThat(books.get(0).getTitle(), equalTo("Snow White"));
     }
 
+    @Test
+    public void Given_BookWithOnlyTitleAndId_When_UpdatingExistingBook_Then_ShouldReturnBookWithNewTitleAndOldAttributesNotNull() {
+        final Book newBook = Book.builder()
+                .id(2L)
+                .title("Maleficent 2")
+                .build();
+        when(this.bookRepository.findBookById(2L)).thenReturn(Optional.of(this.book2));
+
+        final Book expectedBook = Book.builder()
+                .id(2L)
+                .title("Maleficent 2")
+                .comment("Fancy comment")
+                .user(this.user2)
+                .friend(null)
+                .build();
+
+        assertThat(this.bookService.update(2L, newBook), equalTo(expectedBook));
+
+    }
 }
