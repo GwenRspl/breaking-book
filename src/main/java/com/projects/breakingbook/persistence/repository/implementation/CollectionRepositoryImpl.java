@@ -72,6 +72,7 @@ public class CollectionRepositoryImpl implements CollectionRepository {
             .append("book_publisher, book_date_published, book_pages, book_synopsis, ")
             .append("book_breaking_book_user, book_friend, book_owned, book_rating, book_comment, book_status, ")
             .append("friend_id, friend_name, friend_avatar, friend_breaking_book_user ")
+            .append("book_collection_collection_id, book_collection_book_id ")
             .append("FROM collection ")
             .append("INNER JOIN book_collection ON collection.collection_id = book_collection.book_collection_collection_id ")
             .append("INNER JOIN breaking_book_user r ON collection.collection_breaking_book_user = r.breaking_book_user_id ")
