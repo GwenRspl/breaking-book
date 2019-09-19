@@ -94,5 +94,5 @@ public class BookServiceTest {
         assertThat(books, hasSize(1));
         assertThat(books.get(0).getTitle(), equalTo("Snow White"));
     }
-    
+
 }
