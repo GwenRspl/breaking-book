@@ -58,7 +58,6 @@ public class BookServiceTest {
         this.book2 = Book.builder()
                 .id(2L)
                 .title("Maleficent")
-                .comment("Fancy comment")
                 .user(this.user2)
                 .friend(null)
                 .build();
@@ -95,4 +94,5 @@ public class BookServiceTest {
         assertThat(books, hasSize(1));
         assertThat(books.get(0).getTitle(), equalTo("Snow White"));
     }
+    
 }
