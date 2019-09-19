@@ -59,7 +59,7 @@ public class BookServiceImpl implements BookService {
         if (optionalBook.isPresent()) {
             originalBook = optionalBook.get();
         }
-
+        book.setId(id);
         if (book.getTitle() == null) {
             book.setTitle(originalBook.getTitle());
         }
@@ -91,7 +91,7 @@ public class BookServiceImpl implements BookService {
             book.setUser(originalBook.getUser());
         }
         if (book.getFriend() == null) {
-            if (originalBook.getFriend() != null && originalBook.getFriend().getId() != 0) {
+            if (originalBook.getFriend().getId() != 0) {
                 book.setFriend(originalBook.getFriend());
             }
         }
