@@ -3,6 +3,7 @@ package com.projects.breakingbook.business.service;
 import com.projects.breakingbook.business.entity.Book;
 import com.projects.breakingbook.business.entity.Friend;
 import com.projects.breakingbook.business.entity.User;
+import com.projects.breakingbook.business.service.implementation.BookServiceImpl;
 import com.projects.breakingbook.persistence.repository.BookRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
@@ -26,7 +28,7 @@ import static org.mockito.Mockito.when;
 public class BookServiceTest {
 
     @Autowired
-    BookService bookService;
+    BookServiceImpl bookService;
 
     @MockBean
     BookRepository bookRepository;
@@ -98,12 +100,23 @@ public class BookServiceTest {
     }
 
     @Test
-    public void Given_BookWithOnlyTitleAndId_When_UpdatingExistingBook_Then_ShouldReturnBookWithNewTitleAndOldAttributesNotNull() {
+    public void shouldUpdateBook() {
+        final Book expectedBook = Book.builder()
+                .id(2L)
+                .title("Sleeping Beauty")
+                .comment("Fancy comment")
+                .user(this.user2)
+                .friend(null)
+                .build();
+
         final Book newBook = Book.builder()
                 .id(2L)
-                .title("Maleficent 2")
+                .title("Sleeping Beauty")
                 .build();
-        when(this.bookRepository.findBookById(2L)).thenReturn(Optional.of(this.book2));
 
+        when(this.bookRepository.findBookById(2L)).thenReturn(Optional.of(this.book2));
+        when(this.bookRepository.updateBook(2L, newBook)).thenReturn(true);
+
+        assertThat(this.bookService.update(2L, newBook)).isEqualTo(true);
     }
 }

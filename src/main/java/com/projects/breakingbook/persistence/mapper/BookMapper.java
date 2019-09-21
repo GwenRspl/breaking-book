@@ -3,7 +3,7 @@ package com.projects.breakingbook.persistence.mapper;
 import com.projects.breakingbook.business.entity.Book;
 import com.projects.breakingbook.business.entity.Friend;
 import com.projects.breakingbook.business.entity.User;
-import com.projects.breakingbook.utils.MapperUtils;
+import com.projects.breakingbook.persistence.mapper.utils.MapperUtils;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

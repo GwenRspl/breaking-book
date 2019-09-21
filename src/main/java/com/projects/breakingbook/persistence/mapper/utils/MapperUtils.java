@@ -1,4 +1,4 @@
-package com.projects.breakingbook.utils;
+package com.projects.breakingbook.persistence.mapper.utils;
 
 import com.projects.breakingbook.business.entity.*;
 
