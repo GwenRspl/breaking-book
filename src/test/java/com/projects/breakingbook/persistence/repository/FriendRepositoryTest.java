@@ -2,14 +2,16 @@ package com.projects.breakingbook.persistence.repository;
 
 import com.projects.breakingbook.business.entity.Friend;
 import com.projects.breakingbook.business.entity.User;
+import com.projects.breakingbook.persistence.repository.config.PostgresqlContainerTest;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,11 +24,10 @@ import static org.junit.Assert.assertThat;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-@Transactional
 public class FriendRepositoryTest {
 
-    @Autowired
-    JdbcTemplate jdbcTemplate;
+    @ClassRule
+    public static PostgreSQLContainer postgreSQLContainer = PostgresqlContainerTest.getInstance();
     @Autowired
     private FriendRepository friendRepository;
     private User user;
@@ -52,6 +53,7 @@ public class FriendRepositoryTest {
     }
 
     @Test
+    @Transactional
     public void create_should_return_valid_friend() {
         final Long id = this.friendRepository.createFriend(this.alice);
         assertNotNull(id);
@@ -60,6 +62,7 @@ public class FriendRepositoryTest {
     }
 
     @Test
+    @Transactional
     public void update_should_update_correctly() {
         final Long id = this.friendRepository.createFriend(this.alice);
         this.alice.setName("Tom");
@@ -69,6 +72,7 @@ public class FriendRepositoryTest {
     }
 
     @Test
+    @Transactional
     public void delete_by_id_should_delete_correct_friend() {
         final Long id = this.friendRepository.createFriend(this.bob);
         this.friendRepository.deleteFriendById(id);
@@ -77,6 +81,7 @@ public class FriendRepositoryTest {
     }
 
     @Test
+    @Transactional
     public void list_all_should_return_all_friends() {
         final List<Friend> oldFriends = this.friendRepository.findAllFriends(this.user.getId());
         this.friendRepository.createFriend(this.bob);
