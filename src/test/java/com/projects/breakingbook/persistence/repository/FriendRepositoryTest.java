@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -21,7 +22,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
-
+@Sql({"/schema-test.sql", "/data-test.sql"})
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class FriendRepositoryTest {
@@ -58,6 +59,7 @@ public class FriendRepositoryTest {
         final Long id = this.friendRepository.createFriend(this.alice);
         assertNotNull(id);
         final Optional<Friend> actualFriend = this.friendRepository.findFriendById(id);
+        assertThat(actualFriend.isPresent(), equalTo(true));
         assertThat(actualFriend.get().getName(), equalTo(this.alice.getName()));
     }
 
@@ -68,6 +70,7 @@ public class FriendRepositoryTest {
         this.alice.setName("Tom");
         this.friendRepository.updateFriend(id, this.alice);
         final Optional<Friend> actualFriend = this.friendRepository.findFriendById(id);
+        assertThat(actualFriend.isPresent(), equalTo(true));
         assertThat(actualFriend.get().getName(), equalTo("Tom"));
     }
 
