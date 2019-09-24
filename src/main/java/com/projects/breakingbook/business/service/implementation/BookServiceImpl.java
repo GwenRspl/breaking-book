@@ -57,16 +57,12 @@ public class BookServiceImpl implements BookService {
     public boolean update(final Long id, Book book) {
         final Optional<Book> optionalBook = this.bookRepository.findBookById(id);
         Book originalBook = null;
-        if (optionalBook.isPresent()) {
-            originalBook = optionalBook.get();
-        }
         book.setId(id);
-        book = ServiceUtils.generateBooksAttributes(book, originalBook);
-        if (book.getFriend() == null) {
-            if (originalBook.getFriend() != null && originalBook.getFriend().getId() != 0) {
-                book.setFriend(originalBook.getFriend());
-            }
+        if (!optionalBook.isPresent()) {
+            return false;
         }
+        originalBook = optionalBook.get();
+        book = ServiceUtils.generateBooksAttributes(book, originalBook);
         return this.bookRepository.updateBook(id, book);
     }
 

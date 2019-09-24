@@ -2,6 +2,7 @@ package com.projects.breakingbook.business.service.utils;
 
 import com.projects.breakingbook.business.entity.Book;
 import com.projects.breakingbook.business.entity.BookStatus;
+import com.projects.breakingbook.business.entity.Friend;
 import com.projects.breakingbook.business.entity.User;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.Test;
@@ -13,7 +14,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ServiceUtilsTest {
-
 
     @Test
     public void shouldReturnDefaultValueWhenValueIsNull() {
@@ -47,6 +47,9 @@ public class ServiceUtilsTest {
     public void generateBooksAttributes() {
         final List<String> authors = Arrays.asList("Author 1", "Author 2");
         final User user = new User();
+        user.setId(5L);
+        final Friend friend = new Friend();
+        friend.setId(1L);
         final Book book = Book.builder()
                 .id(2L)
                 .title("Maleficent")
@@ -63,7 +66,7 @@ public class ServiceUtilsTest {
                 .status(BookStatus.READ)
                 .comment("Fancy comment")
                 .pages(234)
-                .friend(null)
+                .friend(friend)
                 .build();
 
         final Book newBook = Book.builder()
@@ -87,7 +90,7 @@ public class ServiceUtilsTest {
                 .user(user)
                 .comment("Fancy comment")
                 .pages(234)
-                .friend(null)
+                .friend(friend)
                 .build();
 
         final Book actualBook = ServiceUtils.generateBooksAttributes(newBook, book);
@@ -105,6 +108,7 @@ public class ServiceUtilsTest {
         softly.assertThat(actualBook.getUser()).as("user").isEqualTo(expectedBook.getUser());
         softly.assertThat(actualBook.getComment()).as("comment").isEqualTo(expectedBook.getComment());
         softly.assertThat(actualBook.getPages()).as("pages").isEqualTo(expectedBook.getPages());
+        softly.assertThat(actualBook.getFriend()).as("friend").isEqualTo(expectedBook.getFriend());
         softly.assertAll();
 
     }

@@ -4,11 +4,11 @@ import com.projects.breakingbook.business.entity.Book;
 
 public class ServiceUtils {
 
-    public static <T> T getValueOrDefaultString(final T value, final T defaultValue) {
+    static <T> T getValueOrDefaultString(final T value, final T defaultValue) {
         return value == null ? defaultValue : value;
     }
 
-    public static int getValueOrDefaultInteger(final int value, final int defaultValue) {
+    static int getValueOrDefaultInteger(final int value, final int defaultValue) {
         return value == 0 ? defaultValue : value;
     }
 
@@ -25,6 +25,9 @@ public class ServiceUtils {
         newBook.setUser(getValueOrDefaultString(newBook.getUser(), originalBook.getUser()));
         newBook.setRating(getValueOrDefaultInteger(newBook.getRating(), originalBook.getRating()));
         newBook.setComment(getValueOrDefaultString(newBook.getComment(), originalBook.getComment()));
+        if (newBook.getFriend() == null && originalBook.getFriend() != null && originalBook.getFriend().getId() != 0) {
+            newBook.setFriend(originalBook.getFriend());
+        }
         return newBook;
     }
 }
