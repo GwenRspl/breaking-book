@@ -26,6 +26,7 @@ public class BookServiceImpl implements BookService {
         return this.bookRepository.findAllBooks(userId);
     }
 
+/*
     @Override
     public List<Book> getAllLentBooks(final Long userId) {
         return this.bookRepository
@@ -40,6 +41,16 @@ public class BookServiceImpl implements BookService {
                     }
                     return true;
                 })
+                .collect(Collectors.toList());
+    }
+*/
+
+    @Override
+    public List<Book> getAllLentBooks(final Long userId) {
+        return this.bookRepository
+                .findAllBooks(userId)
+                .stream()
+                .filter(book -> book.getFriend() != null && book.getFriend().getId() != 0)
                 .collect(Collectors.toList());
     }
 
