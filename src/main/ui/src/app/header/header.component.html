@@ -1,0 +1,55 @@
+<ion-toolbar>
+    <ion-buttons *ngIf="username" hidden-from-lg slot="start">
+        <ion-menu-button menu="m1"></ion-menu-button>
+    </ion-buttons>
+
+    <ion-title (click)="goToHome()" hidden-until-sm slot="start">
+        Breaking Book
+    </ion-title>
+
+    <ion-title (click)="goToHome()" class="mobile-title" hidden-from-sm slot="start">
+        Breaking Book
+    </ion-title>
+
+    <ion-buttons *ngIf="username; else SignedOut" hidden-until-lg slot="primary">
+        <ion-button [routerLink]="['/', 'library']" routerLinkActive="active-link">
+            <ion-icon name="book" slot="start"></ion-icon>
+            Library
+        </ion-button>
+        <ion-button [routerLink]="['/', 'collections']" routerLinkActive="active-link">
+            <ion-icon name="filing" slot="start"></ion-icon>
+            Collections
+        </ion-button>
+        <ion-button [routerLink]="['/', 'wishlists']" routerLinkActive="active-link">
+            <ion-icon name="basket" slot="start"></ion-icon>
+            Wishlists
+        </ion-button>
+        <ion-button [routerLink]="['/', 'friends']" routerLinkActive="active-link">
+            <ion-icon name="people" slot="start"></ion-icon>
+            Friends
+        </ion-button>
+    </ion-buttons>
+
+    <ion-buttons *ngIf="username" class="header-toolbar-cog" slot="end">
+        <ion-text class="bb-username" hidden-until-sm>Welcome {{username}} !</ion-text>
+        <ion-button (click)="onCogClick($event)">
+            <ion-icon name="cog" slot="end"></ion-icon>
+        </ion-button>
+    </ion-buttons>
+
+    <ng-template #SignedOut>
+        <ion-buttons slot="primary">
+            <ion-button [routerLink]="['/', 'sign-in']" routerLinkActive="active-link">
+                <ion-icon name="log-in" hidden-until-sm slot="start"></ion-icon>
+                <ion-icon name="log-in" hidden-from-sm slot="icon-only"></ion-icon>
+                <ion-text hidden-until-sm>Sign In</ion-text>
+            </ion-button>
+            <ion-button [routerLink]="['/', 'sign-up']" routerLinkActive="active-link">
+                <ion-icon name="list-box" hidden-until-sm slot="start"></ion-icon>
+                <ion-icon name="list-box" hidden-from-sm slot="icon-only"></ion-icon>
+                <ion-text hidden-until-sm>Sign Up</ion-text>
+            </ion-button>
+        </ion-buttons>
+    </ng-template>
+</ion-toolbar>
+

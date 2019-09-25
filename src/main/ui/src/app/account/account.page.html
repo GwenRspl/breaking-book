@@ -1,0 +1,42 @@
+<ion-content>
+    <ion-grid *ngIf="!finishedLoading">
+        <ion-row align-items-center justify-content-center padding-top>
+            <ion-item class="item-spinner center-content-vertically" lines="none" text-center>
+                <ion-label>Loading</ion-label>
+                <ion-spinner></ion-spinner>
+            </ion-item>
+        </ion-row>
+    </ion-grid>
+    <div class="center-content-vertically">
+        <ion-grid *ngIf="finishedLoading">
+            <ion-row class="account-info">
+                <ion-col offset-md="3" offset-sm="3" offset-xl="4" size-md="2" size-sm="2" size-xl="1" size-xs="5">
+                    <ion-avatar class="ion-float-right">
+                        <img *ngIf="user.avatar != null && user.avatar != '' " [src]="user.avatar" alt="avatar">
+                        <img *ngIf="user.avatar == null || user.avatar == '' " [src]="defaultAvatar" alt="avatar">
+                    </ion-avatar>
+                </ion-col>
+                <ion-col size-md="4" size-sm="4" size-xl="2" size-xs="7">
+                    <ion-item lines="none">
+                        <ion-label>
+                            <h2>
+                                {{user.username}}
+                            </h2>
+                            <p>
+                                {{user.email}}
+                            </p>
+                        </ion-label>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col offset-md="4" offset-sm="5" offset-xl="5" offset-xs="5" size-md="4" size-sm="4" size-xl="2"
+                         size-xs="7">
+                    <ion-button (click)="editAccount()" class="ion-float-right">
+                        Edit account
+                    </ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
+</ion-content>

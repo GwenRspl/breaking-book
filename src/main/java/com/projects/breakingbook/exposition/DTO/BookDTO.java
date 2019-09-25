@@ -24,7 +24,7 @@ public class BookDTO {
     private int pages;
     private String synopsis;
     private boolean owned;
-    private boolean read;
+    private String status;
     private int rating;
     private String comment;
     private Long friendId;

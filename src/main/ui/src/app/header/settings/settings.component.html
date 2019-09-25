@@ -1,0 +1,15 @@
+<ion-list lines="full">
+    <ion-item (click)="closePopover()" [routerLink]="['/', 'account']">
+        <ion-button color="dark" fill="clear" size="default">
+            <ion-icon name="person" slot="start"></ion-icon>
+            Account
+        </ion-button>
+    </ion-item>
+    <ion-item (click)="signOut()">
+        <ion-button color="dark" fill="clear" size="default">
+            <ion-icon name="log-out" slot="start"></ion-icon>
+            Sign Out
+        </ion-button>
+    </ion-item>
+</ion-list>
+

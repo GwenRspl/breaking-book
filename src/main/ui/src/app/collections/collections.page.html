@@ -1,0 +1,35 @@
+<ion-content>
+    <ion-grid>
+        <ion-row justify-content-center>
+            <ion-col class="create-col" size-lg="8">
+                <ion-item class="create-input">
+                    <ion-input [(ngModel)]="userInput"
+                               placeholder="Collection name"></ion-input>
+
+                </ion-item>
+                <ion-button (click)="createNewCollection()" hidden-until-md size="medium">
+                    Create new collection
+                </ion-button>
+
+                <ion-button (click)="createNewCollection()" hidden-from-md size="medium">
+                    <ion-icon name="add" slot="icon-only"></ion-icon>
+                </ion-button>
+            </ion-col>
+        </ion-row>
+        <ion-row justify-content-center>
+            <ion-col size-xl="10">
+                <ion-grid>
+                    <ion-row>
+                        <ion-col *ngFor="let collection of collections" size-md="6" size-xs="12">
+                            <app-display-book-list (refreshParent)="retrieveCollections()"
+                                                   [books]="booksCollectionsMap.get(collection.id)"
+                                                   [collection]="collection"
+                                                   itemMode="collection"></app-display-book-list>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+</ion-content>

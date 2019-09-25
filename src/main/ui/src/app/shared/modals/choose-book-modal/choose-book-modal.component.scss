@@ -1,0 +1,7 @@
+.item-clickable {
+  cursor: pointer;
+
+  &:hover {
+    --background: var(--ion-color-background-element-hover);
+  }
+}

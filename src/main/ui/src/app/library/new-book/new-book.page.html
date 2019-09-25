@@ -1,0 +1,168 @@
+<ion-content>
+    <ion-grid>
+        <ion-row>
+            <ion-col offset-lg="2" offset-xl="3" size-lg="8" size-xl="6">
+                <ion-card class="card" padding>
+                    <ion-card-header text-center>
+                        <ion-card-title>Add a new book</ion-card-title>
+                    </ion-card-header>
+                    <form [formGroup]="bookForm">
+                        <ion-item class="form-item">
+                            <ion-label position="floating">
+                                Title*
+                            </ion-label>
+                            <ion-input (keyup.enter)="addBookToLibrary()" formControlName="title" type="text">
+                            </ion-input>
+                        </ion-item>
+                        <ion-text *ngIf="submitted && f.title.errors" color="danger">
+                            <p *ngIf="f.title.errors.required" class="form-error-message">This field is required.</p>
+                        </ion-text>
+
+                        <ion-item class="form-item">
+                            <ion-label position="floating">
+                                Authors* <span>(Multiple authors should be comma separated)</span>
+                            </ion-label>
+                            <ion-input (keyup.enter)="addBookToLibrary()" formControlName="authors" type="text">
+                            </ion-input>
+                        </ion-item>
+                        <ion-text *ngIf="submitted && f.authors.errors" color="danger">
+                            <p *ngIf="f.authors.errors.required" class="form-error-message">This field is required.</p>
+                        </ion-text>
+
+                        <ion-item class="form-item">
+                            <ion-label position="floating">
+                                ISBN
+                            </ion-label>
+                            <ion-input (keyup.enter)="addBookToLibrary()" formControlName="isbn" type="text">
+                            </ion-input>
+                        </ion-item>
+                        <ion-text *ngIf="submitted && f.isbn.errors" color="danger">
+                            <p *ngIf="f.isbn.errors.minlength" class="form-error-message">The ISBN should be at least 10
+                                characters long.</p>
+                            <p *ngIf="f.isbn.errors.maxlength" class="form-error-message">The ISBN should be at least 10
+                                or 13 characters long.</p>
+                        </ion-text>
+
+                        <ion-item class="form-item">
+                            <ion-label position="floating">
+                                Image
+                            </ion-label>
+                            <ion-input (keyup.enter)="addBookToLibrary()" formControlName="image" type="url">
+                            </ion-input>
+                        </ion-item>
+                        <ion-text *ngIf="submitted && f.image.errors" color="danger">
+                            <p class="form-error-message">Should be a valid URL.</p>
+                        </ion-text>
+
+                        <ion-item class="form-item">
+                            <ion-label position="floating">
+                                Language*
+                            </ion-label>
+                            <ion-select formControlName="language" interface="popover">
+                                <ion-select-option value="FR">French</ion-select-option>
+                                <ion-select-option value="EN">English</ion-select-option>
+                            </ion-select>
+                        </ion-item>
+                        <ion-text *ngIf="submitted && f.language.errors" color="danger">
+                            <p class="form-error-message">This field is required.</p>
+                        </ion-text>
+
+                        <ion-item class="form-item">
+                            <ion-label position="floating">
+                                Publisher
+                            </ion-label>
+                            <ion-input (keyup.enter)="addBookToLibrary()" formControlName="publisher" type="text">
+                            </ion-input>
+                        </ion-item>
+
+
+                        <ion-item class="form-item">
+                            <ion-label position="floating">
+                                Date published
+                            </ion-label>
+                            <ion-datetime display-format="MMM YYYY"
+                                          formControlName="datePublished"
+                                          picker-format="MMM YYYY"></ion-datetime>
+                        </ion-item>
+
+                        <ion-item class="form-item">
+                            <ion-label position="floating">
+                                Pages
+                            </ion-label>
+                            <ion-input (keyup.enter)="addBookToLibrary()" formControlName="pages" type="number">
+                            </ion-input>
+                        </ion-item>
+
+                        <ion-item class="form-item">
+                            <ion-label position="floating">
+                                Synopsis
+                            </ion-label>
+                            <ion-textarea formControlName="synopsis" type="text">
+                            </ion-textarea>
+                        </ion-item>
+
+                        <ion-item class="form-item">
+                            <ion-label position="floating">
+                                Do you own this book?*
+                            </ion-label>
+                            <ion-select formControlName="owned" interface="popover">
+                                <ion-select-option value="true">Yes</ion-select-option>
+                                <ion-select-option value="false">No</ion-select-option>
+                            </ion-select>
+                        </ion-item>
+                        <ion-text *ngIf="submitted && f.status.errors" color="danger">
+                            <p class="form-error-message">This field is required</p>
+                        </ion-text>
+
+                        <ion-item class="form-item">
+                            <ion-label position="floating">
+                                Did you read this book?*
+                            </ion-label>
+                            <ion-select formControlName="status" interface="popover">
+                                <ion-select-option value="UNREAD">Not yet</ion-select-option>
+                                <ion-select-option value="READ">Yes</ion-select-option>
+                                <ion-select-option value="ONGOING">I'm reading it now</ion-select-option>
+                            </ion-select>
+                        </ion-item>
+                        <ion-text *ngIf="submitted && f.status.errors" color="danger">
+                            <p class="form-error-message">This field is required</p>
+                        </ion-text>
+
+                        <ion-item class="form-item">
+                            <ion-label position="floating">
+                                Rate this book
+                            </ion-label>
+                            <ion-select formControlName="rating" interface="popover">
+                                <ion-select-option value="1">1 star</ion-select-option>
+                                <ion-select-option value="2">2 stars</ion-select-option>
+                                <ion-select-option value="3">3 stars</ion-select-option>
+                                <ion-select-option value="4">4 stars</ion-select-option>
+                                <ion-select-option value="5">5 stars</ion-select-option>
+                            </ion-select>
+                        </ion-item>
+
+                        <ion-item class="form-item">
+                            <ion-label position="floating">
+                                Comment
+                            </ion-label>
+                            <ion-textarea formControlName="comment" type="text">
+                            </ion-textarea>
+                        </ion-item>
+
+                        <ion-grid>
+                            <ion-row>
+                                <ion-col text-center>
+                                    <ion-button (click)="addBookToLibrary()"
+                                                color="success" padding>
+                                        Add book to library
+                                    </ion-button>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+
+                    </form>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

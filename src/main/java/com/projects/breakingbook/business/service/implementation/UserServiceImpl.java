@@ -1,12 +1,11 @@
 package com.projects.breakingbook.business.service.implementation;
 
+import com.projects.breakingbook.business.entity.User;
 import com.projects.breakingbook.business.service.UserService;
-import com.projects.breakingbook.persistence.entity.User;
 import com.projects.breakingbook.persistence.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,9 +13,9 @@ import java.util.Optional;
 @Transactional
 public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(final UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -26,28 +25,36 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> getOne(Long id) {
+    public Optional<User> getOne(final Long id) {
         return this.userRepository.findUserById(id);
     }
 
     @Override
-    public boolean create(User user) {
+    public boolean create(final User user) {
         return this.userRepository.createUser(user);
     }
 
     @Override
-    public Optional<User> findUserByUsername(String username) {
-        return userRepository.findUserByUsername(username);
+    public Optional<User> findUserByUsername(final String username) {
+        return this.userRepository.findUserByUsername(username);
     }
 
     @Override
-    public boolean update(Long id, User user) {
-        Optional<User> optionalUser = this.userRepository.findUserById(id);
-        if(optionalUser.isPresent()) {
-            if (user.getUsername() == null) user.setUsername(optionalUser.get().getUsername());
-            if (user.getAvatar() == null) user.setAvatar(optionalUser.get().getAvatar());
-            if (user.getEmail() == null) user.setEmail(optionalUser.get().getEmail());
-            if (user.getPassword() == null) user.setPassword(optionalUser.get().getPassword());
+    public boolean update(final Long id, final User user) {
+        final Optional<User> optionalUser = this.userRepository.findUserById(id);
+        if (optionalUser.isPresent()) {
+            if (user.getUsername() == null) {
+                user.setUsername(optionalUser.get().getUsername());
+            }
+            if (user.getAvatar() == null) {
+                user.setAvatar(optionalUser.get().getAvatar());
+            }
+            if (user.getEmail() == null) {
+                user.setEmail(optionalUser.get().getEmail());
+            }
+            if (user.getPassword() == null) {
+                user.setPassword(optionalUser.get().getPassword());
+            }
             return this.userRepository.updateUser(id, user);
         } else {
             return false;
@@ -55,7 +62,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean delete(Long id) {
+    public boolean delete(final Long id) {
         return this.userRepository.deleteUserById(id);
     }
 
@@ -65,12 +72,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean existsByUsername(String username) {
-        return userRepository.existsByUsername(username);
+    public Boolean existsByUsername(final String username) {
+        return this.userRepository.existsByUsername(username);
     }
 
     @Override
-    public Boolean existsByEmail(String email) {
-        return userRepository.existsByEmail(email);
+    public Boolean existsByEmail(final String email) {
+        return this.userRepository.existsByEmail(email);
     }
 }

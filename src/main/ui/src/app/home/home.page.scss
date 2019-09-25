@@ -1,0 +1,29 @@
+ion-grid, ion-col {
+  padding: 0;
+}
+
+h2, p {
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+p {
+  text-align: justify;
+}
+
+ion-img {
+  height: 300px;
+  object-fit: cover;
+}
+
+ion-row:nth-child(odd) {
+  margin-bottom: 2em;
+}
+
+ion-row:nth-child(even) {
+  margin-bottom: 5em;
+}
+
+h2 {
+  font-family: RockSalt, RockSalt, Arial, sans-serif;
+}
