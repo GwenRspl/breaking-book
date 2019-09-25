@@ -65,16 +65,17 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public boolean update(final Long id, Book book) {
+    public boolean update(final Long id, final Book book) {
         final Optional<Book> optionalBook = this.bookRepository.findBookById(id);
-        Book originalBook = null;
         book.setId(id);
+        Book originalBook = null;
+        Book updatedBook = null;
         if (!optionalBook.isPresent()) {
             return false;
         }
         originalBook = optionalBook.get();
-        book = ServiceUtils.generateBooksAttributes(book, originalBook);
-        return this.bookRepository.updateBook(id, book);
+        updatedBook = ServiceUtils.generateBooksAttributes(book, originalBook);
+        return this.bookRepository.updateBook(id, updatedBook);
     }
 
     @Override

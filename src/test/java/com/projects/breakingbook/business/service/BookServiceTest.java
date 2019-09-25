@@ -6,7 +6,6 @@ import com.projects.breakingbook.business.entity.User;
 import com.projects.breakingbook.business.service.implementation.BookServiceImpl;
 import com.projects.breakingbook.persistence.repository.BookRepository;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,15 +110,7 @@ public class BookServiceTest {
     }
 
     @Test
-    public void should_return_true_if_book_exists_in_db() {
-        final Book expectedBook = Book.builder()
-                .id(2L)
-                .title("Sleeping Beauty")
-                .comment("Fancy comment")
-                .user(this.user2)
-                .friend(null)
-                .build();
-
+    public void should_return_true_when_updating_book_if_book_exists_in_db() {
         final Book newBook = Book.builder()
                 .id(2L)
                 .title("Sleeping Beauty")
@@ -132,7 +123,7 @@ public class BookServiceTest {
     }
 
     @Test
-    public void should_return_false_if_book_does_not_exist_in_db() {
+    public void should_return_false_when_updating_book_if_book_does_not_exist_in_db() {
         final Book newBook = Book.builder()
                 .id(5L)
                 .title("Sleeping Beauty")

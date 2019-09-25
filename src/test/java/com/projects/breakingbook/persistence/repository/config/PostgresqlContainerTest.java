@@ -27,6 +27,7 @@ public class PostgresqlContainerTest extends PostgreSQLContainer<PostgresqlConta
 
     @Override
     public void stop() {
+        //Nothing
     }
 }
 

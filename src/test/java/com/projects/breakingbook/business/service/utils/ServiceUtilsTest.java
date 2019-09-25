@@ -72,6 +72,9 @@ public class ServiceUtilsTest {
         final Book newBook = Book.builder()
                 .id(2L)
                 .title("Maleficent 2")
+                .status(BookStatus.READ)
+                .language("FR")
+                .owned(true)
                 .build();
 
         final Book expectedBook = Book.builder()
@@ -95,6 +98,7 @@ public class ServiceUtilsTest {
 
         final Book actualBook = ServiceUtils.generateBooksAttributes(newBook, book);
 
+
         final SoftAssertions softly = new SoftAssertions();
         softly.assertThat(actualBook.getTitle()).as("Title").isEqualTo(expectedBook.getTitle());
         softly.assertThat(actualBook.getAuthors()).as("authors").isEqualTo(expectedBook.getAuthors());
@@ -106,10 +110,13 @@ public class ServiceUtilsTest {
         softly.assertThat(actualBook.getSynopsis()).as("synopsis").isEqualTo(expectedBook.getSynopsis());
         softly.assertThat(actualBook.getRating()).as("rating").isEqualTo(expectedBook.getRating());
         softly.assertThat(actualBook.getUser()).as("user").isEqualTo(expectedBook.getUser());
+        softly.assertThat(actualBook.getStatus()).as("status").isEqualTo(expectedBook.getStatus());
+        softly.assertThat(actualBook.isOwned()).as("owned").isEqualTo(expectedBook.isOwned());
         softly.assertThat(actualBook.getComment()).as("comment").isEqualTo(expectedBook.getComment());
         softly.assertThat(actualBook.getPages()).as("pages").isEqualTo(expectedBook.getPages());
         softly.assertThat(actualBook.getFriend()).as("friend").isEqualTo(expectedBook.getFriend());
         softly.assertAll();
+        assertThat(actualBook).isEqualTo(expectedBook);
 
     }
 }
