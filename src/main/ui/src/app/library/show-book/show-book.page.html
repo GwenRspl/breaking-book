@@ -65,7 +65,10 @@
                                 </ion-chip>
                                 <ion-chip *ngIf="book.friendId != null && this.book.friendId != 0" color="tertiary">
                                     <ion-avatar>
-                                        <img [src]="friend.avatar" alt="avatar">
+                                        <img *ngIf="friend.avatar != null && friend.avatar != ''" [src]="friend.avatar"
+                                             alt="avatar">
+                                        <img *ngIf="friend.avatar == null || friend.avatar == ''" [src]="defaultAvatar"
+                                             alt="avatar">
                                     </ion-avatar>
                                     <ion-label>Lent to {{friend.name}}</ion-label>
                                 </ion-chip>

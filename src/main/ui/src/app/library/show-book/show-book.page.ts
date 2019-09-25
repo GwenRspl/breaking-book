@@ -19,6 +19,7 @@ export class ShowBookPage implements OnInit {
   private _book: Book;
   private _friend: Friend;
   private _defaultCover = '../../../assets/default_cover.png';
+  private _defaultAvatar = '../../../assets/default_avatar.png';
   private _editMode: boolean = false;
   private _submitted = false;
   private _finishedLoading: boolean = false;
@@ -48,6 +49,10 @@ export class ShowBookPage implements OnInit {
 
   get defaultCover(): string {
     return this._defaultCover;
+  }
+
+  get defaultAvatar(): string {
+    return this._defaultAvatar;
   }
 
   get editMode(): boolean {
