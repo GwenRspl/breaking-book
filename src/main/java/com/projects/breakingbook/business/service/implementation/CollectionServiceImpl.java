@@ -1,7 +1,7 @@
 package com.projects.breakingbook.business.service.implementation;
 
-import com.projects.breakingbook.business.entity.Collection;
 import com.projects.breakingbook.business.service.CollectionService;
+import com.projects.breakingbook.persistence.entity.Collection;
 import com.projects.breakingbook.persistence.repository.CollectionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,49 +13,37 @@ import java.util.Optional;
 @Transactional
 public class CollectionServiceImpl implements CollectionService {
 
-    private final CollectionRepository collectionRepository;
+    private CollectionRepository collectionRepository;
 
-    public CollectionServiceImpl(final CollectionRepository collectionRepository) {
-        this.collectionRepository = collectionRepository;
+    public CollectionServiceImpl(CollectionRepository collectionRepository) { this.collectionRepository = collectionRepository; }
+
+    @Override
+    public List<Collection> getAll() {
+        return collectionRepository.findAllCollections();
     }
 
     @Override
-    public List<Collection> getAll(final Long userId) {
-        return this.collectionRepository.findAllCollections(userId);
+    public boolean create(Collection collection) {
+        return collectionRepository.createCollection(collection);
     }
 
     @Override
-    public boolean create(final Collection collection) {
-        return this.collectionRepository.createCollection(collection);
+    public Optional<Collection> getOne(Long id) {
+        return collectionRepository.findCollectionById(id);
     }
 
     @Override
-    public Optional<Collection> getOne(final Long id) {
-        return this.collectionRepository.findCollectionById(id);
-    }
-
-    @Override
-    public boolean delete(final Long id) {
-        return this.collectionRepository.deleteCollectionById(id);
+    public boolean delete(Long id) {
+        return collectionRepository.deleteCollectionById(id);
     }
 
     @Override
     public boolean deleteAll() {
-        return this.collectionRepository.deleteAllCollections();
+        return collectionRepository.deleteAllCollections();
     }
 
     @Override
-    public boolean addBookToCollection(final Long id, final Long bookId) {
-        return this.collectionRepository.addBookToCollection(id, bookId);
-    }
-
-    @Override
-    public boolean removeBookFromCollection(final Long id, final Long bookId) {
-        return this.collectionRepository.removeBookFromCollection(id, bookId);
-    }
-
-    @Override
-    public boolean update(final Long id, final Collection collection) {
-        return this.collectionRepository.updateCollection(id, collection);
+    public boolean update(Long id, Collection collection) {
+        return collectionRepository.updateCollection(id, collection);
     }
 }

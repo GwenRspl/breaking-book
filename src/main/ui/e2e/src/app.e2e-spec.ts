@@ -1,14 +1,14 @@
 import { AppPage } from './app.po';
 
-describe('new App', () => {
+describe('workspace-project App', () => {
   let page: AppPage;
 
   beforeEach(() => {
     page = new AppPage();
   });
 
-  it('should be blank', () => {
+  it('should display welcome message', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toContain('The world is your oyster.');
+    expect(page.getParagraphText()).toEqual('Welcome to ui!');
   });
 });
