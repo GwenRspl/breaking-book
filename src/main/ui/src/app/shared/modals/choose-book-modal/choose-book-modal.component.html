@@ -1,0 +1,37 @@
+<ion-content>
+    <ion-list padding>
+        <ion-list-header>
+            <h1>Choose a book to lend</h1>
+        </ion-list-header>
+        <p *ngIf="books.length == 0">No books available, add more books to your library.</p>
+        <ion-virtual-scroll [items]="books">
+            <ion-item (click)="chooseBook(book.id)" *virtualItem="let book" class="item-clickable" lines="full">
+                <ion-label>
+                    <h2>{{book.title}}</h2>
+                    <h3>{{book.authors}}</h3>
+                </ion-label>
+
+                <div hidden-until-md>
+                    <ion-chip *ngIf="book.status === 'READ'" color="success" slot="end">
+                        <ion-icon name="checkmark-circle-outline"></ion-icon>
+                        <ion-label>Read</ion-label>
+                    </ion-chip>
+                    <ion-chip *ngIf="book.status === 'ONGOING'" color="warning" slot="end">
+                        <ion-icon name="book"></ion-icon>
+                        <ion-label>Reading</ion-label>
+                    </ion-chip>
+                    <ion-chip *ngIf="book.status === 'UNREAD'" color="danger" slot="end">
+                        <ion-icon name="hourglass"></ion-icon>
+                        <ion-label>Not read</ion-label>
+                    </ion-chip>
+                </div>
+                <div hidden-from-md>
+                    <ion-icon *ngIf="book.status === 'READ'" color="success" name="checkmark-circle-outline"
+                              size="large"></ion-icon>
+                    <ion-icon *ngIf="book.status === 'ONGOING'" color="warning" name="book" size="large"></ion-icon>
+                    <ion-icon *ngIf="book.status === 'UNREAD'" color="danger" name="hourglass" size="large"></ion-icon>
+                </div>
+            </ion-item>
+        </ion-virtual-scroll>
+    </ion-list>
+</ion-content>

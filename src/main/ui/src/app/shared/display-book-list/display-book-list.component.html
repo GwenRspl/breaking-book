@@ -1,0 +1,51 @@
+<div *ngIf="finishedLoading" class="collection-div">
+    <ion-grid>
+        <ion-row class="action-buttons">
+            <ion-col>
+                <ion-button (click)="deleteItem(item.id)"
+                            class="ion-float-right" color="danger" fill="solid">
+                    <ion-icon name="close-circle" slot="start"></ion-icon>
+                    Delete
+                </ion-button>
+                <ion-button (click)="renameItemModal()" class="ion-float-right" color="primary" fill="solid">
+                    <ion-icon name="create" slot="start"></ion-icon>
+                    Rename
+                </ion-button>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <h2 text-center>{{item.name}}</h2>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+
+            <ion-col *ngFor="let book of books"
+                     class="books-div" size-lg="3" size-sm="4" size-xs="6">
+                <ion-card class="overlay-container card">
+                    <ion-img *ngIf="book.image != null && book.image != ''"
+                             [src]="book.image"
+                             class="cover-img"></ion-img>
+                    <ion-img *ngIf="book.image == null || book.image == ''"
+                             [src]="defaultCover"
+                             class="cover-img"></ion-img>
+                    <div (click)="goToBookDetails(book.id)" class="overlay">
+                        <div class="overlay-text">{{book.title}}</div>
+                    </div>
+                    <ion-fab-button (click)="deleteBookFromItem(book.id)"
+                                    class="fab-btn"
+                                    color="danger">
+                        <ion-icon name="close-circle"></ion-icon>
+                    </ion-fab-button>
+                </ion-card>
+            </ion-col>
+            <ion-col class="books-div" size-lg="3" size-sm="4" size-xs="6">
+                <ion-card (click)="openChooseBookModal()"
+                          class="overlay-container center-content-vertically add-book-card card"
+                          text-center>
+                    <ion-icon color="tertiary" name="add-circle" size="large"></ion-icon>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</div>
