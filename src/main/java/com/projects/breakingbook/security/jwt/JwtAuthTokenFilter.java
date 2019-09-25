@@ -1,5 +1,12 @@
 package com.projects.breakingbook.security.jwt;
 
+import java.io.IOException;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.projects.breakingbook.security.services.UserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,51 +17,46 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
 public class JwtAuthTokenFilter extends OncePerRequestFilter {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JwtAuthTokenFilter.class);
+	@Autowired
+	private JwtProvider tokenProvider;
 
-    @Autowired
-    private JwtProvider tokenProvider;
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
+	@Autowired
+	private UserDetailsServiceImpl userDetailsService;
 
-    private static String getJwt(final HttpServletRequest request) {
-        final String authHeader = request.getHeader("Authorization");
+	private static final Logger logger = LoggerFactory.getLogger(JwtAuthTokenFilter.class);
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            return authHeader.replace("Bearer ", "");
-        }
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+			throws ServletException, IOException {
+		try {
 
-        return null;
-    }
+			String jwt = getJwt(request);
+			if (jwt != null && tokenProvider.validateJwtToken(jwt)) {
+				String username = tokenProvider.getUserNameFromJwtToken(jwt);
 
-    @Override
-    protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response, final FilterChain filterChain)
-            throws ServletException, IOException {
-        try {
+				UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+						userDetails, null, userDetails.getAuthorities());
+				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-            final String jwt = JwtAuthTokenFilter.getJwt(request);
-            if (jwt != null && this.tokenProvider.validateJwtToken(jwt)) {
-                final String username = this.tokenProvider.getUserNameFromJwtToken(jwt);
+				SecurityContextHolder.getContext().setAuthentication(authentication);
+			}
+		} catch (Exception e) {
+			logger.error("Can NOT set user authentication -> Message: {}", e);
+		}
 
-                final UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-                final UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+		filterChain.doFilter(request, response);
+	}
 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
-        } catch (final Exception e) {
-            LOGGER.error("Can NOT set user authentication -> Message: {}", e);
-        }
+	private String getJwt(HttpServletRequest request) {
+		String authHeader = request.getHeader("Authorization");
 
-        filterChain.doFilter(request, response);
-    }
+		if (authHeader != null && authHeader.startsWith("Bearer ")) {
+			return authHeader.replace("Bearer ", "");
+		}
+
+		return null;
+	}
 }

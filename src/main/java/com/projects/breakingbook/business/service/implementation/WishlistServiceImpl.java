@@ -1,7 +1,7 @@
 package com.projects.breakingbook.business.service.implementation;
 
-import com.projects.breakingbook.business.entity.Wishlist;
 import com.projects.breakingbook.business.service.WishlistService;
+import com.projects.breakingbook.persistence.entity.Wishlist;
 import com.projects.breakingbook.persistence.repository.WishlistRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,49 +13,39 @@ import java.util.Optional;
 @Transactional
 public class WishlistServiceImpl implements WishlistService {
 
-    private final WishlistRepository wishlistRepository;
+    private WishlistRepository wishlistRepository;
 
-    public WishlistServiceImpl(final WishlistRepository wishlistRepository) {
+    public WishlistServiceImpl(WishlistRepository wishlistRepository) {
         this.wishlistRepository = wishlistRepository;
     }
 
     @Override
-    public List<Wishlist> getAll(final Long userId) {
-        return this.wishlistRepository.findAllWishlists(userId);
+    public List<Wishlist> getAll() {
+        return this.wishlistRepository.findAllWishlists();
     }
 
     @Override
-    public Optional<Wishlist> getOne(final Long id) {
+    public Optional<Wishlist> getOne(Long id) {
         return this.wishlistRepository.findWishlistById(id);
     }
 
     @Override
-    public boolean create(final Wishlist wishlist) {
+    public boolean create(Wishlist wishlist) {
         return this.wishlistRepository.createWishlist(wishlist);
     }
 
     @Override
-    public boolean update(final Long id, final Wishlist wishlist) {
+    public boolean update(Long id, Wishlist wishlist) {
         return this.wishlistRepository.updateWishlist(id, wishlist);
     }
 
     @Override
-    public boolean delete(final Long id) {
+    public boolean delete(Long id) {
         return this.wishlistRepository.deleteWishlistById(id);
     }
 
     @Override
     public boolean deleteAll() {
         return this.wishlistRepository.deleteAllWishlists();
-    }
-
-    @Override
-    public boolean addBookToWishlist(final Long id, final Long bookId) {
-        return this.wishlistRepository.addBookToWishlist(id, bookId);
-    }
-
-    @Override
-    public boolean removeBookFromWishlist(final Long id, final Long bookId) {
-        return this.wishlistRepository.removeBookFromWishlist(id, bookId);
     }
 }
