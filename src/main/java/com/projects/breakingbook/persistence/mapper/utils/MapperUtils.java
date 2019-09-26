@@ -38,13 +38,12 @@ public class MapperUtils {
     }
 
     public static Friend generateFriendFromResultSet(final ResultSet resultSet, final User user, final List<String> columnsNames) throws SQLException {
-        final Friend friend = Friend.builder()
+        return Friend.builder()
                 .id(resultSet.getLong(columnsNames.get(0)))
                 .name(resultSet.getString(columnsNames.get(1)))
                 .avatar(resultSet.getString(columnsNames.get(2)))
                 .user(user)
                 .build();
-        return friend;
     }
 
     public static Book generateBookFromResultSet(final ResultSet resultSet, final Friend friend, final User user, final String bookId) throws SQLException {
