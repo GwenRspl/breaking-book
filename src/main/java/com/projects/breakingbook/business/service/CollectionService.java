@@ -20,8 +20,6 @@ public interface CollectionService {
 
     boolean delete(final Long id);
 
-    boolean deleteAll();
-
     boolean addBookToCollection(final Long id, final Long bookId);
 
     boolean removeBookFromCollection(final Long id, final Long bookId);

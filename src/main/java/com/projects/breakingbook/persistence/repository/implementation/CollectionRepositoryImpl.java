@@ -45,7 +45,6 @@ public class CollectionRepositoryImpl implements CollectionRepository {
             .append("WHERE collection_id = ?")
             .toString();
     private static final String DELETE_BY_ID = "DELETE FROM collection WHERE collection_id = ?";
-    private static final String DELETE_ALL = "DELETE FROM collection";
     private static final String UPDATE = "UPDATE collection SET collection_name = ? WHERE collection_id = ?";
     private static final String SELECT_JOIN = new StringBuilder()
             .append("SELECT ")
@@ -133,12 +132,6 @@ public class CollectionRepositoryImpl implements CollectionRepository {
     @Override
     public boolean deleteCollectionById(final Long id) {
         final int result = this.jdbcTemplate.update(DELETE_BY_ID, id);
-        return result != 0;
-    }
-
-    @Override
-    public boolean deleteAllCollections() {
-        final int result = this.jdbcTemplate.update(DELETE_ALL);
         return result != 0;
     }
 

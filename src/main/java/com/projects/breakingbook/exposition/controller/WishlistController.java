@@ -110,16 +110,6 @@ public class WishlistController {
         }
     }
 
-    @DeleteMapping("")
-    public ResponseEntity<?> deleteAll() {
-        final boolean result = this.wishlistService.deleteAll();
-        if (result) {
-            return new ResponseEntity<>("All wishlists deleted successfully", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("No wishlist deleted", HttpStatus.BAD_REQUEST);
-        }
-    }
-
     private WishlistDTO convertToDTO(final Wishlist wishlist) {
         final WishlistDTO wishlistDTO = this.modelMapper.map(wishlist, WishlistDTO.class);
         if (wishlist.getUser() != null) {

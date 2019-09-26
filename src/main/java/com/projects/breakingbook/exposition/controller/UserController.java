@@ -145,17 +145,6 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/users")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> deleteAll() {
-        final boolean result = this.userService.deleteAll();
-        if (result) {
-            return new ResponseEntity<>("All users deleted successfully", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("No user deleted", HttpStatus.BAD_REQUEST);
-        }
-    }
-
     private UserDTO convertToDTO(final User user) {
         final UserDTO userDTO = this.modelMapper.map(user, UserDTO.class);
         if (user.getBooks() != null) {

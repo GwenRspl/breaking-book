@@ -45,11 +45,6 @@ public class WishlistServiceImpl implements WishlistService {
     }
 
     @Override
-    public boolean deleteAll() {
-        return this.wishlistRepository.deleteAllWishlists();
-    }
-
-    @Override
     public boolean addBookToWishlist(final Long id, final Long bookId) {
         return this.wishlistRepository.addBookToWishlist(id, bookId);
     }

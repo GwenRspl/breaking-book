@@ -17,8 +17,6 @@ public interface UserRepository {
 
     boolean deleteUserById(Long id);
 
-    boolean deleteAllUsers();
-
     boolean updateUser(Long id, User user);
 
     Boolean existsByUsername(String username);

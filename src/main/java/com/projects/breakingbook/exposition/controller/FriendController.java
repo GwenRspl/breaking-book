@@ -100,28 +100,6 @@ public class FriendController {
         }
     }
 
-    // TODO : delete this, not very useful
-    @DeleteMapping("")
-    public ResponseEntity<?> deleteAll(final Long userId) {
-        Long bookId;
-        final List<Friend> friends = this.friendService.getAll(userId);
-        boolean result;
-        for (final Friend friend : friends) {
-            bookId = this.friendService.getBorrowedBook(friend.getId());
-            if (bookId == null) {
-                result = this.friendService.delete(friend.getId());
-            } else {
-                this.bookService.updateFriend(bookId, null);
-                this.bookService.toggleOwned(bookId);
-                result = this.friendService.delete(friend.getId());
-            }
-            if (!result) {
-                return new ResponseEntity<>("No friendId deleted", HttpStatus.BAD_REQUEST);
-            }
-        }
-        return new ResponseEntity<>("All friends deleted successfully", HttpStatus.OK);
-    }
-
     private FriendDTO convertToDTO(final Friend friend) {
         final FriendDTO friendDTO = this.modelMapper.map(friend, FriendDTO.class);
         friendDTO.setUserId(friend.getUser().getId());

@@ -43,7 +43,6 @@ public class WishlistRepositoryImpl implements WishlistRepository {
             .append("WHERE wishlist_id = ?")
             .toString();
     private static final String DELETE_BY_ID = "DELETE FROM wishlist WHERE wishlist_id = ?";
-    private static final String DELETE_ALL = "DELETE FROM wishlist";
     private static final String UPDATE = "UPDATE wishlist SET wishlist_name = ? WHERE wishlist_id = ?";
     private static final String SELECT_JOIN = new StringBuilder()
             .append("SELECT ")
@@ -130,12 +129,6 @@ public class WishlistRepositoryImpl implements WishlistRepository {
     @Override
     public boolean deleteWishlistById(final Long id) {
         final int result = this.jdbcTemplate.update(DELETE_BY_ID, id);
-        return result != 0;
-    }
-
-    @Override
-    public boolean deleteAllWishlists() {
-        final int result = this.jdbcTemplate.update(DELETE_ALL);
         return result != 0;
     }
 

@@ -15,8 +15,6 @@ public interface FriendRepository {
 
     boolean deleteFriendById(Long id);
 
-    boolean deleteAllFriends();
-
     boolean updateFriend(Long id, Friend friend);
 
     Long getBorrowedBook(Long friendId);

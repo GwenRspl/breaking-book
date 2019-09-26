@@ -109,16 +109,6 @@ public class CollectionController {
         }
     }
 
-    @DeleteMapping("")
-    public ResponseEntity<?> deleteAll() {
-        final boolean result = this.collectionService.deleteAll();
-        if (result) {
-            return new ResponseEntity<>("All Collections deleted successfully", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("No Collection deleted", HttpStatus.BAD_REQUEST);
-        }
-    }
-
     private CollectionDTO convertToDTO(final Collection collection) {
         final CollectionDTO collectionDTO = this.modelMapper.map(collection, CollectionDTO.class);
         if (collection.getUser() != null) {

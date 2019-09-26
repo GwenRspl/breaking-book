@@ -40,11 +40,6 @@ public class CollectionServiceImpl implements CollectionService {
     }
 
     @Override
-    public boolean deleteAll() {
-        return this.collectionRepository.deleteAllCollections();
-    }
-
-    @Override
     public boolean addBookToCollection(final Long id, final Long bookId) {
         return this.collectionRepository.addBookToCollection(id, bookId);
     }

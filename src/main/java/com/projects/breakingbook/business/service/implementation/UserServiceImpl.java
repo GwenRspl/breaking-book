@@ -67,11 +67,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean deleteAll() {
-        return this.userRepository.deleteAllUsers();
-    }
-
-    @Override
     public Boolean existsByUsername(final String username) {
         return this.userRepository.existsByUsername(username);
     }
