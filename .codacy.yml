@@ -1,3 +1,6 @@
-
 exclude_paths:
   - 'src/main/resources/static/**'
+  - 'src/main/ui/src/karma.conf.js'
+  - 'src/main/ui/e2e/protractor.conf.js'
+  - '.mvn/wrapper/MavenWrapperDownloader.java'
+  - 'src/main/ui/src/zone-flags.ts'

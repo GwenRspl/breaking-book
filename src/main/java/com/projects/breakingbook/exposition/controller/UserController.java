@@ -26,7 +26,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -41,8 +40,8 @@ public class UserController {
     private final UserService userService;
     private final BookService bookService;
     private final ModelMapper modelMapper;
-    PasswordEncoder encoder;
-    JwtProvider jwtProvider;
+    private final PasswordEncoder encoder;
+    private final JwtProvider jwtProvider;
 
     @Autowired
     public UserController(final AuthenticationManager authenticationManager, final UserService userService, final BookService bookService, final ModelMapper modelMapper, final PasswordEncoder encoder, final JwtProvider jwtProvider) {
@@ -130,7 +129,7 @@ public class UserController {
             } else {
                 throw new UserNotUpdatedException("User not updated");
             }
-        } catch (final ParseException | UserNotUpdatedException e) {
+        } catch (final UserNotUpdatedException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -168,11 +167,11 @@ public class UserController {
         return userDTO;
     }
 
-    private User convertToEntity(final UserDTO userDTO) throws ParseException {
+    private User convertToEntity(final UserDTO userDTO) {
         final User user = this.modelMapper.map(userDTO, User.class);
         if (userDTO.getBookIds() != null) {
             final List<Book> books = userDTO.getBookIds().stream()
-                    .map(id -> this.bookService.getOne(id))
+                    .map(this.bookService::getOne)
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .collect(Collectors.toList());
