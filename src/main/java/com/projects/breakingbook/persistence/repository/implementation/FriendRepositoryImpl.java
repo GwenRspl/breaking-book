@@ -51,7 +51,6 @@ public class FriendRepositoryImpl implements FriendRepository {
             .append("DELETE FROM friend ")
             .append("WHERE friend_id = ?")
             .toString();
-    private static final String DELETE_ALL = "DELETE FROM friend";
     private static final String UPDATE = new StringBuilder()
             .append("UPDATE friend ")
             .append("SET friend_name = ?, friend_avatar = ?, friend_breaking_book_user = ? ")
@@ -143,12 +142,6 @@ public class FriendRepositoryImpl implements FriendRepository {
     @Override
     public boolean deleteFriendById(final Long id) {
         final int result = this.jdbcTemplate.update(DELETE_BY_ID, id);
-        return result != 0;
-    }
-
-    @Override
-    public boolean deleteAllFriends() {
-        final int result = this.jdbcTemplate.update(DELETE_ALL);
         return result != 0;
     }
 

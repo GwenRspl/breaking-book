@@ -15,8 +15,6 @@ public interface WishlistRepository {
 
     boolean deleteWishlistById(Long id);
 
-    boolean deleteAllWishlists();
-
     boolean updateWishlist(Long id, Wishlist wishlist);
 
     boolean addBookToWishlist(Long id, Long bookId);

@@ -15,8 +15,6 @@ public interface CollectionRepository {
 
     boolean deleteCollectionById(Long id);
 
-    boolean deleteAllCollections();
-
     boolean updateCollection(Long id, Collection collection);
 
     boolean addBookToCollection(final Long id, final Long bookId);

@@ -40,7 +40,6 @@ public class UserRepositoryImpl implements UserRepository {
             .append("WHERE breaking_book_user_id = ?")
             .toString();
     private static final String DELETE_BY_ID = "DELETE FROM breaking_book_user WHERE breaking_book_user_id = ?";
-    private static final String DELETE_ALL = "DELETE FROM breaking_book_user";
     private static final String UPDATE = new StringBuilder()
             .append("UPDATE breaking_book_user ")
             .append("SET breaking_book_user_username = ?, breaking_book_user_avatar = ?, ")
@@ -118,12 +117,6 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public boolean deleteUserById(final Long id) {
         final int result = this.jdbcTemplate.update(DELETE_BY_ID, id);
-        return result != 0;
-    }
-
-    @Override
-    public boolean deleteAllUsers() {
-        final int result = this.jdbcTemplate.update(DELETE_ALL);
         return result != 0;
     }
 

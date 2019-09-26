@@ -19,8 +19,6 @@ public interface BookService {
 
     boolean delete(final Long id);
 
-    boolean deleteAll();
-
     boolean toggleOwned(Long id);
 
     boolean updateFriend(Long bookId, Long friendId);

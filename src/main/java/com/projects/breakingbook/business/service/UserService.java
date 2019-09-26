@@ -19,8 +19,6 @@ public interface UserService {
 
     boolean delete(final Long id);
 
-    boolean deleteAll();
-
     Boolean existsByUsername(String username);
 
     Boolean existsByEmail(String email);

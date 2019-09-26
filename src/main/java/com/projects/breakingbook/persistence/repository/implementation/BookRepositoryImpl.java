@@ -55,7 +55,6 @@ public class BookRepositoryImpl implements BookRepository {
             .append("FULL OUTER JOIN friend f on book.book_friend = f.friend_id WHERE book_id = ?")
             .toString();
     private static final String DELETE_BY_ID = "DELETE FROM book WHERE book_id = ?";
-    private static final String DELETE_ALL = "DELETE FROM book";
     private static final String UPDATE = new StringBuilder()
             .append("UPDATE book ")
             .append("SET book_title = ?, book_authors = ?, book_isbn = ?, book_image = ?, book_language = ?, ")
@@ -132,12 +131,6 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public boolean deleteBookById(final Long id) {
         final int result = this.jdbcTemplate.update(DELETE_BY_ID, id);
-        return result != 0;
-    }
-
-    @Override
-    public boolean deleteAllBooks() {
-        final int result = this.jdbcTemplate.update(DELETE_ALL);
         return result != 0;
     }
 

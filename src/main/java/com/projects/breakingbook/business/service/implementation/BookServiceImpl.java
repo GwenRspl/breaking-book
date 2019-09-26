@@ -26,25 +26,6 @@ public class BookServiceImpl implements BookService {
         return this.bookRepository.findAllBooks(userId);
     }
 
-/*
-    @Override
-    public List<Book> getAllLentBooks(final Long userId) {
-        return this.bookRepository
-                .findAllBooks(userId)
-                .stream()
-                .filter(book -> {
-                    if (book.getFriend() == null) {
-                        return false;
-                    }
-                    if (book.getFriend().getId() == null || book.getFriend().getId() == 0) {
-                        return true;
-                    }
-                    return true;
-                })
-                .collect(Collectors.toList());
-    }
-*/
-
     @Override
     public List<Book> getAllLentBooks(final Long userId) {
         return this.bookRepository
@@ -81,11 +62,6 @@ public class BookServiceImpl implements BookService {
     @Override
     public boolean delete(final Long id) {
         return this.bookRepository.deleteBookById(id);
-    }
-
-    @Override
-    public boolean deleteAll() {
-        return this.bookRepository.deleteAllBooks();
     }
 
     @Override
