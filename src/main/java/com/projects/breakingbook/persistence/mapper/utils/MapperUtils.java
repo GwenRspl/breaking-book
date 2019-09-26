@@ -1,6 +1,10 @@
 package com.projects.breakingbook.persistence.mapper.utils;
 
-import com.projects.breakingbook.business.entity.*;
+import com.projects.breakingbook.business.entity.Book;
+import com.projects.breakingbook.business.entity.BookStatus;
+import com.projects.breakingbook.business.entity.Friend;
+import com.projects.breakingbook.business.entity.RoleName;
+import com.projects.breakingbook.business.entity.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
