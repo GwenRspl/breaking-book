@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/breaking-book-db
+    username: breaking-book-master
+    password: root
+    initialization-mode: always
+
+breaking-book:
+  app:
+    jwtSecret: jwtBBSecretKey
+    jwtExpiration: 86400
+    client: http://localhost:8100
+    apiKey: ${GOOGLE_API_KEY}

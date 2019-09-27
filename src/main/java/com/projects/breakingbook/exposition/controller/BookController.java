@@ -10,6 +10,7 @@ import com.projects.breakingbook.exposition.DTO.BookDTO;
 import com.projects.breakingbook.exposition.exception.BookNotCreatedException;
 import com.projects.breakingbook.exposition.exception.BookNotUpdatedException;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -40,11 +41,19 @@ public class BookController {
 
     private final ModelMapper modelMapper;
 
+    @Value("${breaking-book.app.apiKey}")
+    private String apikey;
+
     public BookController(final BookService bookService, final FriendService friendService, final UserService userService, final ModelMapper modelMapper) {
         this.bookService = bookService;
         this.friendService = friendService;
         this.userService = userService;
         this.modelMapper = modelMapper;
+    }
+
+    @GetMapping("/key")
+    public String getApi() {
+        return this.apikey;
     }
 
     @GetMapping("")
