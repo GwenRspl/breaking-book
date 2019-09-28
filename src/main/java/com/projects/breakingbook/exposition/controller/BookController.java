@@ -41,19 +41,11 @@ public class BookController {
 
     private final ModelMapper modelMapper;
 
-    @Value("${breaking-book.app.apiKey}")
-    private String apikey;
-
     public BookController(final BookService bookService, final FriendService friendService, final UserService userService, final ModelMapper modelMapper) {
         this.bookService = bookService;
         this.friendService = friendService;
         this.userService = userService;
         this.modelMapper = modelMapper;
-    }
-
-    @GetMapping("/key")
-    public String getApi() {
-        return this.apikey;
     }
 
     @GetMapping("")

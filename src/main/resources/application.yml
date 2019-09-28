@@ -10,5 +10,5 @@ breaking-book:
     jwtSecret: jwtBBSecretKey
     jwtExpiration: 86400
     client: http://localhost:8100
-    #apiKey: ${GOOGLE_API_KEY}
-    apiKey: blabla
+    apiKey: ${GOOGLE_API_KEY}
+    #apiKey: blabla
