@@ -28,9 +28,7 @@ export class BooksService {
               private tokenStorage: TokenStorageService) {
     this.setUserId();
     this.getGoogleApiKey().subscribe(
-        (data:string) => { this.googleApiKey = data;
-        console.log(this.googleApiKey);
-        })
+      (data: string) => this.googleApiKey = data);
   }
 
   setUserId() {
@@ -70,8 +68,8 @@ export class BooksService {
   }
 
   getGoogleApiKey() {
-    const url= BASE_URL_API + "/key";
-    return this.httpClient.get<String>(url, HTTP_OPTIONS);
+    const url = BASE_URL_API + '/key';
+    return this.httpClient.get<string>(url, HTTP_OPTIONS);
   }
 
   searchBookViaGoogleApi(mode: string, searchInput: string) {
