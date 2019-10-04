@@ -147,7 +147,9 @@ export class ShowFriendPage implements OnInit {
 
   presentDeleteFriendAlert() {
     this.alertCtrl.create({
-      message: 'Are you sure you want to delete this friend?',
+      header: 'Before deleting this friend...',
+      subHeader: 'Have you indicated which books have been returned ?',
+      message: ' Warning ! Not returned books will be marked as not owned in your library.',
       cssClass: 'alert-btn',
       buttons: [
         {
@@ -167,7 +169,7 @@ export class ShowFriendPage implements OnInit {
           }
         }
       ]
-    }).then(alert => alert.present())
+    }).then(alert => alert.present());
 
   }
 
