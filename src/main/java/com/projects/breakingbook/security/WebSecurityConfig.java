@@ -60,7 +60,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/books/**",
                         "/api/friends/**",
                         "/api/collections/**",
-                        "/api/wishlists/**").authenticated()
+                        "/api/wishlists/**",
+                        "/api/key/**").authenticated()
                 .antMatchers("**").permitAll()
                 .anyRequest().authenticated()
                 .and()

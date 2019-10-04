@@ -15,6 +15,7 @@ import com.projects.breakingbook.security.jwt.JwtProvider;
 import com.projects.breakingbook.security.services.UserPrinciple;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -51,6 +52,9 @@ public class UserController {
     private final PasswordEncoder encoder;
     private final JwtProvider jwtProvider;
 
+    @Value("${breaking-book.app.apiKey}")
+    private String apikey;
+
     @Autowired
     public UserController(final AuthenticationManager authenticationManager, final UserService userService, final BookService bookService, final ModelMapper modelMapper, final PasswordEncoder encoder, final JwtProvider jwtProvider) {
         this.authenticationManager = authenticationManager;
@@ -59,6 +63,11 @@ public class UserController {
         this.modelMapper = modelMapper;
         this.encoder = encoder;
         this.jwtProvider = jwtProvider;
+    }
+
+    @GetMapping("auth/key")
+    public String getApi() {
+        return this.apikey;
     }
 
     @PostMapping("/auth/signin")

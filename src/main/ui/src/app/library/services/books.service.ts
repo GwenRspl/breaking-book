@@ -5,7 +5,7 @@ import {GoogleApiQueryResult} from '../search-via-api/googleApiQueryResult.model
 import {Collection} from '../../collections/collection.model';
 import {Observable} from 'rxjs';
 import {TokenStorageService} from '../../authentication/services/token-storage.service';
-import {BASE_URL_API, GOOGLE_API_KEY} from '../../../environments/environment';
+import {BASE_URL_API} from '../../../environments/environment';
 
 const BASE_URL = BASE_URL_API + '/books';
 const COLLECTIONS_URL = BASE_URL_API + '/collections';
@@ -20,13 +20,15 @@ const HTTP_OPTIONS = {headers: new HttpHeaders({'Content-Type': 'application/jso
 })
 export class BooksService {
   private userId: number;
-
+  private googleApiKey: string;
   private selectedBook: Book;
   private bookReadyToPopulate = false;
 
   constructor(private httpClient: HttpClient,
               private tokenStorage: TokenStorageService) {
     this.setUserId();
+    this.getGoogleApiKey().subscribe(
+      (data: string) => this.googleApiKey = data);
   }
 
   setUserId() {
@@ -65,8 +67,13 @@ export class BooksService {
     return this.httpClient.get<Book>(url);
   }
 
+  getGoogleApiKey() {
+    const url = BASE_URL_API + '/key';
+    return this.httpClient.get<string>(url, HTTP_OPTIONS);
+  }
+
   searchBookViaGoogleApi(mode: string, searchInput: string) {
-    const url = GOOGLE_API_URL + mode + ':' + searchInput + GOOGLE_API_KEY + GOOGLE_API_FIELDS + GOOGLE_API_MAX_RESULTS;
+    const url = GOOGLE_API_URL + mode + ':' + searchInput + this.googleApiKey + GOOGLE_API_FIELDS + GOOGLE_API_MAX_RESULTS;
     return this.httpClient.get<GoogleApiQueryResult>(url);
   }
 
