@@ -93,14 +93,14 @@ public class FriendController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable final Long id) {
         final boolean result;
-        final Long bookId = this.friendService.getBorrowedBook(id);
-        if (bookId == null) {
-            result = this.friendService.delete(id);
-        } else {
-            this.bookService.updateFriend(bookId, null);
-            this.bookService.toggleOwned(bookId);
-            result = this.friendService.delete(id);
+        final List<Long> booksIds = this.friendService.getBorrowedBook(id);
+        if (!booksIds.isEmpty()) {
+            booksIds.forEach(bookId -> {
+                this.bookService.updateFriend(bookId, null);
+                this.bookService.toggleOwned(bookId);
+            });
         }
+        result = this.friendService.delete(id);
 
         if (result) {
             return new ResponseEntity<>("friendId deleted successfully", HttpStatus.OK);
