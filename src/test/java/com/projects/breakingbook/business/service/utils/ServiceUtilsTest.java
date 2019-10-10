@@ -102,9 +102,7 @@ public class ServiceUtilsTest {
 
     @Test
     public void should_generate_books_attributes() {
-
         final Book actualBook = ServiceUtils.generateBooksAttributes(this.newBook, this.originalBook);
-
         final SoftAssertions should = new SoftAssertions();
         should.assertThat(actualBook.getTitle()).as("Title").isEqualTo(this.expectedBook.getTitle());
         should.assertThat(actualBook.getAuthors()).as("authors").isEqualTo(this.expectedBook.getAuthors());
@@ -123,6 +121,5 @@ public class ServiceUtilsTest {
         should.assertThat(actualBook.getFriend()).as("friend").isEqualTo(this.expectedBook.getFriend());
         should.assertAll();
         assertThat(actualBook).isEqualTo(this.expectedBook);
-
     }
 }

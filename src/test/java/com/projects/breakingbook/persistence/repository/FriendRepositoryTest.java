@@ -1,11 +1,10 @@
 package com.projects.breakingbook.persistence.repository;
 
 import com.projects.breakingbook.business.entity.Book;
-import com.projects.breakingbook.business.entity.BookStatus;
 import com.projects.breakingbook.business.entity.Friend;
-import com.projects.breakingbook.business.entity.RoleName;
 import com.projects.breakingbook.business.entity.User;
 import com.projects.breakingbook.persistence.repository.config.PostgresqlContainerTest;
+import com.projects.breakingbook.persistence.repository.utils.TestUtils;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -18,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +32,7 @@ public class FriendRepositoryTest {
 
     @ClassRule
     public static PostgreSQLContainer postgreSQLContainer = PostgresqlContainerTest.getInstance();
+    private final String UPDATED_NAME = "Porcinette";
     @Autowired
     private FriendRepository friendRepository;
     @Autowired
@@ -50,62 +49,13 @@ public class FriendRepositoryTest {
 
     @Before
     public void setUp() {
-        this.winnie = User.builder()
-                .username("Winnie")
-                .email("winnie@foretdesreves.bleus")
-                .password("123456")
-                .avatar("ourson")
-                .role(RoleName.ROLE_USER)
-                .id(1L)
-                .build();
-
-        this.cocoLapin = Friend.builder()
-                .id(1L)
-                .name("cocoLapin")
-                .user(this.winnie)
-                .build();
-
-        this.bourriquet = Friend.builder()
-                .id(2L)
-                .name("Bourriquet")
-                .user(this.winnie)
-                .build();
-
-        this.porcinet = Friend.builder()
-                .name("Porcinet")
-                .user(this.winnie)
-                .build();
-
-        this.lesAventures = Book.builder()
-                .id(1L)
-                .title("Les aventures de Winnie l'ourson")
-                .authors(Collections.singletonList("Walt Disney"))
-                .user(this.winnie)
-                .friend(this.cocoLapin)
-                .status(BookStatus.READ)
-                .owned(true)
-                .build();
-
-        this.etlEphelant = Book.builder()
-                .id(2L)
-                .title("Winnie l'Ourson et l'Ephélant")
-                .comment("Un éléphant qui ne sait pas prononcer son nom")
-                .authors(Collections.singletonList("Walt Disney"))
-                .user(this.winnie)
-                .friend(this.cocoLapin)
-                .status(BookStatus.READ)
-                .owned(true)
-                .build();
-
-        this.etSesAmis = Book.builder()
-                .id(3L)
-                .title("Winnie et ses amis")
-                .authors(Collections.singletonList("Walt Disney"))
-                .user(this.winnie)
-                .friend(null)
-                .status(BookStatus.READ)
-                .owned(true)
-                .build();
+        this.winnie = TestUtils.winnie;
+        this.cocoLapin = TestUtils.cocoLapin;
+        this.bourriquet = TestUtils.bourriquet;
+        this.porcinet = TestUtils.porcinet;
+        this.lesAventures = TestUtils.lesAventures;
+        this.etlEphelant = TestUtils.etlEphelant;
+        this.etSesAmis = TestUtils.etSesAmis;
 
         this.userRepository.createUser(this.winnie);
         this.friendRepository.createFriend(this.cocoLapin);
@@ -129,11 +79,11 @@ public class FriendRepositoryTest {
     @Transactional
     public void should_correctly_update_friend() {
         final Long id = this.friendRepository.createFriend(this.porcinet);
-        this.porcinet.setName("Porcinette");
+        this.porcinet.setName(this.UPDATED_NAME);
         this.friendRepository.updateFriend(id, this.porcinet);
         final Optional<Friend> actualFriend = this.friendRepository.findFriendById(id);
         assertThat(actualFriend.isPresent(), equalTo(true));
-        assertThat(actualFriend.get().getName(), equalTo("Porcinette"));
+        assertThat(actualFriend.get().getName(), equalTo(this.UPDATED_NAME));
     }
 
     @Test
