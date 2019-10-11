@@ -1,12 +1,11 @@
 package com.projects.breakingbook.exposition.controller;
 
 import com.projects.breakingbook.business.entity.Book;
-import com.projects.breakingbook.business.entity.BookStatus;
 import com.projects.breakingbook.business.entity.Friend;
-import com.projects.breakingbook.business.entity.RoleName;
 import com.projects.breakingbook.business.entity.User;
 import com.projects.breakingbook.business.service.FriendService;
 import com.projects.breakingbook.exposition.DTO.FriendDTO;
+import com.projects.breakingbook.persistence.repository.utils.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +18,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.ParseException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,80 +47,25 @@ public class FriendControllerTest {
 
     @Before
     public void setUp() {
-        this.winnie = User.builder()
-                .username("Winnie")
-                .email("winnie@foretdesreves.bleus")
-                .password("123456")
-                .avatar("ourson")
-                .role(RoleName.ROLE_USER)
-                .id(1L)
-                .build();
+        this.winnie = TestUtils.winnie;
 
-        this.cocoLapin = Friend.builder()
-                .id(1L)
-                .name("cocoLapin")
-                .user(this.winnie)
-                .build();
+        this.cocoLapin = TestUtils.cocoLapin;
 
-        this.bourriquet = Friend.builder()
-                .id(2L)
-                .name("Bourriquet")
-                .user(this.winnie)
-                .build();
+        this.bourriquet = TestUtils.bourriquet;
 
-        this.porcinet = Friend.builder()
-                .name("Porcinet")
-                .user(this.winnie)
-                .build();
+        this.porcinet = TestUtils.porcinet;
 
-        this.cocoLapinDTO = FriendDTO.builder()
-                .id(1L)
-                .name("cocoLapin")
-                .userId(1L)
-                .build();
+        this.cocoLapinDTO = TestUtils.cocoLapinDTO;
 
-        this.bourriquetDTO = FriendDTO.builder()
-                .id(2L)
-                .name("Bourriquet")
-                .userId(1L)
-                .build();
+        this.bourriquetDTO = TestUtils.bourriquetDTO;
 
-        this.porcinetDTO = FriendDTO.builder()
-                .name("Porcinet")
-                .userId(1L)
-                .build();
+        this.porcinetDTO = TestUtils.porcinetDTO;
 
-        this.lesAventures = Book.builder()
-                .id(1L)
-                .title("Les aventures de Winnie l'ourson")
-                .authors(Collections.singletonList("Walt Disney"))
-                .user(this.winnie)
-                .friend(this.cocoLapin)
-                .status(BookStatus.READ)
-                .owned(true)
-                .build();
+        this.lesAventures = TestUtils.lesAventures;
 
-        this.etlEphelant = Book.builder()
-                .id(2L)
-                .title("Winnie l'Ourson et l'Ephélant")
-                .comment("Un éléphant qui ne sait pas prononcer son nom")
-                .authors(Collections.singletonList("Walt Disney"))
-                .user(this.winnie)
-                .friend(this.cocoLapin)
-                .status(BookStatus.READ)
-                .owned(true)
-                .build();
+        this.etlEphelant = TestUtils.etlEphelant;
 
-        this.etSesAmis = Book.builder()
-                .id(3L)
-                .title("Winnie et ses amis")
-                .authors(Collections.singletonList("Walt Disney"))
-                .user(this.winnie)
-                .friend(null)
-                .status(BookStatus.READ)
-                .owned(true)
-                .build();
-
+        this.etSesAmis = TestUtils.etSesAmis;
     }
 
     @Test

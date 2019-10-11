@@ -5,6 +5,7 @@ import com.projects.breakingbook.business.entity.BookStatus;
 import com.projects.breakingbook.business.entity.Friend;
 import com.projects.breakingbook.business.entity.RoleName;
 import com.projects.breakingbook.business.entity.User;
+import com.projects.breakingbook.exposition.DTO.FriendDTO;
 
 import java.util.Collections;
 
@@ -74,5 +75,22 @@ public class TestUtils {
             .friend(null)
             .status(BookStatus.READ)
             .owned(true)
+            .build();
+
+    public static final FriendDTO cocoLapinDTO = FriendDTO.builder()
+            .id(1L)
+            .name("cocoLapin")
+            .userId(1L)
+            .build();
+
+    public static final FriendDTO bourriquetDTO = FriendDTO.builder()
+            .id(2L)
+            .name("Bourriquet")
+            .userId(1L)
+            .build();
+
+    public static final FriendDTO porcinetDTO = FriendDTO.builder()
+            .name("Porcinet")
+            .userId(1L)
             .build();
 }
