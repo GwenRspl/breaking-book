@@ -90,6 +90,7 @@ public class TestUtils {
             .build();
 
     public static final FriendDTO porcinetDTO = FriendDTO.builder()
+            .id(3L)
             .name("Porcinet")
             .userId(1L)
             .build();

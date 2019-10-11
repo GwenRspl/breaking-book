@@ -92,4 +92,29 @@ public class FriendControllerTest {
         assertThat(actual).isEqualTo(expected);
     }
 
+    @Test
+    public void should_return_httpStatusOK_when_friend_is_updated() throws ParseException {
+        final FriendDTO porcinetteDTO = FriendDTO.builder()
+                .id(3L)
+                .name("Porcinette")
+                .build();
+        when(this.friendService.update(this.porcinetDTO.getId(), this.friendController.convertToEntity(porcinetteDTO))).thenReturn(true);
+        final ResponseEntity<?> expected = new ResponseEntity<>("Friend updated successfully", HttpStatus.OK);
+        final ResponseEntity<?> actual = this.friendController.update(this.porcinetDTO.getId(), porcinetteDTO);
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    public void should_return_friendNotUpdatedException_when_friend_is_not_updated() throws ParseException {
+        final FriendDTO porcinetteDTO = FriendDTO.builder()
+                .id(3L)
+                .name("Porcinette")
+                .build();
+        when(this.friendService.update(this.porcinetDTO.getId(), this.friendController.convertToEntity(porcinetteDTO))).thenReturn(false);
+        final ResponseEntity<?> expected = new ResponseEntity<>("Book not updated", HttpStatus.BAD_REQUEST);
+        final ResponseEntity<?> actual = this.friendController.update(this.porcinetDTO.getId(), porcinetteDTO);
+        assertThat(actual).isEqualTo(expected);
+    }
+
+
 }
