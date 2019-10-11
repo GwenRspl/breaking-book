@@ -5,6 +5,7 @@ import com.projects.breakingbook.business.entity.Friend;
 import com.projects.breakingbook.business.entity.User;
 import com.projects.breakingbook.business.service.implementation.BookServiceImpl;
 import com.projects.breakingbook.persistence.repository.BookRepository;
+import com.projects.breakingbook.persistence.repository.utils.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,66 +35,42 @@ public class BookServiceTest {
     @MockBean
     BookRepository bookRepository;
 
-    private User polochon;
-    private User dormeur;
-    private Book aladdin;
-    private Book blancheNeige;
-    private Book laPetiteSirene;
-    private Friend iago;
+    private User winnie;
+    private User jeanChristophe;
+    private Book lesAventures;
+    private Book etlEphelant;
+    private Book etSesAmis;
+    private Friend cocoLapin;
 
     @Before
     public void setUp() {
-        this.polochon = User.builder()
-                .id(1L)
-                .username("Grincheux")
-                .build();
+        this.winnie = TestUtils.winnie;
 
-        this.dormeur = User.builder()
-                .id(2L)
-                .username("Dormeur")
-                .build();
+        this.jeanChristophe = TestUtils.jeanChristophe;
 
-        this.aladdin = Book.builder()
-                .id(1L)
-                .title("Aladdin et les quarante voleurs")
-                .user(this.polochon)
-                .friend(null)
-                .build();
+        this.lesAventures = TestUtils.lesAventures;
 
-        this.blancheNeige = Book.builder()
-                .id(2L)
-                .title("Blanche-Neige et les sept nains")
-                .comment("Histoire du soir")
-                .user(this.dormeur)
-                .friend(null)
-                .build();
+        this.etlEphelant = TestUtils.etlEphelant;
 
-        this.laPetiteSirene = Book.builder()
-                .id(3L)
-                .title("La petite Sirène")
-                .user(this.polochon)
-                .friend(null)
-                .build();
+        this.etSesAmis = TestUtils.etSesAmis;
 
-        this.iago = Friend.builder()
-                .id(1L)
-                .name("Tom")
-                .build();
+        this.cocoLapin = TestUtils.cocoLapin;
     }
 
     @Test
     public void should_list_All_Books() {
-        when(this.bookRepository.findAllBooks(1L)).thenReturn(Arrays.asList(this.aladdin, this.laPetiteSirene));
+        when(this.bookRepository.findAllBooks(1L)).thenReturn(Arrays.asList(this.lesAventures, this.etSesAmis));
 
         final List<Book> books = this.bookService.getAll(1L);
         assertThat(books, hasSize(2));
-        assertThat(books.get(0).getTitle(), equalTo("Aladdin et les quarante voleurs"));
-        assertThat(books.get(1).getTitle(), equalTo("La petite Sirène"));
+        assertThat(books.get(0).getTitle(), equalTo("Les aventures de Winnie l'ourson"));
+        assertThat(books.get(1).getTitle(), equalTo("Winnie et ses amis"));
     }
 
     @Test
     public void should_return_empty_array_when_no_books_lent() {
-        when(this.bookRepository.findAllBooks(1L)).thenReturn(Arrays.asList(this.aladdin, this.laPetiteSirene));
+        this.etlEphelant.setFriend(null);
+        when(this.bookRepository.findAllBooks(1L)).thenReturn(Arrays.asList(this.etlEphelant, this.etSesAmis));
 
         final List<Book> books = this.bookService.getAllLentBooks(1L);
         assertThat(books, hasSize(0));
@@ -101,22 +78,22 @@ public class BookServiceTest {
 
     @Test
     public void should_return_lent_books() {
-        this.aladdin.setFriend(this.iago);
-        when(this.bookRepository.findAllBooks(1L)).thenReturn(Collections.singletonList(this.aladdin));
+        this.lesAventures.setFriend(this.cocoLapin);
+        when(this.bookRepository.findAllBooks(1L)).thenReturn(Collections.singletonList(this.lesAventures));
 
         final List<Book> books = this.bookService.getAllLentBooks(1L);
         assertThat(books, hasSize(1));
-        assertThat(books.get(0).getTitle(), equalTo("Aladdin et les quarante voleurs"));
+        assertThat(books.get(0).getTitle(), equalTo("Les aventures de Winnie l'ourson"));
     }
 
     @Test
     public void should_return_true_when_updating_book_if_book_exists_in_db() {
         final Book newBook = Book.builder()
                 .id(2L)
-                .title("Blanche-Neige")
+                .title("Winnie l'Ourson et l'Eléphant")
                 .build();
 
-        when(this.bookRepository.findBookById(2L)).thenReturn(Optional.of(this.blancheNeige));
+        when(this.bookRepository.findBookById(2L)).thenReturn(Optional.of(this.etlEphelant));
         when(this.bookRepository.updateBook(2L, newBook)).thenReturn(true);
 
         assertThat(this.bookService.update(2L, newBook)).isEqualTo(true);
@@ -126,7 +103,7 @@ public class BookServiceTest {
     public void should_return_false_when_updating_book_if_book_does_not_exist_in_db() {
         final Book newBook = Book.builder()
                 .id(5L)
-                .title("La Belle et la Bête")
+                .title("Rencontre au pays des rêves bleus")
                 .build();
 
         when(this.bookRepository.findBookById(5L)).thenReturn(Optional.empty());

@@ -11,12 +11,21 @@ import java.util.Collections;
 public class TestUtils {
 
     public static final User winnie = User.builder()
+            .id(1L)
             .username("Winnie")
             .email("winnie@foretdesreves.bleus")
             .password("123456")
             .avatar("ourson")
             .role(RoleName.ROLE_USER)
-            .id(1L)
+            .build();
+
+    public static final User jeanChristophe = User.builder()
+            .id(2L)
+            .username("Jean-Christophe")
+            .email("jean-christophe@foretdesreves.bleus")
+            .password("azerty")
+            .avatar("gamin")
+            .role(RoleName.ROLE_USER)
             .build();
 
     public static final Friend cocoLapin = Friend.builder()
