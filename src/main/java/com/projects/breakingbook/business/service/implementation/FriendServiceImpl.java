@@ -59,7 +59,7 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public Long getBorrowedBook(final Long id) {
+    public List<Long> getBorrowedBook(final Long id) {
         return this.friendRepository.getBorrowedBook(id);
     }
 
